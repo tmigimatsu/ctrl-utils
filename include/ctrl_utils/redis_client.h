@@ -7,8 +7,8 @@
  * Authors: Toki Migimatsu
  */
 
-#ifndef CTRLUTILS_REDIS_CLIENT_H_
-#define CTRLUTILS_REDIS_CLIENT_H_
+#ifndef CTRL_UTILS_REDIS_CLIENT_H_
+#define CTRL_UTILS_REDIS_CLIENT_H_
 
 #include <exception>   // std::exception
 #include <future>      // std::future, std::promise
@@ -18,7 +18,7 @@
 
 #include <cpp_redis/cpp_redis>
 
-namespace utils {
+namespace ctrl_utils {
 
 class RedisClient : public cpp_redis::client {
 
@@ -146,6 +146,6 @@ T RedisClient::sync_get(const std::string& key) {
   return future.get();
 };
 
-}  // namespace utils
+}  // namespace ctrl_utils
 
-#endif  // CTRLUTILS_REDIS_CLIENT_H_
+#endif  // CTRL_UTILS_REDIS_CLIENT_H_

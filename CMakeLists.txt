@@ -11,7 +11,7 @@
 cmake_minimum_required(VERSION 3.6)
 
 # Define project
-project(ctrl-utils VERSION 1.0.0 LANGUAGES CXX)
+project(ctrl_utils VERSION 1.0.0 LANGUAGES CXX)
 
 # Set CMake flags
 set(CMAKE_CXX_STANDARD 14)
@@ -21,7 +21,7 @@ if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
 endif()
 
 # Define directories
-set(CTRL_UTILS_LIB ctrl-utils)
+set(CTRL_UTILS_LIB ctrl_utils)
 set(CTRL_UTILS_CMAKE_DIR ${PROJECT_SOURCE_DIR}/cmake)
 set(CTRL_UTILS_EXT_DIR ${PROJECT_SOURCE_DIR}/external)
 set(CTRL_UTILS_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)

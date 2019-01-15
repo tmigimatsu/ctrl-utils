@@ -7,13 +7,13 @@
  * Authors: Toki Migimatsu
  */
 
-#ifndef CTRLUTILS_TIMER_H_
-#define CTRLUTILS_TIMER_H_
+#ifndef CTRL_UTILS_TIMER_H_
+#define CTRL_UTILS_TIMER_H_
 
 #include <chrono>  // std::chrono
 #include <thread>  // std::this_thread
 
-namespace utils {
+namespace ctrl_utils {
 
 /**
  * @ingroup cpp_utils
@@ -148,6 +148,6 @@ class Timer {
 
 };
 
-}  // namespace utils
+}  // namespace ctrl_utils
 
-#endif  // CTRLUTILS_TIMER_H_
+#endif  // CTRL_UTILS_TIMER_H_

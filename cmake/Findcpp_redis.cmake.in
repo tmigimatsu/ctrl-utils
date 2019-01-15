@@ -1,5 +1,5 @@
 ############################################################
-# Finds the cpp_redis library built inside ctrl-utils.
+# Finds the cpp_redis library built inside ctrl_utils.
 #
 # Copyright 2018. All Rights Reserved.
 #

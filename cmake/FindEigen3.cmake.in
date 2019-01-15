@@ -1,5 +1,5 @@
 ############################################################
-# Finds the Eigen3 library built inside ctrl-utils.
+# Finds the Eigen3 library built inside ctrl_utils.
 #
 # Copyright 2018. All Rights Reserved.
 #

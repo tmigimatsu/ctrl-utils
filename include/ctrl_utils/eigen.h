@@ -7,8 +7,8 @@
  * Authors: Toki Migimatsu
  */
 
-#ifndef CTRLUTILS_EIGEN_H_
-#define CTRLUTILS_EIGEN_H_
+#ifndef CTRL_UTILS_EIGEN_H_
+#define CTRL_UTILS_EIGEN_H_
 
 #include <algorithm>  // std::max
 #include <cmath>      // std::cos, std::sin
@@ -16,7 +16,7 @@
 
 #include <Eigen/Eigen>
 
-namespace utils {
+namespace ctrl_utils {
 namespace Eigen {
 
 template<typename Derived>
@@ -180,6 +180,6 @@ RightProductMatrix(const ::Eigen::QuaternionBase<Derived>& quat) {
 }
 
 }  // namespace Eigen
-}  // namespace utils
+}  // namespace ctrl_utils
 
-#endif  // CTRLUTILS_EIGEN_UTILS_H_
+#endif  // CTRL_UTILS_EIGEN_UTILS_H_

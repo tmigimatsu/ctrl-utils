@@ -1,5 +1,5 @@
 ############################################################
-# CMake config for the ctrl-utils library.
+# CMake config for the ctrl_utils library.
 #
 # Copyright 2018. All Rights Reserved.
 #
@@ -17,5 +17,5 @@ find_dependency(yaml-cpp 0.6.2 REQUIRED)
 list(REMOVE_AT CMAKE_MODULE_PATH -1)
 
 if(NOT TARGET ctrlutils::ctrlutils)
-    include("${CTRL_UTILS_CMAKE_DIR}/ctrl-utilsTargets.cmake")
+    include("${CTRL_UTILS_CMAKE_DIR}/ctrl_utilsTargets.cmake")
 endif()

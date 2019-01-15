@@ -7,8 +7,8 @@
  * Authors: Toki Migimatsu
  */
 
-#ifndef CTRLUTILS_EIGEN_STRING_H_
-#define CTRLUTILS_EIGEN_STRING_H_
+#ifndef CTRL_UTILS_EIGEN_STRING_H_
+#define CTRL_UTILS_EIGEN_STRING_H_
 
 #include <exception>  // std::invalid_argument
 #include <string>     // std::string, std::to_string
@@ -16,7 +16,7 @@
 
 #include <Eigen/Eigen>
 
-namespace utils {
+namespace ctrl_utils {
 namespace Eigen {
 
 /**
@@ -60,7 +60,7 @@ template<typename Derived>
 std::string EncodeJson(const ::Eigen::DenseBase<Derived>& matrix);
 
 }  // namespace Eigen
-}  // namespace utils
+}  // namespace ctrl_utils
 
 namespace Eigen {
 
@@ -69,19 +69,19 @@ std::stringstream& operator>>(std::stringstream& ss,
                               Eigen::Matrix<Scalar, Rows, Cols, Options,
                                             MaxRows, MaxCols>& matrix) {
   using PlainMatrix = Eigen::Matrix<Scalar, Rows, Cols, Options, MaxRows, MaxCols>;
-  matrix = utils::Eigen::DecodeMatlab<PlainMatrix>(ss.str());
+  matrix = ctrl_utils::Eigen::DecodeMatlab<PlainMatrix>(ss.str());
   return ss;
 }
 
 template<typename Derived>
 std::stringstream& operator<<(std::stringstream& ss, const Eigen::DenseBase<Derived>& matrix) {
-  ss << utils::Eigen::EncodeMatlab(matrix);
+  ss << ctrl_utils::Eigen::EncodeMatlab(matrix);
   return ss;
 }
 
 }  // namespace Eigen
 
-namespace utils {
+namespace ctrl_utils {
 namespace Eigen {
 
 template<typename Derived>
@@ -298,6 +298,6 @@ Derived DecodeJson(const std::string& str) {
 }
 
 }  // namespace Eigen
-}  // namespace utils
+}  // namespace ctrl_utils
 
-#endif  // CTRLUTILS_EIGEN_STRING_H_
+#endif  // CTRL_UTILS_EIGEN_STRING_H_

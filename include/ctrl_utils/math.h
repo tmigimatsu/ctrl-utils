@@ -7,10 +7,10 @@
  * Authors: Toki Migimatsu
  */
 
-#ifndef CTRLUTILS_MATH_H_
-#define CTRLUTILS_MATH_H_
+#ifndef CTRL_UTILS_MATH_H_
+#define CTRL_UTILS_MATH_H_
 
-namespace utils {
+namespace ctrl_utils {
 namespace math {
 
 template <typename T>
@@ -19,6 +19,6 @@ T Signum(T x, T epsilon = T(0)) {
 }
 
 }  // namespace math
-}  // namespace utils
+}  // namespace ctrl_utils
 
-#endif  // CTRLUTILS_MATH_H_
+#endif  // CTRL_UTILS_MATH_H_
