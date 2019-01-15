@@ -1,0 +1,21 @@
+############################################################
+# CMake config for the ctrl-utils library.
+#
+# Copyright 2018. All Rights Reserved.
+#
+# Created: September 16, 2018
+# Authors: Toki Migimatsu
+############################################################
+
+get_filename_component(CTRL_UTILS_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+list(APPEND CMAKE_MODULE_PATH ${CTRL_UTILS_CMAKE_DIR})
+find_dependency(Eigen3 3.3.5 REQUIRED)
+find_dependency(cpp_redis 4.3.1 REQUIRED)
+find_dependency(yaml-cpp 0.6.2 REQUIRED)
+list(REMOVE_AT CMAKE_MODULE_PATH -1)
+
+if(NOT TARGET ctrlutils::ctrlutils)
+    include("${CTRL_UTILS_CMAKE_DIR}/ctrl-utilsTargets.cmake")
+endif()
