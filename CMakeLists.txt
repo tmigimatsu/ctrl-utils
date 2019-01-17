@@ -47,9 +47,10 @@ configure_file(${CTRL_UTILS_CMAKE_DIR}/Findcpp_redis.cmake.in
     ${CMAKE_BINARY_DIR}/Findcpp_redis.cmake @ONLY)
 configure_file(${CTRL_UTILS_CMAKE_DIR}/FindEigen3.cmake.in
     ${CMAKE_BINARY_DIR}/FindEigen3.cmake @ONLY)
+configure_file(${CTRL_UTILS_CMAKE_DIR}/Findnlohmann_json.cmake.in
+    ${CMAKE_BINARY_DIR}/Findnlohmann_json.cmake @ONLY)
 configure_file(${CTRL_UTILS_CMAKE_DIR}/Findyaml-cpp.cmake.in
     ${CMAKE_BINARY_DIR}/Findyaml-cpp.cmake @ONLY)
-
 
 find_package(cpp_redis 4.3.1 QUIET)
 if(NOT cpp_redis_FOUND)
@@ -63,6 +64,12 @@ find_package(Eigen3 3.3.5 QUIET)
 if(NOT Eigen3_FOUND)
     download_package(Eigen3)
     find_package(Eigen3 3.3.5 REQUIRED PATHS ${CMAKE_BINARY_DIR}/Eigen3/build)
+endif()
+
+find_package(nlohmann_json 3.2 QUIET)
+if(NOT nlohmann_json_FOUND)
+    download_package(nlohmann_json)
+    find_package(nlohmann_json 3.2 REQUIRED PATHS ${CMAKE_BINARY_DIR}/nlohmann_json/build)
 endif()
 
 find_package(yaml-cpp 0.6.2 QUIET)
@@ -82,6 +89,7 @@ target_link_libraries(${CTRL_UTILS_LIB}
     INTERFACE
         cpp_redis::cpp_redis
         Eigen3::Eigen
+        nlohmann_json::nlohmann_json
         yaml-cpp::yaml-cpp
 )
 
