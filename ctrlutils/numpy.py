@@ -7,6 +7,8 @@ Created: 01/14/19
 Authors: Toki Migimatsu
 """
 
+import numpy as np
+
 ##
 # Decode a Numpy array from Matlab format.
 #
