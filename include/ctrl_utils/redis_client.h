@@ -123,6 +123,23 @@ RedisClient& RedisClient::get(const std::string& key,
   return *this;
 }
 
+template<>
+inline RedisClient& RedisClient::get(const std::string& key,
+    const std::function<void(std::string&&)>& reply_callback,
+    const std::function<void(const std::string&)>& error_callback) {
+  cpp_redis::client::get(key, [key, reply_callback, error_callback](cpp_redis::reply& reply) {
+    if (!reply.is_string()) {
+      if (error_callback) {
+        error_callback("RedisClient::get(): Failed to get string value from key: " + key + ".");
+      }
+      return;
+    }
+    std::string str = reply.as_string();
+    reply_callback(std::move(str));
+  });
+  return *this;
+}
+
 template<typename T>
 std::future<T> RedisClient::get(const std::string& key) {
   auto promise = std::make_shared<std::promise<T>>();
@@ -142,6 +159,20 @@ std::future<T> RedisClient::get(const std::string& key) {
       return;
     }
     promise->set_value(std::move(value));
+  });
+  return promise->get_future();
+}
+
+template<>
+inline std::future<std::string> RedisClient::get(const std::string& key) {
+  auto promise = std::make_shared<std::promise<std::string>>();
+  cpp_redis::client::get(key, [this, key, promise](cpp_redis::reply& reply) {
+    if (!reply.is_string()) {
+      std::string error("Redis::get(): Failed to get string value from key: " + key + ".");
+      promise->set_exception(std::make_exception_ptr(std::runtime_error(error)));
+      return;
+    }
+    promise->set_value(reply.as_string());
   });
   return promise->get_future();
 }
