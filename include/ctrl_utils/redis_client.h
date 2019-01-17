@@ -191,6 +191,12 @@ bool ReplyToString(const cpp_redis::reply& reply, T& value) {
   return true;
 }
 
+template<>
+inline bool ReplyToString(const cpp_redis::reply& reply, std::string& value) {
+  value = reply.as_string();
+  return true;
+}
+
 template<typename Tuple, size_t... Is>
 void RepliesToTuple(const std::vector<cpp_redis::reply>& replies, Tuple& values,
                    std::index_sequence<Is...>) {
