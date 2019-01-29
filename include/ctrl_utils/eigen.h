@@ -80,15 +80,15 @@ CrossMatrix(const ::Eigen::DenseBase<Derived>& x) {
   ::Eigen::Matrix<Scalar,3,3> result;
 
   result(0,0) = 0;
-  result(1,0) = -z.coeff(2);
-  result(2,0) = z.coeff(1);
+  result(1,0) = z.coeff(2);
+  result(2,0) = -z.coeff(1);
 
-  result(0,1) = z.coeff(2);
+  result(0,1) = -z.coeff(2);
   result(1,1) = 0;
-  result(2,1) = -z.coeff(0);
+  result(2,1) = z.coeff(0);
 
-  result(0,2) = -z.coeff(1);
-  result(1,2) = z.coeff(0);
+  result(0,2) = z.coeff(1);
+  result(1,2) = -z.coeff(0);
   result(2,2) = 0;
 
   return result;
