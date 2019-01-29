@@ -20,6 +20,8 @@
 
 #include <cpp_redis/cpp_redis>
 
+#include "ctrl_utils/string.h"
+
 namespace ctrl_utils {
 
 class RedisClient : public cpp_redis::client {
@@ -58,6 +60,16 @@ class RedisClient : public cpp_redis::client {
   template<class... Ts>
   std::future<std::tuple<Ts...>> mget(const std::vector<std::string>& keys);
 
+  template<typename T>
+  RedisClient& hset(const std::string& key, const std::string& field, const T& value,
+                    const reply_callback_t& reply_callback);
+
+  template<typename T>
+  std::future<cpp_redis::reply> hset(const std::string& key, const std::string& field, const T& value);
+
+  template<typename T>
+  cpp_redis::reply sync_hset(const std::string& key, const std::string& field, const T& value);
+
   template<class... Ts>
   std::tuple<Ts...> sync_mget(const std::vector<std::string>& keys);
 
@@ -77,17 +89,17 @@ class RedisClient : public cpp_redis::client {
 template<typename T>
 RedisClient& RedisClient::set(const std::string& key, const T& value,
                               const reply_callback_t& reply_callback) {
-  std::stringstream ss;
-  ss << value;
-  cpp_redis::client::set(key, ss.str(), reply_callback);
+  std::string str;
+  ToString(str, value);
+  cpp_redis::client::set(key, str, reply_callback);
   return *this;
 }
 
 template<typename T>
 std::future<cpp_redis::reply> RedisClient::set(const std::string& key, const T& value) {
-  std::stringstream ss;
-  ss << value;
-  return cpp_redis::client::set(key, ss.str());
+  std::string str;
+  ToString(str, value);
+  return cpp_redis::client::set(key, str);
 }
 
 template<typename T>
@@ -108,10 +120,9 @@ RedisClient& RedisClient::get(const std::string& key,
       }
       return;
     }
-    std::stringstream ss(reply.as_string());
     T value;
     try {
-      ss >> value;
+      FromString(reply.as_string(), value);
     } catch (const std::exception& e) {
       if (error_callback) {
         error_callback("RedisClient::get(): Exception thrown on key: " + key + "\n\t" + e.what());
@@ -123,22 +134,22 @@ RedisClient& RedisClient::get(const std::string& key,
   return *this;
 }
 
-template<>
-inline RedisClient& RedisClient::get(const std::string& key,
-    const std::function<void(std::string&&)>& reply_callback,
-    const std::function<void(const std::string&)>& error_callback) {
-  cpp_redis::client::get(key, [key, reply_callback, error_callback](cpp_redis::reply& reply) {
-    if (!reply.is_string()) {
-      if (error_callback) {
-        error_callback("RedisClient::get(): Failed to get string value from key: " + key + ".");
-      }
-      return;
-    }
-    std::string str = reply.as_string();
-    reply_callback(std::move(str));
-  });
-  return *this;
-}
+// template<>
+// inline RedisClient& RedisClient::get(const std::string& key,
+//     const std::function<void(std::string&&)>& reply_callback,
+//     const std::function<void(const std::string&)>& error_callback) {
+//   cpp_redis::client::get(key, [key, reply_callback, error_callback](cpp_redis::reply& reply) {
+//     if (!reply.is_string()) {
+//       if (error_callback) {
+//         error_callback("RedisClient::get(): Failed to get string value from key: " + key + ".");
+//       }
+//       return;
+//     }
+//     std::string str = reply.as_string();
+//     reply_callback(std::move(str));
+//   });
+//   return *this;
+// }
 
 template<typename T>
 std::future<T> RedisClient::get(const std::string& key) {
@@ -149,10 +160,9 @@ std::future<T> RedisClient::get(const std::string& key) {
       promise->set_exception(std::make_exception_ptr(std::runtime_error(error)));
       return;
     }
-    std::stringstream ss(reply.as_string());
     T value;
     try {
-      ss >> value;
+      FromString(reply.as_string(), value);
     } catch (const std::exception& e) {
       std::string error("RedisClient::get(): Exception thrown on key: " + key + "\n\t" + e.what());
       promise->set_exception(std::make_exception_ptr(std::runtime_error(error)));
@@ -163,19 +173,19 @@ std::future<T> RedisClient::get(const std::string& key) {
   return promise->get_future();
 }
 
-template<>
-inline std::future<std::string> RedisClient::get(const std::string& key) {
-  auto promise = std::make_shared<std::promise<std::string>>();
-  cpp_redis::client::get(key, [this, key, promise](cpp_redis::reply& reply) {
-    if (!reply.is_string()) {
-      std::string error("Redis::get(): Failed to get string value from key: " + key + ".");
-      promise->set_exception(std::make_exception_ptr(std::runtime_error(error)));
-      return;
-    }
-    promise->set_value(reply.as_string());
-  });
-  return promise->get_future();
-}
+// template<>
+// inline std::future<std::string> RedisClient::get(const std::string& key) {
+//   auto promise = std::make_shared<std::promise<std::string>>();
+//   cpp_redis::client::get(key, [this, key, promise](cpp_redis::reply& reply) {
+//     if (!reply.is_string()) {
+//       std::string error("Redis::get(): Failed to get string value from key: " + key + ".");
+//       promise->set_exception(std::make_exception_ptr(std::runtime_error(error)));
+//       return;
+//     }
+//     promise->set_value(reply.as_string());
+//   });
+//   return promise->get_future();
+// }
 
 template<typename T>
 T RedisClient::sync_get(const std::string& key) {
@@ -186,14 +196,7 @@ T RedisClient::sync_get(const std::string& key) {
 
 template<typename T>
 bool ReplyToString(const cpp_redis::reply& reply, T& value) {
-  std::stringstream ss(reply.as_string());
-  ss >> value;
-  return true;
-}
-
-template<>
-inline bool ReplyToString(const cpp_redis::reply& reply, std::string& value) {
-  value = reply.as_string();
+  FromString(reply.as_string(), value);
   return true;
 }
 
@@ -207,9 +210,7 @@ template<typename T>
 bool KeyvalToString(const std::pair<std::string, T>& key_val,
                     std::pair<std::string, std::string>& key_valstr) {
   key_valstr.first = key_val.first;
-  std::stringstream ss;
-  ss << key_val.second;
-  key_valstr.second = ss.str();
+  ToString(key_valstr.second, key_val.second);
   return true;
 }
 
@@ -278,17 +279,42 @@ std::tuple<Ts...> RedisClient::sync_mget(const std::vector<std::string>& keys) {
 template<typename T>
 RedisClient& RedisClient::publish(const std::string& key, const T& value,
                                   const reply_callback_t& reply_callback) {
-  std::stringstream ss;
-  ss << value;
-  cpp_redis::client::publish(key, ss.str(), reply_callback);
+  std::string str;
+  ToString(str, value);
+  cpp_redis::client::publish(key, str, reply_callback);
   return *this;
 }
 
 template<typename T>
+RedisClient& RedisClient::hset(const std::string& key, const std::string& field,
+                               const T& value, const reply_callback_t& reply_callback) {
+  std::string str;
+  ToString(str, value);
+  cpp_redis::client::hset(key, field, str, reply_callback);
+  return *this;
+}
+
+template<typename T>
+std::future<cpp_redis::reply> RedisClient::hset(const std::string& key, const std::string& field,
+                                                const T& value) {
+  std::string str;
+  ToString(str, value);
+  return cpp_redis::client::hset(key, field, str);
+}
+
+template<typename T>
+cpp_redis::reply RedisClient::sync_hset(const std::string& key, const std::string& field,
+                                        const T& value) {
+  std::future<cpp_redis::reply> future = hset(key, field, value);
+  commit();
+  return future.get();
+};
+
+template<typename T>
 std::future<cpp_redis::reply> RedisClient::publish(const std::string& key, const T& value) {
-  std::stringstream ss;
-  ss << value;
-  return cpp_redis::client::publish(key, ss.str());
+  std::string str;
+  ToString(str, value);
+  return cpp_redis::client::publish(key, str);
 }
 
 template<typename T>

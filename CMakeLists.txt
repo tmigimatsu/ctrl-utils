@@ -72,7 +72,7 @@ if(NOT nlohmann_json_FOUND)
     find_package(nlohmann_json 3.2 REQUIRED PATHS ${CMAKE_BINARY_DIR}/nlohmann_json/build)
 endif()
 
-find_package(yaml-cpp 0.6.2 QUIET)
+# find_package(yaml-cpp 0.6.2 QUIET)
 if(NOT yaml-cpp_FOUND)
     download_package(yaml-cpp)
     list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_BINARY_DIR})
