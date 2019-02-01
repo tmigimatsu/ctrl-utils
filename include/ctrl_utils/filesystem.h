@@ -12,7 +12,7 @@
 
 #include <string>    // std::stringstream
 #include <stdlib.h>  // realpath
-#include <unistd.h>  // get_current_dir_name
+#include <unistd.h>  // getcwd
 
 namespace ctrl_utils {
 
@@ -26,7 +26,7 @@ inline std::string AbsolutePath(const std::string& path) {
 
 inline std::string CurrentPath() {
   std::string path;
-  char* c_path = get_current_dir_name();
+  char* c_path = getcwd(NULL, 0);
   path = c_path;
   free(c_path);
   return path;
