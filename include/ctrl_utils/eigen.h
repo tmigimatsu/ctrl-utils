@@ -21,7 +21,8 @@ namespace Eigen {
 
 template<typename Derived>
 inline typename ::Eigen::MatrixBase<Derived>::PlainObject
-PseudoInverse(const ::Eigen::MatrixBase<Derived>& A, double svd_epsilon = 0) {
+PseudoInverse(const ::Eigen::MatrixBase<Derived>& A, double svd_epsilon = 0,
+              bool* is_singular = nullptr) {
   unsigned int options = ::Eigen::MatrixBase<Derived>::ColsAtCompileTime == ::Eigen::Dynamic ?
                          ::Eigen::ComputeThinU | ::Eigen::ComputeThinV :
                          ::Eigen::ComputeFullU | ::Eigen::ComputeFullV;
@@ -30,6 +31,9 @@ PseudoInverse(const ::Eigen::MatrixBase<Derived>& A, double svd_epsilon = 0) {
   if (svd_epsilon <= 0) {
     svd_epsilon = std::numeric_limits<typename Derived::Scalar>::epsilon() *
                 std::max(A.cols(), A.cols()) * S(0);
+  }
+  if (is_singular != nullptr) {
+    *is_singular = (S.array() <= svd_epsilon).any();
   }
   return svd.matrixV() *
          (S.array() > svd_epsilon).select(S.array().inverse(), 0).matrix().asDiagonal() *
