@@ -14,7 +14,29 @@
 #include <cmath>      // std::cos, std::sin
 #include <limits>     // std::numeric_limits
 
+#define EIGEN_MATRIX_PLUGIN "ctrl_utils/eigen_matrix_plugin.h"
 #include <Eigen/Eigen>
+#include <unsupported/Eigen/CXX11/Tensor>
+
+namespace Eigen {
+
+typedef Matrix<double,6,1> Vector6d;
+typedef Matrix<double,6,6> Matrix6d;
+typedef Matrix<double,6,Dynamic> Matrix6Xd;
+
+typedef Matrix<float,6,1> Vector6f;
+typedef Matrix<float,6,6> Matrix6f;
+typedef Matrix<float,6,Dynamic> Matrix6Xf;
+
+typedef Tensor<double,1> Tensor1d;
+typedef Tensor<double,2> Tensor2d;
+typedef Tensor<double,3> Tensor3d;
+
+typedef Tensor<float,1> Tensor1f;
+typedef Tensor<float,2> Tensor2f;
+typedef Tensor<float,3> Tensor3f;
+
+}  // namespace Eigen
 
 namespace ctrl_utils {
 namespace Eigen {
