@@ -20,6 +20,13 @@
 
 namespace Eigen {
 
+template<typename Scalar, int Dim>
+using Vector = Matrix<Scalar,Dim,1>;
+template<int Dim>
+using Vectorf = Matrix<float,Dim,1>;
+template<int Dim>
+using Vectord = Matrix<double,Dim,1>;
+
 typedef Matrix<double,6,1> Vector6d;
 typedef Matrix<double,6,6> Matrix6d;
 typedef Matrix<double,6,Dynamic> Matrix6Xd;
