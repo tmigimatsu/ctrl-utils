@@ -14,7 +14,7 @@
 #include <string>     // std::string, std::to_string
 #include <sstream>    // std::stringstream
 
-#include <Eigen/Eigen>
+#include "eigen.h"
 
 namespace ctrl_utils {
 namespace Eigen {
