@@ -46,16 +46,15 @@ typedef Tensor<float,3> Tensor3f;
 }  // namespace Eigen
 
 namespace ctrl_utils {
-namespace Eigen {
 
 template<typename Derived>
-inline typename ::Eigen::MatrixBase<Derived>::PlainObject
-PseudoInverse(const ::Eigen::MatrixBase<Derived>& A, double svd_epsilon = 0,
+inline typename Eigen::MatrixBase<Derived>::PlainObject
+PseudoInverse(const Eigen::MatrixBase<Derived>& A, double svd_epsilon = 0,
               bool* is_singular = nullptr) {
-  unsigned int options = ::Eigen::MatrixBase<Derived>::ColsAtCompileTime == ::Eigen::Dynamic ?
-                         ::Eigen::ComputeThinU | ::Eigen::ComputeThinV :
-                         ::Eigen::ComputeFullU | ::Eigen::ComputeFullV;
-  ::Eigen::JacobiSVD<typename Derived::PlainObject> svd(A, options);
+  unsigned int options = Eigen::MatrixBase<Derived>::ColsAtCompileTime == Eigen::Dynamic ?
+                         Eigen::ComputeThinU | Eigen::ComputeThinV :
+                         Eigen::ComputeFullU | Eigen::ComputeFullV;
+  Eigen::JacobiSVD<typename Derived::PlainObject> svd(A, options);
   const auto& S = svd.singularValues();
   if (svd_epsilon <= 0) {
     svd_epsilon = std::numeric_limits<typename Derived::Scalar>::epsilon() *
@@ -70,8 +69,8 @@ PseudoInverse(const ::Eigen::MatrixBase<Derived>& A, double svd_epsilon = 0,
 }
 
 template<typename Scalar>
-::Eigen::Matrix<Scalar,3,3> RotationX(Scalar angle) {
-  ::Eigen::Matrix<Scalar,3,3> R;
+Eigen::Matrix<Scalar,3,3> RotationX(Scalar angle) {
+  Eigen::Matrix<Scalar,3,3> R;
   Scalar ca = std::cos(angle);
   Scalar sa = std::sin(angle);
   R << 1, 0,   0,
@@ -81,8 +80,8 @@ template<typename Scalar>
 }
 
 template<typename Scalar>
-::Eigen::Matrix<Scalar,3,3> RotationY(Scalar angle) {
-  ::Eigen::Matrix<Scalar,3,3> R;
+Eigen::Matrix<Scalar,3,3> RotationY(Scalar angle) {
+  Eigen::Matrix<Scalar,3,3> R;
   Scalar ca = std::cos(angle);
   Scalar sa = std::sin(angle);
   R <<  ca, 0, sa,
@@ -92,8 +91,8 @@ template<typename Scalar>
 }
 
 template<typename Scalar>
-::Eigen::Matrix<Scalar,3,3> RotationZ(Scalar angle) {
-  ::Eigen::Matrix<Scalar,3,3> R;
+Eigen::Matrix<Scalar,3,3> RotationZ(Scalar angle) {
+  Eigen::Matrix<Scalar,3,3> R;
   Scalar ca = std::cos(angle);
   Scalar sa = std::sin(angle);
   R << ca, -sa, 0,
@@ -103,14 +102,14 @@ template<typename Scalar>
 }
 
 template<typename Derived>
-::Eigen::Matrix<typename Derived::Scalar,3,3>
-CrossMatrix(const ::Eigen::DenseBase<Derived>& x) {
+Eigen::Matrix<typename Derived::Scalar,3,3>
+CrossMatrix(const Eigen::DenseBase<Derived>& x) {
   EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived);
   eigen_assert(x.size() == 3);
 
   typedef typename Derived::Scalar Scalar;
-	typename ::Eigen::internal::nested_eval<Derived,2>::type z(x.derived());
-  ::Eigen::Matrix<Scalar,3,3> result;
+	typename Eigen::internal::nested_eval<Derived,2>::type z(x.derived());
+  Eigen::Matrix<Scalar,3,3> result;
 
   result(0,0) = 0;
   result(1,0) = z.coeff(2);
@@ -128,14 +127,14 @@ CrossMatrix(const ::Eigen::DenseBase<Derived>& x) {
 }
 
 template<typename Derived>
-::Eigen::Matrix<typename Derived::Scalar,3,3>
-DoubleCrossMatrix(const ::Eigen::DenseBase<Derived>& x) {
+Eigen::Matrix<typename Derived::Scalar,3,3>
+DoubleCrossMatrix(const Eigen::DenseBase<Derived>& x) {
   EIGEN_STATIC_ASSERT_VECTOR_ONLY(Derived);
   eigen_assert(x.size() == 3);
 
   typedef typename Derived::Scalar Scalar;
-	typename ::Eigen::internal::nested_eval<Derived,4>::type z(x.derived());
-  ::Eigen::Matrix<Scalar,3,3> result;
+	typename Eigen::internal::nested_eval<Derived,4>::type z(x.derived());
+  Eigen::Matrix<Scalar,3,3> result;
 
   Scalar aa = -z.coeff(0) * z.coeff(0);
   Scalar bb = -z.coeff(1) * z.coeff(1);
@@ -157,9 +156,9 @@ DoubleCrossMatrix(const ::Eigen::DenseBase<Derived>& x) {
 }
 
 template<typename Derived>
-::Eigen::Matrix<typename Derived::Scalar,4,4>
-LeftProductMatrix(const ::Eigen::QuaternionBase<Derived>& quat) {
-  ::Eigen::Matrix<typename Derived::Scalar,4,4> result;
+Eigen::Matrix<typename Derived::Scalar,4,4>
+LeftProductMatrix(const Eigen::QuaternionBase<Derived>& quat) {
+  Eigen::Matrix<typename Derived::Scalar,4,4> result;
 
   result(0,0) = quat.w();
   result(1,0) = quat.z();
@@ -185,9 +184,9 @@ LeftProductMatrix(const ::Eigen::QuaternionBase<Derived>& quat) {
 }
 
 template<typename Derived>
-::Eigen::Matrix<typename Derived::Scalar,4,4>
-RightProductMatrix(const ::Eigen::QuaternionBase<Derived>& quat) {
-  ::Eigen::Matrix<typename Derived::Scalar,4,4> result;
+Eigen::Matrix<typename Derived::Scalar,4,4>
+RightProductMatrix(const Eigen::QuaternionBase<Derived>& quat) {
+  Eigen::Matrix<typename Derived::Scalar,4,4> result;
 
   result(0,0) = quat.w();
   result(1,0) = -quat.z();
@@ -212,7 +211,6 @@ RightProductMatrix(const ::Eigen::QuaternionBase<Derived>& quat) {
   return result;
 }
 
-}  // namespace Eigen
 }  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_EIGEN_UTILS_H_
