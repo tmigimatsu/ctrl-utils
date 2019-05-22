@@ -11,10 +11,20 @@
 #include <optional>  // std::optional
 #else   // __cplusplus
 
+#include <cassert>    // assert
+#include <exception>  // std::exception
+
 #ifndef CTRL_UTILS_OPTIONAL_H_
 #define CTRL_UTILS_OPTIONAL_H_
 
 namespace std {
+
+class bad_optional_access : public exception {
+ public:
+  bad_optional_access() = default;
+  virtual const char* what() const noexcept override { return "bad optional access"; }
+  virtual ~bad_optional_access() noexcept = default;
+};
 
 template<typename T>
 class optional {
@@ -35,16 +45,16 @@ class optional {
   optional& operator=(const T& value) { value_ = value; has_value_ = true; return *this; }
   optional& operator=(T&& value) { value_ = std::forward<T>(value); has_value_ = true; return *this; }
 
-  const T* operator->() const { return &value_; }
-  T* operator->() { return &value_; }
-  const T& operator*() const { return value_; }
-  T& operator*() { return value_; }
+  const T* operator->() const { assert(has_value_); return &value_; }
+  T* operator->() { assert(has_value_); return &value_; }
+  const T& operator*() const { assert(has_value_); return value_; }
+  T& operator*() { assert(has_value_); return value_; }
 
   explicit operator bool() const { return has_value_; }
   bool has_value() const { return has_value_; }
 
-  const T& value() const { return value_; }
-  T& value() { return value_; }
+  const T& value() const { if (!has_value_) throw std::bad_optional_access(); return value_; }
+  T& value() { if (!has_value_) throw std::bad_optional_access(); return value_; }
 
   T value_or(T&& default_value) const { return has_value_ ? value_ : default_value; }
 
