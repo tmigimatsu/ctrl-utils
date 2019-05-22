@@ -25,7 +25,7 @@
 
 namespace ctrl_utils {
 
-class RedisClient : public cpp_redis::client {
+class RedisClient : public ::cpp_redis::client {
 
  private:
 

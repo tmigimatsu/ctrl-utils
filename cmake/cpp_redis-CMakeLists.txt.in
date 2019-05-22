@@ -18,8 +18,9 @@ ExternalProject_Add(cpp_redis
     SOURCE_DIR ${CTRL_UTILS_EXT_DIR}/cpp_redis.git
     BINARY_DIR ${CMAKE_BINARY_DIR}/cpp_redis/build
     # Download
-    GIT_REPOSITORY https://github.com/cpp_redis/cpp_redis.git
+    GIT_REPOSITORY https://github.com/cpp-redis/cpp_redis.git
     GIT_TAG 4.3.1
+    PATCH_COMMAND sed -i.old -E "s/^GENERATE_TAGFILE( \+)=$/GENERATE_TAGFILE\\1= cpp_redis.tag/" ${CTRL_UTILS_EXT_DIR}/cpp_redis.git/.doxygen && doxygen ${CTRL_UTILS_EXT_DIR}/cpp_redis.git/.doxygen
     # Configure
     CMAKE_ARGS -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/cpp_redis
     # Make
