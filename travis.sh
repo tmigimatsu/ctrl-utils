@@ -9,5 +9,4 @@ doxygen .doxygen
 cd ..
 cd ..
 
-cd doc
 doxygen Doxyfile
