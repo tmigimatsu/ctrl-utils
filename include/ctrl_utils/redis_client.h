@@ -33,6 +33,9 @@ class RedisClient : public ::cpp_redis::client {
   using is_all_strings = typename std::enable_if_t<std::conjunction_v<std::is_convertible<Ts, std::string>...>>;
 
   template<typename T>
+  using is_string = typename std::enable_if_t<std::is_convertible_v<T, std::string>>;
+
+  template<typename T>
   struct is_pair : public std::false_type {};
 
   template<typename T, typename S>
@@ -54,8 +57,8 @@ class RedisClient : public ::cpp_redis::client {
    *
    * Commands are not sent until RedisClient::commit() is called.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * std::future<double> value = redis_client.get<double>("key");
    * redis_client.commit();
    * std::cout << "Value: " << value.get() << std::endl;
@@ -76,8 +79,8 @@ class RedisClient : public ::cpp_redis::client {
    *
    * Commands are not sent until RedisClient::commit() is called.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * redis_client.get<double>("key", [](double&& value) {
    *   std::cout << "Value: " << value << std::endl;
    * }, [](const std::string& error) {
@@ -105,8 +108,8 @@ class RedisClient : public ::cpp_redis::client {
    * a specialization for that type doesn't exist, std::stringstream::operator>>().
    * These specializations can be defined locally for custom types in your code.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * double value = redis_client.sync_get<double>("key");
    * std::cout << "Value: " << value.get() << std::endl;
    * ~~~~~~~~~~
@@ -126,8 +129,8 @@ class RedisClient : public ::cpp_redis::client {
    *
    * Commands are not sent until RedisClient::commit() is called.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * redis_client.set("key1", 1234);
    * redis_client.set("key2", 1234);
    * redis_client.commit();
@@ -149,8 +152,8 @@ class RedisClient : public ::cpp_redis::client {
    *
    * Commands are not sent until RedisClient::commit() is called.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * redis_client.set("key", 1234, [](cpp_redis::reply& reply) {
    *   if (!reply) throw std::runtime_error("Set failed.");
    * });
@@ -175,8 +178,8 @@ class RedisClient : public ::cpp_redis::client {
    * a specialization for that type doesn't exist, std::stringstream::operator<<().
    * These specializations can be defined locally for custom types in your code.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * redis_client.sync_set("key", 1234);
    * ~~~~~~~~~~
    *
@@ -188,12 +191,12 @@ class RedisClient : public ::cpp_redis::client {
   cpp_redis::reply sync_set(const std::string& key, const T& value);
 
   /**
-   * Asynchronous Redis MGET command with std::future.
+   * Asynchronous Redis MGET command with std::future for heterogeneous value types.
    *
    * Commands are not sent until RedisClient::commit() is called.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * std::future<std::tuple<double, int>> fut_values = redis_client.mget<double, int>("key1", "key2");
    * redis_client.commit();
    * std::tuple<double, int> values = fut_values.get();
@@ -207,12 +210,12 @@ class RedisClient : public ::cpp_redis::client {
   std::future<std::tuple<Ts...>> mget(const Strings&... keys);
 
   /**
-   * Asynchronous Redis MGET command with std::future for a vector of a single type.
+   * Asynchronous Redis MGET command with std::future for homogeneous value types.
    *
    * Commands are not sent until RedisClient::commit() is called.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * std::future<std::vector<int>> fut_values = redis_client.mget<int>({"key1", "key2"});
    * redis_client.commit();
    * for (int value : fut_values.get()) {
@@ -229,8 +232,8 @@ class RedisClient : public ::cpp_redis::client {
   /**
    * Synchronous Redis MGET command.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * std::tuple<double, int> values = redis_client.sync_mget<double, int>("key1", "key2");
    * std::cout << std::get<0>(values) << " " << std::get<1>(values) << std::endl;
    * ~~~~~~~~~~
@@ -244,8 +247,8 @@ class RedisClient : public ::cpp_redis::client {
   /**
    * Synchronous Redis MGET command for a vector of a single type.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * std::vector<int> values = redis_client.sync_mget<int>({"key1", "key2"});
    * for (int value : fut_values.get()) {
    *   std::cout << value << std::endl;
@@ -264,12 +267,31 @@ class RedisClient : public ::cpp_redis::client {
   //                   const std::function<void(const std::string&)>& error_callback = {});
 
   /**
-   * Asynchronous Redis MSET command with std::future.
+   * Asynchronous Redis MSET command with std::future for heterogeneous value types.
    *
    * Commands are not sent until RedisClient::commit() is called.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
+   * // key1 and key2 will be set atomically.
+   * redis_client.mset(std::make_pair("key1", 1234), std::make_pair("key2", 1234));
+   *
+   * redis_client.commit();
+   * ~~~~~~~~~~
+   *
+   * @param key_vals Vector of key-value pairs.
+   * @return Future Redis reply.
+   */
+  template<class... Pairs, typename = is_all_pairs<Pairs...>>
+  std::future<cpp_redis::reply> mset(const Pairs&... key_vals);
+
+  /**
+   * Asynchronous Redis MSET command with std::future for homogeneous value types.
+   *
+   * Commands are not sent until RedisClient::commit() is called.
+   *
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * // key1 and key2 will be set atomically.
    * std::vector<std::pair<std::string, int>> key_vals;
    * key_vals.emplace_back("key1", 1234);
@@ -294,8 +316,8 @@ class RedisClient : public ::cpp_redis::client {
    *
    * Commands are not sent until RedisClient::commit() is called.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * // key1 and key2 will be set atomically.
    * std::vector<std::pair<std::string, int>> key_vals;
    * key_vals.emplace_back("key1", 1234);
@@ -322,10 +344,25 @@ class RedisClient : public ::cpp_redis::client {
                     const reply_callback_t& reply_callback);
 
   /**
-   * Synchronous Redis MSET command.
+   * Synchronous Redis MSET command for heterogeneous value types.
    *
-   * Example:
-   * ~~~~~~~~~~ {.c}
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
+   * // key1 and key2 will be set atomically.
+   * redis_client.sync_mset(std::make_pair("key1", 1234), std::make_pair("key2", 1234));
+   * ~~~~~~~~~~
+   *
+   * @param key_vals Vector of key-value pairs.
+   * @return Redis reply.
+   */
+  template<class... Pairs, typename = is_all_pairs<Pairs...>>
+  cpp_redis::reply sync_mset(const Pairs&... key_vals);
+
+  /**
+   * Synchronous Redis MSET command for homogeneous value types.
+   *
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
    * // key1 and key2 will be set atomically.
    * std::vector<std::pair<std::string, int>> key_vals;
    * key_vals.emplace_back("key1", 1234);
@@ -342,12 +379,6 @@ class RedisClient : public ::cpp_redis::client {
    */
   template<typename T>
   cpp_redis::reply sync_mset(const std::vector<std::pair<std::string, T>>& key_vals);
-
-  template<class... Pairs, typename = is_all_pairs<Pairs...>>
-  std::future<cpp_redis::reply> mset(const Pairs&... key_vals);
-
-  template<class... Pairs, typename = is_all_pairs<Pairs...>>
-  cpp_redis::reply sync_mset(const Pairs&... key_vals);
 
   template<typename T>
   RedisClient& hset(const std::string& key, const std::string& field, const T& value,
@@ -378,12 +409,21 @@ class RedisClient : public ::cpp_redis::client {
   static void RepliesToTuple(const std::vector<cpp_redis::reply>& replies, Tuple& values,
                              std::index_sequence<Is...>);
 
+  template<typename Key, typename Val, typename = is_string<Key>>
+  static bool KeyvalToString(const std::pair<Key, Val>& key_val,
+                             std::pair<std::string, std::string>& key_valstr);
+
+  template<typename Tuple, size_t... Is>
+  static void KeyvalsToString(const Tuple& args,
+                              std::vector<std::pair<std::string, std::string>>& key_valstr,
+                              std::index_sequence<Is...>);
+
 };
 
 
-/**
- * Implementation
- */
+////////////////////
+// Implementation //
+////////////////////
 
 template<typename T>
 RedisClient& RedisClient::get(const std::string& key,
@@ -465,18 +505,18 @@ void RedisClient::RepliesToTuple(const std::vector<cpp_redis::reply>& replies, T
   std::initializer_list<bool>{ ReplyToString(replies[Is], std::get<Is>(values))... };
 }
 
-template<typename T>
-bool KeyvalToString(const std::pair<std::string, T>& key_val,
-                    std::pair<std::string, std::string>& key_valstr) {
+template<typename Key, typename Val, typename>
+bool RedisClient::KeyvalToString(const std::pair<Key, Val>& key_val,
+                                 std::pair<std::string, std::string>& key_valstr) {
   key_valstr.first = key_val.first;
   ToString(key_valstr.second, key_val.second);
   return true;
 }
 
 template<typename Tuple, size_t... Is>
-void KeyvalsToString(const Tuple& args,
-                     std::vector<std::pair<std::string, std::string>>& key_valstr,
-                     std::index_sequence<Is...>) {
+void RedisClient::KeyvalsToString(const Tuple& args,
+                                  std::vector<std::pair<std::string, std::string>>& key_valstr,
+                                  std::index_sequence<Is...>) {
   std::initializer_list<bool>{ KeyvalToString(std::get<Is>(args), key_valstr[Is])... };
 }
 

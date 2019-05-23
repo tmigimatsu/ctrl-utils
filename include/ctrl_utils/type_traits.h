@@ -25,6 +25,9 @@ struct conjunction<B1, Bn...>
 template<class... B>
 constexpr bool conjunction_v = conjunction<B...>::value;
 
+template<class B1, class B2>
+constexpr bool is_convertible_v = is_convertible<B1, B2>::value;
+
 }  // namespace std
 
 #endif  // CTRL_UTILS_TYPE_TRAITS_H_
