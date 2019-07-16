@@ -129,7 +129,7 @@ install(EXPORT ${CTRL_UTILS_TARGETS}
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}Version.cmake
     VERSION ${PROJECT_VERSION}
-    COMPATIBILITY AnyNewerVersion
+    COMPATIBILITY SameMinorVersion
 )
 
 # Create Config.cmake
