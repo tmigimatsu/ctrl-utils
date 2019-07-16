@@ -12,9 +12,14 @@
 
 namespace ctrl_utils {
 
-template <typename T>
+template<typename T>
 T Signum(T x, T epsilon = T(0)) {
   return (x > epsilon) - (x < -epsilon);
+}
+
+template<typename T>
+T Clip(T x, T max) {
+  return (x > max) ? max : (x < -max) ? -max : x;
 }
 
 }  // namespace ctrl_utils

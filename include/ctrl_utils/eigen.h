@@ -68,6 +68,11 @@ PseudoInverse(const Eigen::MatrixBase<Derived>& A, double svd_epsilon = 0,
          svd.matrixU().adjoint();
 }
 
+inline double Cross(Eigen::Ref<const Eigen::Vector2d> a,
+                    Eigen::Ref<const Eigen::Vector2d> b) {
+  return a(0) * b(1) - a(1) * b(0);
+}
+
 template<typename Scalar>
 Eigen::Matrix<Scalar,3,3> RotationX(Scalar angle) {
   Eigen::Matrix<Scalar,3,3> R;
@@ -136,9 +141,9 @@ DoubleCrossMatrix(const Eigen::DenseBase<Derived>& x) {
 	typename Eigen::internal::nested_eval<Derived,4>::type z(x.derived());
   Eigen::Matrix<Scalar,3,3> result;
 
-  Scalar aa = -z.coeff(0) * z.coeff(0);
-  Scalar bb = -z.coeff(1) * z.coeff(1);
-  Scalar cc = -z.coeff(2) * z.coeff(2);
+  const Scalar aa = -z.coeff(0) * z.coeff(0);
+  const Scalar bb = -z.coeff(1) * z.coeff(1);
+  const Scalar cc = -z.coeff(2) * z.coeff(2);
 
   result(0,0) = bb + cc;
   result(1,0) = z.coeff(0) * z.coeff(1);

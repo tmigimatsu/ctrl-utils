@@ -7,12 +7,41 @@
  * Authors: Toki Migimatsu
  */
 
+#if __cplusplus >= 201703L
+#include <filesystem>  // std::filesystem
+#else   // __cplusplus
+
 #ifndef CTRL_UTILS_FILESYSTEM_H_
 #define CTRL_UTILS_FILESYSTEM_H_
 
 #include <string>    // std::stringstream
 #include <stdlib.h>  // realpath
-#include <unistd.h>  // getcwd
+#include <unistd.h>  // access, getcwd
+
+namespace std {
+namespace filesystem {
+
+class path {
+
+ public:
+
+  path(const std::string& source) : str_(source) {}
+
+  const char* c_str() const { return str_.c_str(); }
+  const std::string& string() const { return str_; }
+
+ private:
+
+  std::string str_;
+
+};
+
+inline bool exists(const path& p) {
+  return access(p.c_str(), F_OK) == 0;
+}
+
+}  // namespace filesystem
+}  // namespace std
 
 namespace ctrl_utils {
 
@@ -39,3 +68,5 @@ inline std::string ParentPath(const std::string& path) {
 }  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_FILESYSTEM_H_
+
+#endif  // __cplusplus

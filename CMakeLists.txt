@@ -11,7 +11,7 @@
 cmake_minimum_required(VERSION 3.6)
 
 # Define project
-project(ctrl_utils VERSION 1.0.0 LANGUAGES CXX)
+project(ctrl_utils VERSION 1.0.1 LANGUAGES CXX)
 
 # Set CMake flags
 set(CMAKE_CXX_STANDARD 14)

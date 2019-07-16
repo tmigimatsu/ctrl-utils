@@ -11,6 +11,7 @@
 #define CTRL_UTILS_TREE_H_
 
 #include <map>          // std::map
+#include <stack>        // std::stack
 #include <type_traits>  // std::conditional_t
 #include <utility>      // std::pair
 
@@ -30,10 +31,15 @@ class Tree {
   template<bool Const>
   class ChainView;
 
+  template<bool Const>
+  class DescendantView;
+
  public:
 
   using const_chain_view = ChainView<true>;
   using chain_view = ChainView<false>;
+  using const_descendant_view = DescendantView<true>;
+  using descendant_view = DescendantView<false>;
 
   const std::map<Key, T>& values() const { return values_; }
 
@@ -43,6 +49,12 @@ class Tree {
   chain_view ancestors(const Key& id) { return chain_view(this, id); }
 
   const_chain_view ancestors(const Key& id) const { return const_chain_view(this, id); }
+
+  descendant_view descendants(const Key& id) { return descendant_view(this, id); }
+
+  const_descendant_view descendants(const Key& id) const { return const_descendant_view(this, id); }
+
+  bool contains(const Key& id) const { return values().find(id) != values().end(); }
 
   void insert_child(const Key& id_parent, const Key& id, const T& value) {
     values_[id] = value;
@@ -149,6 +161,71 @@ class Tree<Key, T>::ChainView<Const>::iterator {
 
   TreeT* tree_;
   std::optional<Key> id_;
+
+};
+
+template<typename Key, typename T>
+template<bool Const>
+class Tree<Key, T>::DescendantView {
+
+ public:
+
+  using TreeT = std::conditional_t<Const, const Tree<Key, T>, Tree<Key, T>>;
+
+  class iterator;
+
+  DescendantView(TreeT* tree, const Key& id) : tree_(tree) {
+    // Collect all descendants, including self
+    ids_.push_back(id);
+    for (const auto& key_val : tree_->id_parents_) {
+      const Key& id_descendant = key_val.first;
+      const std::optional<Key>& id_ancestor = key_val.second;
+      if (id_ancestor && *id_ancestor == id) {
+        ids_.push_back(id_descendant);
+      }
+    }
+  }
+
+  iterator begin() { return iterator(tree_, ids_, 0); }
+  iterator end() { return iterator(tree_, ids_, ids_.size()); }
+
+ protected:
+
+  TreeT* tree_;
+  std::vector<Key> ids_;
+
+};
+
+template<typename Key, typename T>
+template<bool Const>
+class Tree<Key, T>::DescendantView<Const>::iterator {
+
+ public:
+
+  using TreeT = std::conditional_t<Const, const Tree<Key, T>, Tree<Key, T>>;
+  using ValueT = std::conditional_t<Const, const std::pair<const Key, T>, std::pair<const Key, T>>;
+
+  using iterator_category = std::input_iterator_tag;
+  using value_type = ValueT;
+  using difference_type = ptrdiff_t;
+  using pointer = value_type*;
+  using reference = value_type&;
+
+  iterator(TreeT* tree, const std::vector<Key>& ids, size_t idx_id) : tree_(tree), ids_(ids), idx_id_(idx_id) {}
+
+  iterator& operator++() { ++idx_id_; return *this; }
+  iterator& operator+=(size_t n) { idx_id_ += n; return *this; }
+  iterator operator+(size_t n) { iterator it(*this); it += n; return it; }
+  bool operator==(const iterator& other) const { return tree_ == other.tree_ && &ids_ == &other.ids_ && idx_id_ == other.idx_id_; }
+  bool operator!=(const iterator& other) const { return !(*this == other); }
+  reference operator*() const { return *tree_->values_.find(ids_[idx_id_]); }
+  pointer operator->() const { return tree_->values_.find(ids_[idx_id_]).operator->(); }
+
+ protected:
+
+  TreeT* tree_;
+  const std::vector<Key>& ids_;
+  size_t idx_id_;
 
 };
 
