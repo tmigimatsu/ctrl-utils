@@ -133,9 +133,9 @@ inline Eigen::Matrix6d ExpMapDerivative(const Eigen::Isometry3d& T);
 
 inline Eigen::Matrix6d LogMapDerivative(const Eigen::Isometry3d& T);
 
-/******************
- * Implementation *
- ******************/
+////////////////////
+// Implementation //
+////////////////////
 
 Eigen::Vector3d OrientationError(const Eigen::Quaterniond &quat, const Eigen::Quaterniond &quat_des) {
   Eigen::Quaterniond quat_err = quat * quat_des.inverse();

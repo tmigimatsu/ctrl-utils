@@ -9,21 +9,23 @@
 
 cmake_minimum_required(VERSION 3.6)
 
-project(nlohmann_json-download NONE)
+set(EXT_LIB_NAME nlohmann_json)
+project(${EXT_LIB_NAME}-download NONE)
 
 include(ExternalProject)
-ExternalProject_Add(nlohmann_json
+ExternalProject_Add(${EXT_LIB_NAME}
     # Directories
-    PREFIX ${CMAKE_BINARY_DIR}/nlohmann_json
-    SOURCE_DIR ${CTRL_UTILS_EXT_DIR}/nlohmann_json.git
-    BINARY_DIR ${CMAKE_BINARY_DIR}/nlohmann_json/build
+    PREFIX @CMAKE_BINARY_DIR@/${EXT_LIB_NAME}
+    SOURCE_DIR @LIB_EXTERNAL_DIR@/nlohmann_json.git
+    BINARY_DIR @CMAKE_BINARY_DIR@/${EXT_LIB_NAME}/build
     # Download
     GIT_REPOSITORY https://github.com/nlohmann/json.git
-    GIT_TAG v3.2.0
+    GIT_TAG v@EXT_PACKAGE_VERSION@
+    GIT_SHALLOW ON
     # Configure
     CMAKE_ARGS -DBUILD_TESTING=OFF
     # Make
-    BUILD_COMMAND ${CTRL_UTILS_CMAKE_DIR}/ncpu.sh | xargs -I {} make -j{}
+    BUILD_COMMAND @LIB_CMAKE_DIR@/ncpu.sh | xargs -I {} make -j{}
     # Install
     INSTALL_COMMAND ""
 )

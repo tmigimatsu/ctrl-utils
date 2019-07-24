@@ -22,9 +22,9 @@ endif()
 
 # Define directories
 set(CTRL_UTILS_LIB ctrl_utils)
-set(CTRL_UTILS_CMAKE_DIR ${PROJECT_SOURCE_DIR}/cmake)
-set(CTRL_UTILS_EXT_DIR ${PROJECT_SOURCE_DIR}/external)
-set(CTRL_UTILS_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(LIB_CMAKE_DIR ${PROJECT_SOURCE_DIR}/cmake)
+set(LIB_EXTERNAL_DIR ${PROJECT_SOURCE_DIR}/external)
+set(LIB_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 
 # Create control_utils library
 add_library(${CTRL_UTILS_LIB} INTERFACE)
@@ -33,9 +33,16 @@ add_library(${CTRL_UTILS_LIB} INTERFACE)
 add_library(${CTRL_UTILS_LIB}::${CTRL_UTILS_LIB} ALIAS ${CTRL_UTILS_LIB})
 
 # Find dependencies
+list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_BINARY_DIR} ${LIB_CMAKE_DIR})
+
 function(download_package PACKAGE_NAME)
-    configure_file(${CTRL_UTILS_CMAKE_DIR}/${PACKAGE_NAME}-CMakeLists.txt.in
-        ${CMAKE_BINARY_DIR}/${PACKAGE_NAME}/CMakeLists.txt)
+    set(EXT_PACKAGE_VERSION ${ARGV1})
+    if(EXISTS ${LIB_CMAKE_DIR}/Find${PACKAGE_NAME}.cmake.in)
+        configure_file(${LIB_CMAKE_DIR}/Find${PACKAGE_NAME}.cmake.in
+            ${CMAKE_BINARY_DIR}/Find${PACKAGE_NAME}.cmake @ONLY)
+    endif()
+    configure_file(${LIB_CMAKE_DIR}/${PACKAGE_NAME}-CMakeLists.txt.in
+        ${CMAKE_BINARY_DIR}/${PACKAGE_NAME}/CMakeLists.txt @ONLY)
     execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${PACKAGE_NAME})
     execute_process(COMMAND ${CMAKE_COMMAND} --build .
@@ -43,41 +50,33 @@ function(download_package PACKAGE_NAME)
 endfunction()
 
 # Export for build tree
-configure_file(${CTRL_UTILS_CMAKE_DIR}/Findcpp_redis.cmake.in
-    ${CMAKE_BINARY_DIR}/Findcpp_redis.cmake @ONLY)
-configure_file(${CTRL_UTILS_CMAKE_DIR}/FindEigen3.cmake.in
-    ${CMAKE_BINARY_DIR}/FindEigen3.cmake @ONLY)
-configure_file(${CTRL_UTILS_CMAKE_DIR}/Findnlohmann_json.cmake.in
-    ${CMAKE_BINARY_DIR}/Findnlohmann_json.cmake @ONLY)
-configure_file(${CTRL_UTILS_CMAKE_DIR}/Findyaml-cpp.cmake.in
-    ${CMAKE_BINARY_DIR}/Findyaml-cpp.cmake @ONLY)
-
 find_package(cpp_redis 4.3.1 QUIET)
 if(NOT cpp_redis_FOUND)
-    download_package(cpp_redis)
-    list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_BINARY_DIR})
-    find_package(cpp_redis 4.3.1 MODULE REQUIRED)
-    list(REMOVE_AT CMAKE_MODULE_PATH 0)
+    download_package(cpp_redis 4.3.1)
+    find_package(cpp_redis 4.3.1 REQUIRED)
 endif()
 
-find_package(Eigen3 3.3.5 QUIET)
+find_package(Eigen3 3.3.7 QUIET)
 if(NOT Eigen3_FOUND)
-    download_package(Eigen3)
-    find_package(Eigen3 3.3.5 REQUIRED PATHS ${CMAKE_BINARY_DIR}/Eigen3/build)
+    download_package(Eigen3 3.3.7)
+    find_package(Eigen3 3.3.7)
 endif()
 
-find_package(nlohmann_json 3.2 QUIET)
+find_package(nlohmann_json 3.6.1 QUIET)
 if(NOT nlohmann_json_FOUND)
-    download_package(nlohmann_json)
-    find_package(nlohmann_json 3.2 REQUIRED PATHS ${CMAKE_BINARY_DIR}/nlohmann_json/build)
+    download_package(nlohmann_json 3.6.1)
+    find_package(nlohmann_json 3.6.1)
+endif()
+
+find_package(pybind11 2.3.0 QUIET)
+if(NOT pybind11_FOUND)
+    download_package(pybind11 2.3.0)
 endif()
 
 # find_package(yaml-cpp 0.6.2 QUIET)
 if(NOT yaml-cpp_FOUND)
-    download_package(yaml-cpp)
-    list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_BINARY_DIR})
+    download_package(yaml-cpp 0.6.2)
     find_package(yaml-cpp 0.6.2 REQUIRED)
-    list(REMOVE_AT CMAKE_MODULE_PATH 0)
 else()
     add_library(yaml-cpp::yaml-cpp INTERFACE IMPORTED)
     set_target_properties(yaml-cpp::yaml-cpp PROPERTIES
@@ -97,7 +96,7 @@ target_link_libraries(${CTRL_UTILS_LIB}
 target_include_directories(${CTRL_UTILS_LIB}
     INTERFACE
         $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${CTRL_UTILS_INCLUDE_DIR}>
+        $<BUILD_INTERFACE:${LIB_INCLUDE_DIR}>
 )
 
 # Use GNUInstalDirs to install ibraries into correct locations on all platforms
@@ -116,7 +115,7 @@ install(TARGETS ${CTRL_UTILS_LIB}
 )
 
 # Install the headers
-install(DIRECTORY ${CTRL_UTILS_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(DIRECTORY ${LIB_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Export targets to Targets.cmake
 install(EXPORT ${CTRL_UTILS_TARGETS}
@@ -133,7 +132,7 @@ write_basic_package_version_file(${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}Version
 )
 
 # Create Config.cmake
-configure_package_config_file(${CTRL_UTILS_CMAKE_DIR}/${CTRL_UTILS_CONFIG}.cmake.in
+configure_package_config_file(${LIB_CMAKE_DIR}/${CTRL_UTILS_CONFIG}.cmake.in
     ${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}.cmake
     INSTALL_DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR})
 

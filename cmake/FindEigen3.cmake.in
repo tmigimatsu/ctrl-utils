@@ -7,5 +7,4 @@
 # Authors: Toki Migimatsu
 ############################################################
 
-
-find_package(Eigen3 3.3.5 REQUIRED PATHS @CMAKE_BINARY_DIR@/Eigen3/build)
+find_package(Eigen3 ${PACKAGE_FIND_VERSION} REQUIRED PATHS @CMAKE_BINARY_DIR@/Eigen3/build)

@@ -9,22 +9,24 @@
 
 cmake_minimum_required(VERSION 3.6)
 
-project(cpp_redis-download NONE)
+set(EXT_LIB_NAME cpp_redis)
+project(${EXT_LIB_NAME}-download NONE)
 
 include(ExternalProject)
-ExternalProject_Add(cpp_redis
+ExternalProject_Add(${EXT_LIB_NAME}
     # Directories
-    PREFIX ${CMAKE_BINARY_DIR}/cpp_redis
-    SOURCE_DIR ${CTRL_UTILS_EXT_DIR}/cpp_redis.git
-    BINARY_DIR ${CMAKE_BINARY_DIR}/cpp_redis/build
+    PREFIX @CMAKE_BINARY_DIR@/${EXT_LIB_NAME}
+    SOURCE_DIR @LIB_EXTERNAL_DIR@/cpp_redis.git
+    BINARY_DIR @CMAKE_BINARY_DIR@/${EXT_LIB_NAME}/build
     # Download
     GIT_REPOSITORY https://github.com/cpp-redis/cpp_redis.git
-    GIT_TAG 4.3.1
-    PATCH_COMMAND sed -i.old -E "s/^GENERATE_TAGFILE( \+)=$/GENERATE_TAGFILE\\1= cpp_redis.tag/" ${CTRL_UTILS_EXT_DIR}/cpp_redis.git/.doxygen && doxygen ${CTRL_UTILS_EXT_DIR}/cpp_redis.git/.doxygen
+    GIT_TAG @EXT_PACKAGE_VERSION@
+    GIT_SHALLOW ON
+    PATCH_COMMAND sed -i.old -E "s/^GENERATE_TAGFILE( \+)=$/GENERATE_TAGFILE\\1= cpp_redis.tag/" @LIB_EXTERNAL_DIR@/cpp_redis.git/.doxygen && doxygen @LIB_EXTERNAL_DIR@/cpp_redis.git/.doxygen
     # Configure
-    CMAKE_ARGS -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/cpp_redis
+    CMAKE_ARGS -DBUILD_EXAMPLES=OFF -DBUILD_TESTS=OFF -DCMAKE_INSTALL_PREFIX=@CMAKE_BINARY_DIR@/${EXT_LIB_NAME}
     # Make
-    BUILD_COMMAND ${CTRL_UTILS_CMAKE_DIR}/ncpu.sh | xargs -I {} make -j{}
+    BUILD_COMMAND @LIB_CMAKE_DIR@/ncpu.sh | xargs -I {} make -j{}
     # Install
     # INSTALL_COMMAND ""
 )

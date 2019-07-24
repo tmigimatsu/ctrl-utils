@@ -9,21 +9,23 @@
 
 cmake_minimum_required(VERSION 3.6)
 
-project(yaml-cpp-download NONE)
+set(EXT_LIB_NAME yaml-cpp)
+project(${EXT_LIB_NAME}-download NONE)
 
 include(ExternalProject)
-ExternalProject_Add(yaml-cpp
+ExternalProject_Add(${EXT_LIB_NAME}
     # Directories
-    PREFIX ${CMAKE_BINARY_DIR}/yaml-cpp
-    SOURCE_DIR ${CTRL_UTILS_EXT_DIR}/yaml-cpp.git
-    BINARY_DIR ${CMAKE_BINARY_DIR}/yaml-cpp/build
+    PREFIX @CMAKE_BINARY_DIR@/${EXT_LIB_NAME}
+    SOURCE_DIR @LIB_EXTERNAL_DIR@/yaml-cpp.git
+    BINARY_DIR @CMAKE_BINARY_DIR@/${EXT_LIB_NAME}/build
     # Download
     GIT_REPOSITORY https://github.com/jbeder/yaml-cpp.git
-    GIT_TAG yaml-cpp-0.6.2
+    GIT_TAG yaml-cpp-@EXT_PACKAGE_VERSION@
+    GIT_SHALLOW ON
     # Configure
     CMAKE_ARGS -DYAML_CPP_BUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON
     # Make
-    BUILD_COMMAND ${CTRL_UTILS_CMAKE_DIR}/ncpu.sh | xargs -I {} make -j{}
+    BUILD_COMMAND @LIB_CMAKE_DIR@/ncpu.sh | xargs -I {} make -j{}
     # Install
     INSTALL_COMMAND ""
 )
