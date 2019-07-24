@@ -11,12 +11,20 @@
 cmake_minimum_required(VERSION 3.6)
 
 # Define project
-project(ctrl_utils VERSION 1.0.1 LANGUAGES CXX)
+project(ctrl_utils VERSION 1.1.0 LANGUAGES CXX)
+
+# Define options
+option(BUILD_CPP_REDIS "Build cpp_redis" ON)
+option(BUILD_EIGEN "Build Eigen" ON)
+option(BUILD_OPENCV "Build OpenCV" OFF)
+option(BUILD_NLOHMANN_JSON "Build nlohmann_json" ON)
+option(BUILD_PYBIND11 "Build pybind11" ON)
+option(BUILD_YAML_CPP "Build yaml-cpp" ON)
 
 # Set CMake flags
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-if (NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
+if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
 endif()
 
@@ -50,47 +58,62 @@ function(download_package PACKAGE_NAME)
 endfunction()
 
 # Export for build tree
-find_package(cpp_redis 4.3.1 QUIET)
-if(NOT cpp_redis_FOUND)
-    download_package(cpp_redis 4.3.1)
-    find_package(cpp_redis 4.3.1 REQUIRED)
+if(BUILD_CPP_REDIS)
+    find_package(cpp_redis 4.3.1 QUIET)
+    if(NOT cpp_redis_FOUND)
+        download_package(cpp_redis 4.3.1)
+        find_package(cpp_redis 4.3.1 REQUIRED)
+    endif()
+    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE cpp_redis::cpp_redis)
 endif()
 
-find_package(Eigen3 3.3.7 QUIET)
-if(NOT Eigen3_FOUND)
-    download_package(Eigen3 3.3.7)
-    find_package(Eigen3 3.3.7)
+if(BUILD_EIGEN)
+    find_package(Eigen3 3.3.7 QUIET)
+    if(NOT Eigen3_FOUND)
+        download_package(Eigen3 3.3.7)
+        find_package(Eigen3 3.3.7)
+    endif()
+    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE Eigen3::Eigen)
 endif()
 
-find_package(nlohmann_json 3.6.1 QUIET)
-if(NOT nlohmann_json_FOUND)
-    download_package(nlohmann_json 3.6.1)
-    find_package(nlohmann_json 3.6.1)
+if(BUILD_NLOHMANN_JSON)
+    find_package(nlohmann_json 3.6.1 QUIET)
+    if(NOT nlohmann_json_FOUND)
+        download_package(nlohmann_json 3.6.1)
+        find_package(nlohmann_json 3.6.1)
+    endif()
+    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE nlohmann_json::nlohmann_json)
 endif()
 
-find_package(pybind11 2.3.0 QUIET)
-if(NOT pybind11_FOUND)
-    download_package(pybind11 2.3.0)
+if(BUILD_OPENCV)
+    find_package(OpenCV 4.1.0 QUIET)
+    if(NOT OpenCV_FOUND)
+        download_package(OpenCV 4.1.0)
+        find_package(OpenCV 4.1.0 REQUIRED)
+    endif()
+    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE OpenCV::OpenCV)
+endif()
+
+if(BUILD_PYBIND11)
+    find_package(pybind11 2.3.0 QUIET)
+    if(NOT pybind11_FOUND)
+        download_package(pybind11 2.3.0)
+    endif()
 endif()
 
 # find_package(yaml-cpp 0.6.2 QUIET)
-if(NOT yaml-cpp_FOUND)
-    download_package(yaml-cpp 0.6.2)
-    find_package(yaml-cpp 0.6.2 REQUIRED)
-else()
-    add_library(yaml-cpp::yaml-cpp INTERFACE IMPORTED)
-    set_target_properties(yaml-cpp::yaml-cpp PROPERTIES
-        INTERFACE_LINK_LIBRARIES yaml-cpp
-        INTERFACE_INCLUDE_DIRECTORIES ${YAML_CPP_INCLUDE_DIR})
+if(BUILD_YAML_CPP)
+    if(NOT yaml-cpp_FOUND)
+        download_package(yaml-cpp 0.6.2)
+        find_package(yaml-cpp 0.6.2 REQUIRED)
+    else()
+        add_library(yaml-cpp::yaml-cpp INTERFACE IMPORTED)
+        set_target_properties(yaml-cpp::yaml-cpp PROPERTIES
+            INTERFACE_LINK_LIBRARIES yaml-cpp
+            INTERFACE_INCLUDE_DIRECTORIES ${YAML_CPP_INCLUDE_DIR})
+    endif()
+    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE yaml-cpp::yaml-cpp)
 endif()
-
-target_link_libraries(${CTRL_UTILS_LIB}
-    INTERFACE
-        cpp_redis::cpp_redis
-        Eigen3::Eigen
-        nlohmann_json::nlohmann_json
-        yaml-cpp::yaml-cpp
-)
 
 # Set include directories
 target_include_directories(${CTRL_UTILS_LIB}
