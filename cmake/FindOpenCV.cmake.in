@@ -1,0 +1,21 @@
+############################################################
+# Finds the OpenCV library built inside ctrl_utils
+#
+# Copyright 2019. All Rights Reserved.
+#
+# Created: July 24, 2019
+# Authors: Toki Migimatsu
+############################################################
+
+
+find_package(OpenCV ${PACKAGE_FIND_VERSION} REQUIRED PATHS @CMAKE_BINARY_DIR@/OpenCV/build)
+
+if(OpenCV_FOUND AND NOT TARGET OpenCV::OpenCV)
+    add_library(OpenCV::OpenCV INTERFACE IMPORTED)
+message(${OpenCV_INCLUDE_DIRS})
+message(${OpenCV_LIBS})
+    set_target_properties(OpenCV::OpenCV PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${OpenCV_INCLUDE_DIRS}"
+        INTERFACE_LINK_LIBRARIES "${OpenCV_LIBS}"
+    )
+endif()
