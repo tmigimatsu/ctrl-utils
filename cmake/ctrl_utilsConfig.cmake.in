@@ -26,6 +26,7 @@ if(@BUILD_OPENCV@)
     find_dependency(OpenCV @OpenCV_VERSION@ REQUIRED)
 endif()
 
-if(NOT TARGET ctrlutils::ctrlutils)
+if(NOT TARGET ctrl_utils::ctrl_utils)
     include("@CMAKE_BINARY_DIR@/ctrl_utilsTargets.cmake")
+    set(ctrl_utils_EXTERNAL_DIR @LIB_EXTERNAL_DIR@)
 endif()
