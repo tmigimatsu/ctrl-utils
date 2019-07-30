@@ -16,6 +16,7 @@
 
 #include <exception>  // std::system_error
 #include <memory>     // std::shared_ptr
+#include <regex>      // std::regex, std::regex_replace
 #include <string>     // std::stringstream
 #include <iostream>   // std::basic_ostream
 
@@ -37,9 +38,9 @@ class path {
 
   path() = default;
 
-  path(const char* source) : str_(source) {}
+  path(const char* source) : str_(normalize(source)) {}
 
-  path(const std::string& source) : str_(source) {}
+  path(const std::string& source) : str_(normalize(source)) {}
 
   const char* c_str() const { return str_.c_str(); }
 
@@ -47,13 +48,44 @@ class path {
 
   bool empty() const { return str_.empty(); }
 
+  path parent_path() const { return str_.substr(0, str_.find_last_of("/\\") + 1); };
+
+  path stem() const {
+    const size_t idx_start = str_.find_last_of("/\\") + 1;
+    const size_t idx_end = str_.find_last_of(".");
+    if (idx_start == idx_end) {
+      return str_.substr(idx_start);
+    } else {
+      return str_.substr(idx_start, idx_end);
+    }
+  }
+
   bool operator==(const path& other) const { return str_ == other.str_; }
 
  private:
 
+  static std::string normalize(const std::string& source) {
+    std::string result = std::regex_replace(source, std::regex("/+"), "/");
+    result = std::regex_replace(result, std::regex("/\\./"), "/");
+    result = std::regex_replace(result, std::regex("^\\./"), "");
+    result = std::regex_replace(result, std::regex("^\\./"), "");
+    result = std::regex_replace(result, std::regex("[^/\\.]+/\\.\\./"), "");
+    result = std::regex_replace(result, std::regex("[^/\\.]+/\\.\\.$"), "");
+    result = std::regex_replace(result, std::regex("^/\\.\\."), "/");
+    result = std::regex_replace(result, std::regex("\\.\\./$"), "..");
+    if (result.empty()) {
+      result = ".";
+    }
+    return result;
+  }
+
   std::string str_;
 
 };
+
+path operator/(const path& a, const path& b) {
+  return a.string() + "/" + b.string();
+}
 
 template<class CharT, class Traits>
 basic_ostream<CharT, Traits>& operator<<(basic_ostream<CharT, Traits>& os, const path& p) {
@@ -147,32 +179,22 @@ inline bool exists(const path& p) {
   return access(p.c_str(), F_OK) == 0;
 }
 
+path current_path() {
+  char* c_path = getcwd(nullptr, 0);
+  path p(c_path);
+  free(c_path);
+  return p;
+}
+
+path absolute_path(const path& p) {
+  char* c_path = realpath(p.c_str(), nullptr);
+  path p_abs(c_path);
+  free(c_path);
+  return p_abs;
+}
+
 }  // namespace filesystem
 }  // namespace std
-
-namespace ctrl_utils {
-
-inline std::string AbsolutePath(const std::string& path) {
-  std::string abs_path;
-  char* c_path = realpath(path.c_str(), NULL);
-  abs_path = c_path;
-  free(c_path);
-  return abs_path;
-}
-
-inline std::string CurrentPath() {
-  std::string path;
-  char* c_path = getcwd(NULL, 0);
-  path = c_path;
-  free(c_path);
-  return path;
-}
-
-inline std::string ParentPath(const std::string& path) {
-  return path.substr(0, path.find_last_of("/\\") + 1);
-}
-
-}  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_FILESYSTEM_H_
 
