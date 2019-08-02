@@ -66,13 +66,18 @@ class path {
 
   static std::string normalize(const std::string& source) {
     std::string result = std::regex_replace(source, std::regex("/+"), "/");
+    if (!result.empty() && result.back() == '.') {
+      result += "/";  // Append / after . for simpler regex
+    }
     result = std::regex_replace(result, std::regex("/\\./"), "/");
     result = std::regex_replace(result, std::regex("^\\./"), "");
-    result = std::regex_replace(result, std::regex("^\\./"), "");
-    result = std::regex_replace(result, std::regex("[^/\\.]+/\\.\\./"), "");
-    result = std::regex_replace(result, std::regex("[^/\\.]+/\\.\\.$"), "");
+    std::string result_new = std::regex_replace(result, std::regex("[^/\\.]+/\\.\\./"), "");
+    while (result_new != result) {
+      result = result_new;
+      result_new = std::regex_replace(result, std::regex("[^/\\.]+/\\.\\./"), "");
+    }
     result = std::regex_replace(result, std::regex("^/\\.\\."), "/");
-    result = std::regex_replace(result, std::regex("\\.\\./$"), "..");
+    result = std::regex_replace(result, std::regex("^\\.\\./$"), "..");
     if (result.empty()) {
       result = ".";
     }
