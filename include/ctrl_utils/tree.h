@@ -81,6 +81,19 @@ class Tree {
     id_parents_[id].reset();
   }
 
+  // TODO: Make child_view version
+  std::vector<Key> children(const Key& id) const {
+    std::vector<Key> children_ids;
+    for (const auto& key_val : tree_->id_parents_) {
+      const Key& id_child = key_val.first;
+      const std::optional<Key>& id_parent = key_val.second;
+      if (id_parent && *id_parent == id) {
+        children_ids.push_back(id_child);
+      }
+    }
+    return children_ids;
+  }
+
   /**
    * Check whether id_ancestor is an ancestor of id.
    *
@@ -176,20 +189,32 @@ class Tree<Key, T>::DescendantView {
 
   DescendantView(TreeT* tree, const Key& id) : tree_(tree) {
     // Collect all descendants, including self
-    ids_.push_back(id);
-    for (const auto& key_val : tree_->id_parents_) {
-      const Key& id_descendant = key_val.first;
-      const std::optional<Key>& id_ancestor = key_val.second;
-      if (id_ancestor && *id_ancestor == id) {
-        ids_.push_back(id_descendant);
-      }
-    }
+    AddChildrenDfs(id);
   }
 
   iterator begin() { return iterator(tree_, ids_, 0); }
   iterator end() { return iterator(tree_, ids_, ids_.size()); }
 
  protected:
+
+  static std::vector<Key> GetChildren(id) {
+    std::vector<Key> children_ids;
+    for (const auto& key_val : tree_->id_parents_) {
+      const Key& id_child = key_val.first;
+      const std::optional<Key>& id_parent = key_val.second;
+      if (id_parent && *id_parent == id) {
+        children_ids.push_back(id_child);
+      }
+    }
+    return children_ids;
+  }
+
+  void AddChildrenDfs(id) {
+    ids_.push_back(id);
+    for (const Key& id_child : GetChildren(id)) {
+      AddChildrenDfs(id_child);
+    }
+  }
 
   TreeT* tree_;
   std::vector<Key> ids_;
