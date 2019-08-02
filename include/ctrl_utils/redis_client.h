@@ -48,6 +48,12 @@ class RedisClient : public ::cpp_redis::client {
 
   RedisClient() : cpp_redis::client() {}
 
+  void connect(const std::string& host = "127.0.0.1", size_t port = 6379) {
+    host_ = host;
+    port_ = port;
+    cpp_redis::client::connect(host, port);
+  }
+
   /**
    * Asynchronous Redis GET command with std::future.
    *
@@ -400,6 +406,19 @@ class RedisClient : public ::cpp_redis::client {
   template<typename T>
   cpp_redis::reply sync_publish(const std::string& key, const T& value);
 
+  template<typename TSub, typename TPub>
+  RedisClient& request(const std::string& key_pub, const TPub& value_pub,
+                       const std::string& key_sub,
+                       std::function<void(TSub&&)>&& sub_callback);
+
+  template<typename TSub, typename TPub>
+  std::future<TSub> request(const std::string& key_pub, const TPub& value_pub,
+                            const std::string& key_sub);
+
+  template<typename TSub, typename TPub>
+  TSub sync_request(const std::string& key_pub, const TPub& value_pub,
+                    const std::string& key_sub);
+
  private:
 
   template<typename T>
@@ -417,6 +436,9 @@ class RedisClient : public ::cpp_redis::client {
   static void KeyvalsToString(const Tuple& args,
                               std::vector<std::pair<std::string, std::string>>& key_valstr,
                               std::index_sequence<Is...>);
+
+  std::string host_;
+  std::size_t port_;
 
 };
 
@@ -731,6 +753,47 @@ cpp_redis::reply RedisClient::sync_publish(const std::string& key, const T& valu
   commit();
   return future.get();
 };
+
+template<typename TSub, typename TPub>
+RedisClient& RedisClient::request(const std::string& key_pub, const TPub& value_pub,
+                                  const std::string& key_sub,
+                                  std::function<void(TSub&&)>&& sub_callback) {
+  auto sub = std::make_shared<cpp_redis::subscriber>();
+  sub->connect(host_, port_);
+
+  sub->subscribe(key_sub,
+                 [sub, sub_callback = std::move(sub_callback)](const std::string& key,
+                                                               const std::string& str_value) mutable {
+    sub_callback(FromString<TSub>(str_value));
+    std::thread([sub = std::move(sub), key]() mutable {
+      sub->unsubscribe(key);
+      sub->commit();
+    }).detach();
+  });
+  sub->commit();
+
+  publish(key_pub, value_pub);
+}
+
+template<typename TSub, typename TPub>
+std::future<TSub> RedisClient::request(const std::string& key_pub, const TPub& value_pub,
+                                       const std::string& key_sub) {
+  auto promise = std::make_shared<std::promise<TSub>>();
+  request<TSub>(key_pub, value_pub, key_sub, [promise](TSub&& value) mutable {
+    if (!promise) return;
+    promise->set_value(std::move(value));
+    promise.reset();
+  });
+  return promise->get_future();
+}
+
+template<typename TSub, typename TPub>
+TSub RedisClient::sync_request(const std::string& key_pub, const TPub& value_pub,
+                               const std::string& key_sub) {
+  std::future<TSub> fut_value = request<TSub>(key_pub, value_pub, key_sub);
+  commit();
+  return fut_value.get();
+}
 
 }  // namespace ctrl_utils
 
