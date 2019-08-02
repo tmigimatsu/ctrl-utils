@@ -14,6 +14,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include "ctrl_utils/eigen.h"
+
 namespace Eigen {
 
 template<typename Derived>
@@ -29,7 +31,7 @@ void to_json(nlohmann::json& json, const Eigen::DenseBase<Derived>& matrix) {
 
   for (size_t i = 0; i < matrix.rows(); i++) {
     json.emplace_back(nlohmann::json::array());
-    const nlohmann::json& json_i = json[i];
+    nlohmann::json& json_i = json[i];
     for (size_t j = 0; j < matrix.cols(); j++) {
       json_i.push_back(matrix(i, j));
     }
@@ -75,6 +77,34 @@ void from_json(const nlohmann::json& json, Eigen::DenseBase<Derived>& matrix) {
       matrix(i, j) = json_i[j];
     }
   }
+}
+
+template<typename Derived>
+void to_json(nlohmann::json& json, const Eigen::QuaternionBase<Derived>& quat) {
+  json["w"] = quat.w();
+  json["x"] = quat.x();
+  json["y"] = quat.y();
+  json["z"] = quat.z();
+}
+
+template<typename Derived>
+void from_json(const nlohmann::json& json, Eigen::QuaternionBase<Derived>& quat) {
+  quat.w() = json["w"].get<typename Derived::Scalar>();
+  quat.x() = json["x"].get<typename Derived::Scalar>();
+  quat.y() = json["y"].get<typename Derived::Scalar>();
+  quat.z() = json["z"].get<typename Derived::Scalar>();
+  quat.normalize();
+}
+
+void to_json(nlohmann::json& json, const Eigen::Isometry3d& T) {
+  json["pos"] = T.translation();
+  json["ori"] = Eigen::Quaterniond(T.linear());
+}
+
+void from_json(const nlohmann::json& json, Eigen::Isometry3d& T) {
+  const Eigen::Vector3d pos = json["pos"].get<Eigen::Vector3d>();
+  const Eigen::Quaterniond ori = json["ori"].get<Eigen::Quaterniond>();
+  T = Eigen::Translation3d(pos) * ori;
 }
 
 }  // namespace Eigen
