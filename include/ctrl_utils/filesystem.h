@@ -56,8 +56,13 @@ class path {
     if (idx_start == idx_end) {
       return str_.substr(idx_start);
     } else {
-      return str_.substr(idx_start, idx_end);
+      return str_.substr(idx_start, idx_end - idx_start);
     }
+  }
+
+  path filename() const {
+    const size_t idx_start = str_.find_last_of("/\\") + 1;
+    return str_.substr(idx_start);
   }
 
   bool operator==(const path& other) const { return str_ == other.str_; }
