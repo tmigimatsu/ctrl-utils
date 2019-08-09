@@ -96,12 +96,12 @@ void from_json(const nlohmann::json& json, Eigen::QuaternionBase<Derived>& quat)
   quat.normalize();
 }
 
-void to_json(nlohmann::json& json, const Eigen::Isometry3d& T) {
+inline void to_json(nlohmann::json& json, const Eigen::Isometry3d& T) {
   json["pos"] = T.translation();
   json["ori"] = Eigen::Quaterniond(T.linear());
 }
 
-void from_json(const nlohmann::json& json, Eigen::Isometry3d& T) {
+inline void from_json(const nlohmann::json& json, Eigen::Isometry3d& T) {
   const Eigen::Vector3d pos = json["pos"].get<Eigen::Vector3d>();
   const Eigen::Quaterniond ori = json["ori"].get<Eigen::Quaterniond>();
   T = Eigen::Translation3d(pos) * ori;

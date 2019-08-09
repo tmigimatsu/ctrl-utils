@@ -84,7 +84,7 @@ class Tree {
   // TODO: Make child_view version
   std::vector<Key> children(const Key& id) const {
     std::vector<Key> children_ids;
-    for (const auto& key_val : tree_->id_parents_) {
+    for (const auto& key_val : id_parents_) {
       const Key& id_child = key_val.first;
       const std::optional<Key>& id_parent = key_val.second;
       if (id_parent && *id_parent == id) {
@@ -197,7 +197,7 @@ class Tree<Key, T>::DescendantView {
 
  protected:
 
-  static std::vector<Key> GetChildren(id) {
+  std::vector<Key> GetChildren(const Key& id) {
     std::vector<Key> children_ids;
     for (const auto& key_val : tree_->id_parents_) {
       const Key& id_child = key_val.first;
@@ -209,7 +209,7 @@ class Tree<Key, T>::DescendantView {
     return children_ids;
   }
 
-  void AddChildrenDfs(id) {
+  void AddChildrenDfs(const Key& id) {
     ids_.push_back(id);
     for (const Key& id_child : GetChildren(id)) {
       AddChildrenDfs(id_child);
