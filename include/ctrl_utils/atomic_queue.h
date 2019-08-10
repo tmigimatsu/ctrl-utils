@@ -1,5 +1,5 @@
 /**
- * atomic_queue.cc
+ * atomic_queue.h
  *
  * Copyright 2018. All Rights Reserved.
  *
