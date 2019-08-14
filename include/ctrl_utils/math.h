@@ -22,6 +22,16 @@ T Clip(T x, T max) {
   return (x > max) ? max : (x < -max) ? -max : x;
 }
 
+template<typename T>
+T Power(T x, size_t exp) {
+  if (exp == 0) return 1;
+  T result = x;
+  for (size_t i = 1; i < exp; i++) {
+    result *= x;
+  }
+  return result;
+}
+
 }  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_MATH_H_
