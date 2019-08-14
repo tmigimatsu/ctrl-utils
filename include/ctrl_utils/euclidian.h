@@ -10,7 +10,7 @@
 #ifndef CTRL_UTILS_EUCLIDIAN_H_
 #define CTRL_UTILS_EUCLIDIAN_H_
 
-#include <spatial_dyn/eigen/spatial_math.h>
+#include <ctrl_utils/eigen.h>
 
 namespace ctrl_utils {
 
@@ -78,7 +78,8 @@ inline Eigen::Quaterniond FarQuaternion(const Eigen::Quaterniond& quat,
 //   return E;
 // }
 
-inline Eigen::Vector3d Log(const Eigen::Matrix3d& R);
+template<typename Derived>
+Eigen::Vector3d Log(const Eigen::RotationBase<Derived,3>& ori);
 
 inline Eigen::Matrix3d Exp(const Eigen::Vector3d& w);
 
@@ -172,8 +173,9 @@ Eigen::Quaterniond FarQuaternion(const Eigen::Quaterniond& quat,
   return result;
 }
 
-Eigen::Vector3d Log(const Eigen::Matrix3d& R) {
-  const Eigen::AngleAxisd aa(R);
+template<typename Derived>
+Eigen::Vector3d Log(const Eigen::RotationBase<Derived,3>& ori) {
+  const Eigen::AngleAxisd aa(ori.derived());
   return aa.angle() * aa.axis();
 }
 

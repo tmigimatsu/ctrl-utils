@@ -27,6 +27,11 @@ using Vectorf = Matrix<float,Dim,1>;
 template<int Dim>
 using Vectord = Matrix<double,Dim,1>;
 
+template<int Dim>
+using Isometryf = Transform<float,Dim,Isometry>;
+template<int Dim>
+using Isometryd = Transform<double,Dim,Isometry>;
+
 typedef Matrix<double,6,1> Vector6d;
 typedef Matrix<double,6,6> Matrix6d;
 typedef Matrix<double,6,Dynamic> Matrix6Xd;
@@ -214,6 +219,19 @@ RightProductMatrix(const Eigen::QuaternionBase<Derived>& quat) {
   result(3,3) = quat.w();
 
   return result;
+}
+
+template<typename Derived1, typename Derived2>
+inline typename Eigen::MatrixBase<Derived1>::PlainObject
+Projection(const Eigen::MatrixBase<Derived1>& v1, const Eigen::MatrixBase<Derived2>& v2) {
+  const typename Eigen::MatrixBase<Derived1>::PlainObject v2_normalized = v2.normalized();
+  return v1.dot(v2_normalized) * v2_normalized;
+}
+
+template<typename Derived1, typename Derived2>
+inline typename Eigen::MatrixBase<Derived1>::PlainObject
+OrthogonalProjection(const Eigen::MatrixBase<Derived1>& v1, const Eigen::MatrixBase<Derived2>& v2) {
+  return v1 - Projection(v1, v2);
 }
 
 }  // namespace ctrl_utils

@@ -17,7 +17,6 @@
 #include "eigen.h"
 
 namespace ctrl_utils {
-namespace Eigen {
 
 /**
  * Decode an Eigen matrix from Matlab format:
@@ -37,7 +36,7 @@ Derived DecodeMatlab(const std::string& str);
  *   std::string A = EncodeMatlab(Eigen::Matrix2d(1, 2, 3, 4)); // "1 2; 3 4"
  */
 template<typename Derived>
-std::string EncodeMatlab(const ::Eigen::DenseBase<Derived>& matrix);
+std::string EncodeMatlab(const Eigen::DenseBase<Derived>& matrix);
 
 /**
  * Decode an Eigen matrix from Json format:
@@ -57,9 +56,8 @@ Derived DecodeJson(const std::string& str);
  *   std::string A = EncodeMatlab(Eigen::Matrix2d(1, 2, 3, 4)); // "[[1, 2], [3, 4]]"
  */
 template<typename Derived>
-std::string EncodeJson(const ::Eigen::DenseBase<Derived>& matrix);
+std::string EncodeJson(const Eigen::DenseBase<Derived>& matrix);
 
-}  // namespace Eigen
 }  // namespace ctrl_utils
 
 namespace Eigen {
@@ -69,20 +67,19 @@ std::stringstream& operator>>(std::stringstream& ss,
                               Eigen::Matrix<Scalar, Rows, Cols, Options,
                                             MaxRows, MaxCols>& matrix) {
   using PlainMatrix = Eigen::Matrix<Scalar, Rows, Cols, Options, MaxRows, MaxCols>;
-  matrix = ctrl_utils::Eigen::DecodeMatlab<PlainMatrix>(ss.str());
+  matrix = ctrl_utils::DecodeMatlab<PlainMatrix>(ss.str());
   return ss;
 }
 
 template<typename Derived>
 std::stringstream& operator<<(std::stringstream& ss, const Eigen::DenseBase<Derived>& matrix) {
-  ss << ctrl_utils::Eigen::EncodeMatlab(matrix);
+  ss << ctrl_utils::EncodeMatlab(matrix);
   return ss;
 }
 
 }  // namespace Eigen
 
 namespace ctrl_utils {
-namespace Eigen {
 
 template<typename Derived>
 Derived DecodeMatlab(const std::string& str) {
@@ -179,7 +176,7 @@ Derived DecodeMatlab(const std::string& str) {
 }
 
 template<typename Derived>
-std::string EncodeMatlab(const ::Eigen::DenseBase<Derived>& matrix) {
+std::string EncodeMatlab(const Eigen::DenseBase<Derived>& matrix) {
   std::stringstream ss;
   ss.precision(std::numeric_limits<typename Derived::Scalar>::digits10);
   if (matrix.cols() == 1) { // Column vector
@@ -203,7 +200,7 @@ std::string EncodeMatlab(const ::Eigen::DenseBase<Derived>& matrix) {
 }
 
 template<typename Derived>
-std::string EncodeJson(const ::Eigen::DenseBase<Derived>& matrix) {
+std::string EncodeJson(const Eigen::DenseBase<Derived>& matrix) {
   std::string s = "[";
   if (matrix.cols() == 1) { // Column vector
     // [[1],[2],[3],[4]] => "[1,2,3,4]"
@@ -276,7 +273,7 @@ Derived DecodeJson(const std::string& str) {
   }
 
   // Parse matrix
-  ::Eigen::MatrixXd matrix(num_rows, num_cols);
+  Eigen::MatrixXd matrix(num_rows, num_cols);
   std::string str_local(str);
   for (char delimiter : ",[]") {
     std::replace(str_local.begin(), str_local.end(), delimiter, ' ');
@@ -297,7 +294,6 @@ Derived DecodeJson(const std::string& str) {
   return matrix;
 }
 
-}  // namespace Eigen
 }  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_EIGEN_STRING_H_
