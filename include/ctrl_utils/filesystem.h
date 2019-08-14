@@ -93,7 +93,7 @@ class path {
 
 };
 
-path operator/(const path& a, const path& b) {
+inline path operator/(const path& a, const path& b) {
   return a.string() + "/" + b.string();
 }
 
@@ -177,11 +177,11 @@ class directory_iterator {
 
 };
 
-directory_iterator begin(directory_iterator it) {
+inline directory_iterator begin(directory_iterator it) {
   return it;
 }
 
-directory_iterator end(const directory_iterator& it) {
+inline directory_iterator end(const directory_iterator& it) {
   return directory_iterator();
 }
 
@@ -189,14 +189,14 @@ inline bool exists(const path& p) {
   return access(p.c_str(), F_OK) == 0;
 }
 
-path current_path() {
+inline path current_path() {
   char* c_path = getcwd(nullptr, 0);
   path p(c_path);
   free(c_path);
   return p;
 }
 
-path absolute_path(const path& p) {
+inline path absolute_path(const path& p) {
   char* c_path = realpath(p.c_str(), nullptr);
   path p_abs(c_path);
   free(c_path);
