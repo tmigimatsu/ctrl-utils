@@ -23,7 +23,8 @@ ExternalProject_Add(${EXT_LIB_NAME}
     GIT_TAG @EXT_PACKAGE_VERSION@
     GIT_SHALLOW ON
     # Configure
-    # CMAKE_ARGS
+    PATCH_COMMAND rm -rf @LIB_EXTERNAL_DIR@/opencv_contrib.git && git clone https://github.com/opencv/opencv_contrib.git @LIB_EXTERNAL_DIR@/opencv_contrib.git --branch @EXT_PACKAGE_VERSION@ --depth 1
+    CMAKE_ARGS -DBUILD_opencv_rgbd=OFF -DOPENCV_EXTRA_MODULES_PATH=@LIB_EXTERNAL_DIR@/opencv_contrib.git/modules
     # Make
     BUILD_COMMAND @LIB_CMAKE_DIR@/ncpu.sh | xargs -I {} make -j{}
     # Install
