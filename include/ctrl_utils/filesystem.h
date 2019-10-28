@@ -141,7 +141,7 @@ class directory_iterator {
       : path_(p) {
     dp_ = std::shared_ptr<DIR>(opendir(path_.c_str()), closedir);
     if (!dp_) {
-      throw filesystem_error();
+      throw runtime_error("directory_iterator: invalid path " + path_.string());
     }
     dirp_ = readdir(dp_.get());
     while (dirp_ != nullptr &&
