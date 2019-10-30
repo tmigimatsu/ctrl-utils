@@ -11,7 +11,7 @@
 cmake_minimum_required(VERSION 3.6)
 
 # Define project
-project(ctrl_utils VERSION 1.1.0 LANGUAGES CXX)
+project(ctrl_utils VERSION 1.2.0 LANGUAGES CXX)
 
 # Define options
 option(BUILD_CPP_REDIS "Build cpp_redis" ON)
