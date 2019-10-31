@@ -20,6 +20,7 @@ option(BUILD_OPENCV "Build OpenCV" OFF)
 option(BUILD_NLOHMANN_JSON "Build nlohmann_json" ON)
 option(BUILD_PYBIND11 "Build pybind11" ON)
 option(BUILD_YAML_CPP "Build yaml-cpp" ON)
+option(BUILD_PYTHON "Build Python library" ON)
 
 # Set CMake flags
 set(CMAKE_CXX_STANDARD 14)
@@ -33,6 +34,7 @@ set(CTRL_UTILS_LIB ctrl_utils)
 set(LIB_CMAKE_DIR ${PROJECT_SOURCE_DIR}/cmake)
 set(LIB_EXTERNAL_DIR ${PROJECT_SOURCE_DIR}/external)
 set(LIB_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
+set(LIB_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
 
 # Create control_utils library
 add_library(${CTRL_UTILS_LIB} INTERFACE)
@@ -165,6 +167,11 @@ install(FILES
     ${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}Version.cmake
     DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR}
 )
+
+# Build Python wrapper
+if(BUILD_PYTHON)
+    add_subdirectory(${LIB_SOURCE_DIR}/python)
+endif()
 
 export(TARGETS ${CTRL_UTILS_LIB}
     NAMESPACE ${CTRL_UTILS_LIB}::
