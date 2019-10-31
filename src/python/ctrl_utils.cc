@@ -20,7 +20,15 @@ using namespace pybind11::literals;
 
 PYBIND11_MODULE(ctrlutils, m) {
 
+  m.def("orientation_error", &OrientationError, "quat"_a, "quat_des"_a);
+
+  m.def("lookat_error", &LookatError, "vec"_a, "vec_des"_a);
+
   m.def("near_quaternion", (Eigen::Quaterniond (*)(const Eigen::Quaterniond&, const Eigen::Quaterniond&)) &NearQuaternion, "quat"_a, "quat_reference"_a);
+
+  m.def("near_quaternion", (Eigen::Quaterniond (*)(Eigen::Ref<const Eigen::Matrix3d>, const Eigen::Quaterniond&)) &NearQuaternion, "ori"_a, "quat_reference"_a);
+
+  m.def("far_quaternion", &FarQuaternion, "quat"_a, "quat_reference"_a);
 
 }
 
