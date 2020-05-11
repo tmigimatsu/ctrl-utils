@@ -22,7 +22,7 @@ namespace cv {
  * Format:
  *   "nrows ncols cvtype bytedata"
  */
-std::stringstream& operator>>(std::stringstream& ss, Mat& image) {
+inline std::stringstream& operator>>(std::stringstream& ss, Mat& image) {
   // Read image dimensions
   int rows, cols, type;
   ss >> rows >> cols >> type;
@@ -44,7 +44,7 @@ std::stringstream& operator>>(std::stringstream& ss, Mat& image) {
  * Format:
  *   "nrows ncols cvtype bytedata"
  */
-std::stringstream& operator<<(std::stringstream& ss, const Mat& image) {
+inline std::stringstream& operator<<(std::stringstream& ss, const Mat& image) {
   // Write image dimensions
   ss << image.rows << " " << image.cols << " " << image.type() << " ";
 
