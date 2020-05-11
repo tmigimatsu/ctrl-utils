@@ -12,8 +12,6 @@ find_package(OpenCV ${PACKAGE_FIND_VERSION} REQUIRED PATHS @CMAKE_BINARY_DIR@/Op
 
 if(OpenCV_FOUND AND NOT TARGET OpenCV::OpenCV)
     add_library(OpenCV::OpenCV INTERFACE IMPORTED)
-    set_target_properties(OpenCV::OpenCV PROPERTIES
-        INTERFACE_INCLUDE_DIRECTORIES "${OpenCV_INCLUDE_DIRS}"
-        INTERFACE_LINK_LIBRARIES "${OpenCV_LIBS}"
-    )
+    target_include_directories(OpenCV::OpenCV INTERFACE ${OpenCV_INCLUDE_DIRS})
+    target_link_libraries(OpenCV::OpenCV INTERFACE ${OpenCV_LIBS})
 endif()

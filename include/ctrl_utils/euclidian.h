@@ -206,6 +206,44 @@ Eigen::Matrix3d LogMapDerivative(const Eigen::AngleAxisd& aa) {
       (1. - 0.5 * theta * std::sin(theta) / (1. - std::cos(theta))) * DoubleCrossMatrix(aa.axis());
 }
 
+inline Eigen::Matrix<double,9,3> LogMapHessian(const Eigen::AngleAxisd& aa) {
+  const double theta = aa.angle();
+  Eigen::Matrix<double,9,3> G;
+  if (theta == 0.) {
+    G.setZero();
+    return G;
+  } else if (theta * theta < std::numeric_limits<double>::epsilon()) {
+    G.topRows<3>().setIdentity();
+    G.middleRows<3>(3).setIdentity();
+    G.bottomRows<3>().setIdentity();
+    return G;
+  }
+  G.setZero();
+  G(2,1) = 1.;
+  G(1,2) = -1.;
+  G(3+2,0) = -1.;
+  G(3+0,2) = 1.;
+  G(6+1,0) = 1.;
+  G(6+0,1) = -1.;
+  Eigen::Matrix<double,9,3> GG;
+  const Eigen::Matrix3d w_x = ctrl_utils::CrossMatrix(theta * aa.axis());
+  GG.topRows<3>() = w_x * G.topRows<3>() + G.topRows<3>() * w_x;
+  GG.middleRows<3>(3) = w_x * G.middleRows<3>(3) + G.middleRows<3>(3) * w_x;
+  GG.bottomRows<3>() = w_x * G.bottomRows<3>() + G.bottomRows<3>() * w_x;
+  const double cos_theta = std::cos(theta);
+  const double sin_theta = std::sin(theta);
+  const double factor = (1. - 0.5 * (theta * sin_theta) / (1. - cos_theta)) / (theta * theta);
+  const double dfactor = -2. / (theta * theta * theta) -
+                         0.5 / (theta * theta * (1. - cos_theta) * (1. - cos_theta)) *
+                         (theta * (1. - cos_theta) * cos_theta - sin_theta * (1. - cos_theta + theta * sin_theta));
+  const Eigen::Matrix3d w_x_w_x = ctrl_utils::DoubleCrossMatrix(theta * aa.axis());
+  Eigen::Matrix<double,9,3> WW;
+  WW.topRows<3>() = dfactor * aa.axis()(0) * w_x_w_x;
+  WW.middleRows<3>(3) = dfactor * aa.axis()(1) * w_x_w_x;
+  WW.bottomRows<3>(3) = dfactor * aa.axis()(2) * w_x_w_x;
+  return - 0.5 * G + dfactor * WW + factor * GG;
+}
+
 template<typename Derived>
 inline typename ExpMapJacobianReturnType<Eigen::MatrixBase<Derived>::ColsAtCompileTime>::type
 ExpMapJacobian(const Eigen::AngleAxisd& aa, const Eigen::MatrixBase<Derived>& X) {
@@ -219,6 +257,72 @@ ExpMapJacobian(const Eigen::AngleAxisd& aa, const Eigen::MatrixBase<Derived>& X)
   }
   return J;
 }
+
+template<int Cols>
+inline typename ExpMapJacobianReturnType<Cols>::type
+ExpCoordsJacobianImpl(const Eigen::Matrix3d& R, const Eigen::AngleAxisd& aa,
+                      const Eigen::Matrix<double,3,Cols>& X);
+
+template<>
+inline Eigen::Matrix3d ExpCoordsJacobianImpl<1>(const Eigen::Matrix3d& R, const Eigen::AngleAxisd& aa,
+                                                const Eigen::Vector3d& p) {
+  const double theta = aa.angle();  // theta is always positive
+  if (theta == 0.) {
+    return Eigen::Matrix3d::Zero();
+  } else if (theta < std::numeric_limits<double>::epsilon()) {
+    return -ctrl_utils::CrossMatrix(p);
+  }
+  const Eigen::Vector3d w = theta * aa.axis();
+
+  return R * ctrl_utils::CrossMatrix(p / -(theta * theta)) *
+         (w * w.transpose() + (R.transpose() - Eigen::Matrix3d::Identity()) *
+          ctrl_utils::CrossMatrix(w));
+}
+
+template<>
+inline Eigen::Matrix<double,9,3> ExpCoordsJacobianImpl<3>(const Eigen::Matrix3d& R, const Eigen::AngleAxisd& aa,
+                                                          const Eigen::Matrix3d& I) {
+  Eigen::Matrix<double,9,3> dR_dw;
+
+  const double theta = aa.angle();  // theta is always positive
+  if (theta == 0.) {
+    dR_dw.setZero();
+    return dR_dw;
+  } else if (theta < std::numeric_limits<double>::epsilon()) {
+    for (size_t i = 0; i < 3; i++) {
+      Eigen::Map<Eigen::Matrix3d> dR_dwi(dR_dw.col(i).data());
+      dR_dwi = ctrl_utils::CrossMatrix(Eigen::Vector3d::Unit(i));
+    }
+    return dR_dw;
+  }
+
+  const Eigen::Vector3d w = theta * aa.axis();
+  const Eigen::Matrix3d w_cross = ctrl_utils::CrossMatrix(w);
+  const Eigen::Matrix3d R_hat = R / (theta * theta);
+  for (size_t i = 0; i < 3; i++) {
+    Eigen::Map<Eigen::Matrix3d> dR_dwi(dR_dw.col(i).data());
+    dR_dwi = (w(i) * w_cross +
+              ctrl_utils::CrossMatrix(w.cross(Eigen::Vector3d::Unit(i) - R.col(i)))) * R_hat;
+  }
+  return dR_dw;
+}
+
+template<typename Derived>
+inline typename ExpMapJacobianReturnType<Eigen::MatrixBase<Derived>::ColsAtCompileTime>::type
+ExpMapJacobianOld(const Eigen::AngleAxisd& aa, const Eigen::MatrixBase<Derived>& X) {
+  return ExpCoordsJacobianImpl(aa.toRotationMatrix(), aa, X.eval());
+}
+
+inline typename ExpMapJacobianReturnType<3>::type
+ExpMapJacobianOld(const Eigen::AngleAxisd& aa) {
+  return ExpCoordsJacobianImpl(aa.toRotationMatrix(), aa, Eigen::Matrix3d::Identity().eval());
+}
+
+// template<typename Derived>
+// inline typename ExpMapJacobianReturnType<Eigen::MatrixBase<Derived>::ColsAtCompileTime>::type
+// ExpMapJacobian(const Eigen::AngleAxisd& aa, const Eigen::MatrixBase<Derived>& X) {
+//   return ExpCoordsJacobianImpl(aa.toRotationMatrix(), aa, X.eval());
+// }
 
 Eigen::Vector6d Log(const Eigen::Isometry3d& T) {
   const Eigen::AngleAxisd aa(T.linear());

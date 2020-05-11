@@ -189,6 +189,15 @@ class Tree<Key, T>::DescendantView {
 
   DescendantView(TreeT* tree, const Key& id) : tree_(tree) {
     // Collect all descendants, including self
+    // ids_.push_back(id);
+    // for (const auto& key_val : tree_->id_parents_) {
+    //   const Key& id_descendant = key_val.first;
+    //   const std::optional<Key>& id_ancestor = key_val.second;
+    //   if (id_ancestor && *id_ancestor == id) {
+    //     ids_.push_back(id_descendant);
+    //   }
+    // }
+    // return;
     AddChildrenDfs(id);
   }
 

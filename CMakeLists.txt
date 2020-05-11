@@ -21,6 +21,7 @@ option(BUILD_NLOHMANN_JSON "Build nlohmann_json" ON)
 option(BUILD_PYBIND11 "Build pybind11" ON)
 option(BUILD_YAML_CPP "Build yaml-cpp" ON)
 option(BUILD_PYTHON "Build Python library" ON)
+option(BUILD_CATCH2 "Build Catch2" OFF)
 
 # Set CMake flags
 set(CMAKE_CXX_STANDARD 14)
@@ -115,6 +116,34 @@ if(BUILD_YAML_CPP)
             INTERFACE_INCLUDE_DIRECTORIES ${YAML_CPP_INCLUDE_DIR})
     endif()
     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE yaml-cpp::yaml-cpp)
+endif()
+
+if(BUILD_CATCH2)
+    find_package(Catch2 2.11.3 QUIET)
+    if(NOT Catch2_FOUND)
+        download_package(Catch2 2.11.3)
+        add_library(Catch2 INTERFACE)
+        set(CATCH2_INCLUDE_DIR ${LIB_EXTERNAL_DIR}/Catch2.git/single_include)
+        target_include_directories(Catch2 INTERFACE
+            $<BUILD_INTERFACE:${CATCH2_INCLUDE_DIR}>
+            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+        )
+        install(TARGETS Catch2
+            EXPORT Catch2Targets
+            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+        )
+        install(EXPORT Catch2Targets
+            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ctrl_utils
+            NAMESPACE Catch2::
+            FILE Catch2Targets.cmake
+        )
+        export(TARGETS Catch2
+            NAMESPACE Catch2::
+            FILE ${CMAKE_BINARY_DIR}/Catch2Targets.cmake)
+        install(DIRECTORY ${CATCH2_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+    endif()
 endif()
 
 # Set include directories
