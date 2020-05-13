@@ -68,6 +68,7 @@ if(BUILD_CPP_REDIS)
         find_package(cpp_redis 4.3.1 REQUIRED)
     endif()
     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE cpp_redis::cpp_redis)
+    list(APPEND CTRL_UTILS_DEPENDENCIES "cpp_redis ${cpp_redis_VERSION} REQUIRED")
 endif()
 
 if(BUILD_EIGEN)
@@ -77,6 +78,7 @@ if(BUILD_EIGEN)
         find_package(Eigen3 3.3.7)
     endif()
     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE Eigen3::Eigen)
+    list(APPEND CTRL_UTILS_DEPENDENCIES "Eigen3 ${Eigen3_VERSION} REQUIRED")
 endif()
 
 if(BUILD_NLOHMANN_JSON)
@@ -86,6 +88,7 @@ if(BUILD_NLOHMANN_JSON)
         find_package(nlohmann_json 3.6.1)
     endif()
     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE nlohmann_json::nlohmann_json)
+    list(APPEND CTRL_UTILS_DEPENDENCIES "nlohmann_json ${nlohmann_json_VERSION} REQUIRED")
 endif()
 
 if(BUILD_OPENCV)
@@ -95,6 +98,7 @@ if(BUILD_OPENCV)
         find_package(OpenCV 4.1.0 REQUIRED)
     endif()
     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE OpenCV::OpenCV)
+    list(APPEND CTRL_UTILS_DEPENDENCIES "OpenCV ${OpenCV_VERSION} REQUIRED")
 endif()
 
 if(BUILD_PYBIND11)
@@ -116,6 +120,7 @@ if(BUILD_YAML_CPP)
             INTERFACE_INCLUDE_DIRECTORIES ${YAML_CPP_INCLUDE_DIR})
     endif()
     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE yaml-cpp::yaml-cpp)
+    list(APPEND CTRL_UTILS_DEPENDENCIES "yaml-cpp ${yaml-cpp_VERSION} REQUIRED")
 endif()
 
 if(BUILD_CATCH2)
@@ -144,6 +149,7 @@ if(BUILD_CATCH2)
             FILE ${CMAKE_BINARY_DIR}/Catch2Targets.cmake)
         install(DIRECTORY ${CATCH2_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
     endif()
+    list(APPEND CTRL_UTILS_DEPENDENCIES "Catch2 ${Catch2_VERSION}")
 endif()
 
 # Set include directories
@@ -169,7 +175,7 @@ install(TARGETS ${CTRL_UTILS_LIB}
 )
 
 # Install the headers
-install(DIRECTORY ${LIB_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(DIRECTORY ${LIB_INCLUDE_DIR}/${CTRL_UTILS_LIB} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Export targets to Targets.cmake
 install(EXPORT ${CTRL_UTILS_TARGETS}
