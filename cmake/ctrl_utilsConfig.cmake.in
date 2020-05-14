@@ -18,7 +18,7 @@ endforeach()
 
 @PACKAGE_INIT@
 
-include("${CMAKE_CURRENT_LIST_DIR}/@CTRL_UTILS_TARGETS@.cmake")
+include("@CMAKE_BINARY_DIR@/@CTRL_UTILS_TARGETS@.cmake")
 check_required_components(@PROJECT_NAME@)
 set(ctrl_utils_EXTERNAL_DIR @LIB_EXTERNAL_DIR@)
 

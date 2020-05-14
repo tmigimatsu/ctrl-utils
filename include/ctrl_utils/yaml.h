@@ -12,11 +12,11 @@
 
 #include <yaml-cpp/yaml.h>
 
+#include <Eigen/Eigen>
 #include "ctrl_utils/eigen.h"
 
 namespace YAML {
 
-template<>
 template<typename Scalar, int Rows, int Cols>
 struct convert<Eigen::Matrix<Scalar, Rows, Cols>> {
 
@@ -69,7 +69,6 @@ struct convert<Eigen::Matrix<Scalar, Rows, Cols>> {
 
 };
 
-template<>
 template<typename Scalar>
 struct convert<Eigen::Quaternion<Scalar>> {
 
