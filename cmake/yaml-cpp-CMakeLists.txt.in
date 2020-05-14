@@ -23,7 +23,7 @@ ExternalProject_Add(${EXT_LIB_NAME}
     GIT_TAG yaml-cpp-@EXT_PACKAGE_VERSION@
     GIT_SHALLOW ON
     # Configure
-    CMAKE_ARGS -DYAML_CPP_BUILD_TESTS=OFF -DBUILD_SHARED_LIBS=ON
+    CMAKE_ARGS -DYAML_CPP_BUILD_TESTS=OFF -DYAML_BUILD_SHARED_LIBS=ON
     # Make
     BUILD_COMMAND @LIB_CMAKE_DIR@/ncpu.sh | xargs -I {} make -j{}
     # Install
