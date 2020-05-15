@@ -113,7 +113,7 @@ if(BUILD_YAML_CPP)
     if(NOT yaml-cpp_FOUND)
         download_package(yaml-cpp 0.6.3)
         find_package(yaml-cpp 0.6.3 REQUIRED)
-    else()
+    elseif(NOT TARGET yaml-cpp::yaml-cpp)
         add_library(yaml-cpp::yaml-cpp INTERFACE IMPORTED)
         set_target_properties(yaml-cpp::yaml-cpp PROPERTIES
             INTERFACE_LINK_LIBRARIES yaml-cpp
