@@ -38,7 +38,7 @@ inline typename Derived1::PlainObject PdControl(const ::Eigen::MatrixBase<Derive
   if (Derived4::ColsAtCompileTime == 1) {
     x_err = -kp_kv(0) * x_err;
   } else {
-    x_err = -kp_kv.block(0, 0, 1, x_err.size()).array() * x_err.array();
+    x_err = -kp_kv.block(0, 0, x_err.size(), 1).array() * x_err.array();
   }
 
   // Limit maximum error
@@ -50,7 +50,7 @@ inline typename Derived1::PlainObject PdControl(const ::Eigen::MatrixBase<Derive
   if (Derived4::ColsAtCompileTime == 1) {
     return x_err - kp_kv(1) * dx;
   } else {
-    return x_err.array() - kp_kv.block(0, 1, 1, dx.size()).array() * dx.array();
+    return x_err.array() - kp_kv.block(0, 1, dx.size(), 1).array() * dx.array();
   }
 
   // With velocity clipping
