@@ -14,6 +14,7 @@
 #include <stack>        // std::stack
 #include <type_traits>  // std::conditional_t
 #include <utility>      // std::pair
+#include <vector>       // std::vector
 
 #if __cplusplus >= 201703L
 #include <optional>     // std::optional
