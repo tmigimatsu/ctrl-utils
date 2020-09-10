@@ -139,7 +139,7 @@ inline Eigen::Matrix6d LogMapDerivative(const Eigen::Isometry3d& T);
 ////////////////////
 
 Eigen::Vector3d OrientationError(const Eigen::Quaterniond &quat, const Eigen::Quaterniond &quat_des) {
-  Eigen::Quaterniond quat_err = quat * quat_des.inverse();
+  Eigen::Quaterniond quat_err = quat * quat_des.conjugate();
   Eigen::AngleAxisd aa_err(quat_err);  // Angle will always be between [0, pi]
   double angle = (quat_err.w() < 0) ? aa_err.angle() - 2 * M_PI : aa_err.angle();
   return angle * aa_err.axis();
