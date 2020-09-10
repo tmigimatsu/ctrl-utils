@@ -8,5 +8,5 @@
 ############################################################
 
 
-set(PYBIND11_LIB_DIR @LIB_EXTERNAL_DIR@/pybind11.git)
-set(PYBIND11_FOUND ON)
+set(pybind11_LIB_DIR @LIB_EXTERNAL_DIR@/pybind11.git)
+set(pybind11_FOUND ON)

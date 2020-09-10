@@ -21,7 +21,7 @@ option(BUILD_NLOHMANN_JSON "Build nlohmann_json" ON)
 option(BUILD_PYBIND11 "Build pybind11" ON)
 option(BUILD_YAML_CPP "Build yaml-cpp" ON)
 option(BUILD_PYTHON "Build Python library" ON)
-option(BUILD_CATCH2 "Build Catch2" OFF)
+option(BUILD_CATCH2 "Build Catch2" ON)
 
 # Set CMake flags
 set(CMAKE_CXX_STANDARD 14)
@@ -102,9 +102,9 @@ if(BUILD_OPENCV)
 endif()
 
 if(BUILD_PYBIND11)
-    find_package(pybind11 2.3.0 QUIET)
+    find_package(pybind11 2.5.0 QUIET)
     if(NOT pybind11_FOUND)
-        download_package(pybind11 2.3.0)
+        download_package(pybind11 2.5.0)
     endif()
 endif()
 
@@ -149,7 +149,7 @@ if(BUILD_CATCH2)
             FILE ${CMAKE_BINARY_DIR}/Catch2Targets.cmake)
         install(DIRECTORY ${CATCH2_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
     endif()
-    list(APPEND CTRL_UTILS_DEPENDENCIES "Catch2 ${Catch2_VERSION}")
+    # list(APPEND CTRL_UTILS_DEPENDENCIES "Catch2 ${Catch2_VERSION} REQUIRED")
 endif()
 
 # Set include directories
