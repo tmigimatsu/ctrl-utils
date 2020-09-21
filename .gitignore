@@ -1,6 +1,5 @@
 build/*
 doc/*
-external/*
 *.so
 *.pyc
 *.egg-info

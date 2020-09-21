@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.11)
+
+find_package(Eigen3 3.3.7 QUIET)
+if(NOT Eigen3_FOUND)
+    message("BUILD EIGEN")
+    add_subdirectory(eigen-git-mirror.git ${CMAKE_BINARY_DIR}/Eigen3)
+    add_library(Eigen3::Eigen INTERFACE IMPORTED GLOBAL)
+    target_link_libraries(Eigen3::Eigen INTERFACE eigen)
+else()
+    set_target_properties(Eigen3::Eigen PROPERTIES IMPORTED_GLOBAL TRUE)
+endif()
