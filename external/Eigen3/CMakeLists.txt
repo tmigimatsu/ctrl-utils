@@ -1,11 +1,21 @@
-cmake_minimum_required(VERSION 3.11)
+############################################################
+# CMakeLists for the ctrl-utils library.
+#
+# Copyright 2020. All Rights Reserved.
+#
+# Created: September 23, 2020
+# Authors: Toki Migimatsu
+############################################################
 
-find_package(Eigen3 3.3.7 QUIET)
-if(NOT Eigen3_FOUND)
-    message("BUILD EIGEN")
-    add_subdirectory(eigen-git-mirror.git ${CMAKE_BINARY_DIR}/Eigen3)
-    add_library(Eigen3::Eigen INTERFACE IMPORTED GLOBAL)
-    target_link_libraries(Eigen3::Eigen INTERFACE eigen)
-else()
-    set_target_properties(Eigen3::Eigen PROPERTIES IMPORTED_GLOBAL TRUE)
+if(NOT TARGET Eigen3::Eigen)
+    find_package(Eigen3 3.3.7 QUIET)
+
+    if(NOT Eigen3_FOUND)
+        add_subdirectory(eigen-git-mirror.git ${CMAKE_BINARY_DIR}/Eigen3)
+        add_library(Eigen3::Eigen INTERFACE IMPORTED GLOBAL)
+        target_link_libraries(Eigen3::Eigen INTERFACE eigen)
+    else()
+        # Set IMPORTED_GLOBAL so parent projects can access Eigen.
+        set_target_properties(Eigen3::Eigen PROPERTIES IMPORTED_GLOBAL TRUE)
+    endif()
 endif()

@@ -18,14 +18,14 @@ endif()
 project(ctrl_utils VERSION 1.2.0 LANGUAGES CXX)
 
 # Define options
-option(BUILD_CPP_REDIS "Build cpp_redis" ON)
-option(BUILD_EIGEN "Build Eigen" ON)
-option(BUILD_OPENCV "Build OpenCV" OFF)
-option(BUILD_NLOHMANN_JSON "Build nlohmann_json" ON)
-option(BUILD_PYBIND11 "Build pybind11" ON)
-option(BUILD_YAML_CPP "Build yaml-cpp" ON)
-option(BUILD_PYTHON "Build Python library" ON)
-option(BUILD_CATCH2 "Build Catch2" OFF)
+option(CTRL_UTILS_BUILD_CPP_REDIS "Build cpp_redis" ON)
+option(CTRL_UTILS_BUILD_EIGEN "Build Eigen" ON)
+option(CTRL_UTILS_BUILD_OPENCV "Build OpenCV" OFF)
+option(CTRL_UTILS_BUILD_NLOHMANN_JSON "Build nlohmann_json" ON)
+option(CTRL_UTILS_BUILD_PYBIND11 "Build pybind11" ON)
+option(CTRL_UTILS_BUILD_YAML_CPP "Build yaml-cpp" ON)
+option(CTRL_UTILS_BUILD_PYBIND11 "Build Python library" ON)
+option(CTRL_UTILS_BUILD_CATCH2 "Build Catch2" ON)
 
 # Set CMake flags
 set(CMAKE_CXX_STANDARD 14)
@@ -40,8 +40,10 @@ set(LIB_CMAKE_DIR ${PROJECT_SOURCE_DIR}/cmake)
 set(LIB_EXTERNAL_DIR ${PROJECT_SOURCE_DIR}/external)
 set(LIB_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(LIB_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
+set(ctrl_utils_EXTERNAL_DIR ${LIB_EXTERNAL_DIR} CACHE INTERNAL "")
 
 # Create control_utils library
+if(NOT TARGET ${CTRL_UTILS_LIB})
 add_library(${CTRL_UTILS_LIB} INTERFACE)
 
 # Create namespaced alias for use inside the build tree
@@ -50,13 +52,25 @@ add_library(${CTRL_UTILS_LIB}::${CTRL_UTILS_LIB} ALIAS ${CTRL_UTILS_LIB})
 # Find dependencies
 # list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_BINARY_DIR} ${LIB_CMAKE_DIR})
 
-include(${LIB_CMAKE_DIR}/include_package.cmake)
-add_subdirectory(${PROJECT_SOURCE_DIR}/external/cpp_redis)
-add_subdirectory(${PROJECT_SOURCE_DIR}/external/Eigen3)
-# add_subdirectory(${PROJECT_SOURCE_DIR}/external/nlohmann_json)
-# add_subdirectory(${PROJECT_SOURCE_DIR}/external/yaml-cpp)
-# add_subdirectory(${PROJECT_SOURCE_DIR}/external/pybind11)
-# add_subdirectory(${PROJECT_SOURCE_DIR}/external/Catch2)
+# include(${LIB_CMAKE_DIR}/include_package.cmake)
+# if(CTRL_UTILS_BUILD_CPP_REDIS)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/cpp_redis)
+# endif()
+# if(CTRL_UTILS_BUILD_EIGEN)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/Eigen3)
+# endif()
+# if(CTRL_UTILS_BUILD_NLOHMANN_JSON)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/nlohmann_json)
+# endif()
+# if(CTRL_UTILS_BUILD_YAML_CPP)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/yaml-cpp)
+# endif()
+# if(CTRL_UTILS_BUILD_PYBIND11)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/pybind11)
+# endif()
+# if(CTRL_UTILS_BUILD_CATCH2)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/Catch2)
+# endif()
 # add_subdirectory(${PROJECT_SOURCE_DIR}/external/OpenCV)
 # target_link_libraries(${CTRL_UTILS_LIB} INTERFACE
 #     cpp_redis::cpp_redis)
@@ -243,4 +257,5 @@ export(TARGETS ${CTRL_UTILS_LIB}
 
 # Register package in user registry
 export(PACKAGE ${CTRL_UTILS_LIB})
+endif()
 
