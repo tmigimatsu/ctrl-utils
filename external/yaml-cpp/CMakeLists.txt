@@ -14,7 +14,7 @@ if(NOT TARGET yaml-cpp::yaml-cpp)
         option(YAML_BUILD_SHARED_LIBS "" ON)
 
         init_git_submodule(yaml-cpp.git)
-        add_subdirectory(yaml-cpp.git ${CMAKE_BINARY_DIR}/yaml-cpp)
+        add_subdirectory(yaml-cpp.git)
     endif()
 
     add_library(yaml-cpp::yaml-cpp INTERFACE IMPORTED GLOBAL)
