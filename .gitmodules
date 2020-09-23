@@ -12,7 +12,7 @@
 	url = https://github.com/jbeder/yaml-cpp.git
 [submodule "external/pybind11/pybind11.git"]
 	path = external/pybind11/pybind11.git
-	url = https://github.com/pybind11/pybind11.git
+	url = https://github.com/pybind/pybind11.git
 [submodule "external/Catch2/Catch2.git"]
 	path = external/Catch2/Catch2.git
 	url = https://github.com/catchorg/Catch2.git
