@@ -23,15 +23,15 @@ struct convert<Eigen::Matrix<Scalar, Rows, Cols>> {
   static Node encode(const Eigen::Matrix<Scalar, Rows, Cols>& rhs) {
     Node node;
     if (rhs.cols() == 1) {
-      for (size_t i = 0; i < rhs.size(); i++) {
+      for (int i = 0; i < rhs.size(); i++) {
         node.push_back(rhs(i));
       }
       return node;
     }
 
-    for (size_t i = 0; i < rhs.rows(); i++) {
+    for (int i = 0; i < rhs.rows(); i++) {
       Node row;
-      for (size_t j = 0; j < rhs.cols(); j++) {
+      for (int j = 0; j < rhs.cols(); j++) {
         row.push_back(rhs(i, j));
       }
       node.push_back(row);
@@ -46,8 +46,8 @@ struct convert<Eigen::Matrix<Scalar, Rows, Cols>> {
       if (!node[0].IsSequence()) {
         rhs.resize(node.size(), 1);
       } else {
-        if (rhs.rows() != 0 && rhs.rows() != node.size() ||
-            rhs.cols() != 0 && rhs.cols() != node[0].size()) return false;
+        if ((rhs.rows() != 0 && rhs.rows() != static_cast<int>(node.size())) ||
+            (rhs.cols() != 0 && rhs.cols() != static_cast<int>(node[0].size()))) return false;
         rhs.resize(node.size(), node[0].size());
       }
     }
