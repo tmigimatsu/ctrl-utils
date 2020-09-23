@@ -11,6 +11,7 @@ if(NOT TARGET Eigen3::Eigen)
     find_package(Eigen3 3.3.7 QUIET)
 
     if(NOT Eigen3_FOUND)
+        init_git_submodule(eigen-git-mirror.git)
         add_subdirectory(eigen-git-mirror.git ${CMAKE_BINARY_DIR}/Eigen3)
         add_library(Eigen3::Eigen INTERFACE IMPORTED GLOBAL)
         target_link_libraries(Eigen3::Eigen INTERFACE eigen)

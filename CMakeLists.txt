@@ -52,7 +52,7 @@ add_library(${CTRL_UTILS_LIB}::${CTRL_UTILS_LIB} ALIAS ${CTRL_UTILS_LIB})
 # Find dependencies
 # list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_BINARY_DIR} ${LIB_CMAKE_DIR})
 
-# include(${LIB_CMAKE_DIR}/include_package.cmake)
+include(${LIB_CMAKE_DIR}/include_package.cmake)
 # if(CTRL_UTILS_BUILD_CPP_REDIS)
 #     add_subdirectory(${PROJECT_SOURCE_DIR}/external/cpp_redis)
 # endif()
