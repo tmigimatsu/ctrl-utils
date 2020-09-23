@@ -21,6 +21,7 @@ endforeach()
 include("@CMAKE_BINARY_DIR@/@CTRL_UTILS_TARGETS@.cmake")
 check_required_components(@PROJECT_NAME@)
 set(ctrl_utils_EXTERNAL_DIR @LIB_EXTERNAL_DIR@)
+set(ctrl_utils_CMAKE_DIR @LIB_CMAKE_DIR@)
 
 #list(APPEND CMAKE_MODULE_PATH @CMAKE_BINARY_DIR@)
 #if(@BUILD_CPP_REDIS@)
