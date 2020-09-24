@@ -15,7 +15,7 @@ if(DEFINED PROJECT_NAME)
 endif()
 
 # Define project
-project(ctrl_utils VERSION 1.2.0 LANGUAGES CXX)
+project(ctrl_utils VERSION 1.3.0 LANGUAGES CXX)
 
 # Define options
 option(CTRL_UTILS_BUILD_PYTHON "Build Python library" OFF)
