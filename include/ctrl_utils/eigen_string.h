@@ -77,6 +77,18 @@ std::stringstream& operator<<(std::stringstream& ss, const Eigen::DenseBase<Deri
   return ss;
 }
 
+template<typename Derived>
+std::stringstream& operator>>(std::stringstream& ss, Eigen::QuaternionBase<Derived>& quat) {
+  ss >> quat.coeffs();
+  return ss;
+}
+
+template<typename Derived>
+std::stringstream& operator<<(std::stringstream& ss, const Eigen::QuaternionBase<Derived>& quat) {
+  ss << ctrl_utils::EncodeMatlab(quat.coeffs());
+  return ss;
+}
+
 }  // namespace Eigen
 
 namespace ctrl_utils {
