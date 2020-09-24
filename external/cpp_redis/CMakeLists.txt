@@ -30,7 +30,7 @@ if(NOT TARGET cpp_redis::cpp_redis)
         set(BUILD_TESTS false)
         set(CMAKE_CXX_FLAGS "-Wno-unused-result")
 
-        init_git_submodule(cpp_redis.git)
+        init_git_submodule(cpp_redis.git TRUE)
         add_subdirectory(cpp_redis.git)
 
         target_link_libraries(cpp_redis::cpp_redis INTERFACE cpp_redis)
