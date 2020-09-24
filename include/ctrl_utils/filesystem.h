@@ -144,8 +144,8 @@ class directory_iterator {
       throw runtime_error("directory_iterator: invalid path " + path_.string());
     }
     dirp_ = readdir(dp_.get());
-    while (dirp_ != nullptr &&
-           strcmp(dirp_->d_name, ".") == 0 || strcmp(dirp_->d_name, "..") == 0) {
+    while ((dirp_ != nullptr &&
+           strcmp(dirp_->d_name, ".") == 0) || strcmp(dirp_->d_name, "..") == 0) {
       dirp_ = readdir(dp_.get());
     }
     if (dirp_ != nullptr) {
@@ -156,6 +156,7 @@ class directory_iterator {
   directory_iterator& operator++() {
     dirp_ = readdir(dp_.get());
     entry_ = dirp_ == nullptr ? path() : path(path_.string() + "/" + std::string(dirp_->d_name));
+    return *this;
   }
 
   bool operator==(const directory_iterator& other) const {

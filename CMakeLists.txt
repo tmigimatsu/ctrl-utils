@@ -7,21 +7,25 @@
 # Authors: Toki Migimatsu
 ############################################################
 
-# Require 3.6 to support pkg_check_modules IMPORTED_TARGET
-cmake_minimum_required(VERSION 3.6)
+# Require 3.11 to support setting INTERFACE_INCLUDE_DIRECTORIES on imported targets.
+cmake_minimum_required(VERSION 3.11)
+
+if(DEFINED PROJECT_NAME)
+    set(IS_SUBPROJECT ON)
+endif()
 
 # Define project
 project(ctrl_utils VERSION 1.2.0 LANGUAGES CXX)
 
 # Define options
-option(BUILD_CPP_REDIS "Build cpp_redis" ON)
-option(BUILD_EIGEN "Build Eigen" ON)
-option(BUILD_OPENCV "Build OpenCV" OFF)
-option(BUILD_NLOHMANN_JSON "Build nlohmann_json" ON)
-option(BUILD_PYBIND11 "Build pybind11" ON)
-option(BUILD_YAML_CPP "Build yaml-cpp" ON)
-option(BUILD_PYTHON "Build Python library" ON)
-option(BUILD_CATCH2 "Build Catch2" OFF)
+option(CTRL_UTILS_BUILD_CPP_REDIS "Build cpp_redis" ON)
+option(CTRL_UTILS_BUILD_EIGEN "Build Eigen" ON)
+option(CTRL_UTILS_BUILD_OPENCV "Build OpenCV" OFF)
+option(CTRL_UTILS_BUILD_NLOHMANN_JSON "Build nlohmann_json" ON)
+option(CTRL_UTILS_BUILD_PYBIND11 "Build pybind11" ON)
+option(CTRL_UTILS_BUILD_YAML_CPP "Build yaml-cpp" ON)
+option(CTRL_UTILS_BUILD_PYBIND11 "Build Python library" ON)
+option(CTRL_UTILS_BUILD_CATCH2 "Build Catch2" ON)
 
 # Set CMake flags
 set(CMAKE_CXX_STANDARD 14)
@@ -36,121 +40,160 @@ set(LIB_CMAKE_DIR ${PROJECT_SOURCE_DIR}/cmake)
 set(LIB_EXTERNAL_DIR ${PROJECT_SOURCE_DIR}/external)
 set(LIB_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(LIB_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
+set(ctrl_utils_EXTERNAL_DIR ${LIB_EXTERNAL_DIR} CACHE INTERNAL "")
 
 # Create control_utils library
+if(NOT TARGET ${CTRL_UTILS_LIB})
 add_library(${CTRL_UTILS_LIB} INTERFACE)
 
 # Create namespaced alias for use inside the build tree
 add_library(${CTRL_UTILS_LIB}::${CTRL_UTILS_LIB} ALIAS ${CTRL_UTILS_LIB})
 
 # Find dependencies
-list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_BINARY_DIR} ${LIB_CMAKE_DIR})
+# list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_BINARY_DIR} ${LIB_CMAKE_DIR})
 
-function(download_package PACKAGE_NAME)
-    set(EXT_PACKAGE_VERSION ${ARGV1})
-    if(EXISTS ${LIB_CMAKE_DIR}/Find${PACKAGE_NAME}.cmake.in)
-        configure_file(${LIB_CMAKE_DIR}/Find${PACKAGE_NAME}.cmake.in
-            ${CMAKE_BINARY_DIR}/Find${PACKAGE_NAME}.cmake @ONLY)
-    endif()
-    configure_file(${LIB_CMAKE_DIR}/${PACKAGE_NAME}-CMakeLists.txt.in
-        ${CMAKE_BINARY_DIR}/${PACKAGE_NAME}/CMakeLists.txt @ONLY)
-    execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${PACKAGE_NAME})
-    execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${PACKAGE_NAME})
-endfunction()
+include(${LIB_CMAKE_DIR}/include_package.cmake)
+# if(CTRL_UTILS_BUILD_CPP_REDIS)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/cpp_redis)
+# endif()
+# if(CTRL_UTILS_BUILD_EIGEN)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/Eigen3)
+# endif()
+# if(CTRL_UTILS_BUILD_NLOHMANN_JSON)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/nlohmann_json)
+# endif()
+# if(CTRL_UTILS_BUILD_YAML_CPP)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/yaml-cpp)
+# endif()
+# if(CTRL_UTILS_BUILD_PYBIND11)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/pybind11)
+# endif()
+# if(CTRL_UTILS_BUILD_CATCH2)
+#     add_subdirectory(${PROJECT_SOURCE_DIR}/external/Catch2)
+# endif()
+# add_subdirectory(${PROJECT_SOURCE_DIR}/external/OpenCV)
+# target_link_libraries(${CTRL_UTILS_LIB} INTERFACE
+#     cpp_redis::cpp_redis)
+    # Eigen3::Eigen)
+    # nlohmann_json::nlohmann_json
+    # yaml-cpp::yaml-cpp)
+# add_dependencies(ctrl_utilscpp_redis::cpp_redis)
 
-# Export for build tree
-if(BUILD_CPP_REDIS)
-    find_package(cpp_redis 4.3.1 QUIET)
-    if(NOT cpp_redis_FOUND)
-        download_package(cpp_redis 4.3.1)
-        find_package(cpp_redis 4.3.1 REQUIRED)
-    endif()
-    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE cpp_redis::cpp_redis)
-    list(APPEND CTRL_UTILS_DEPENDENCIES "cpp_redis ${cpp_redis_VERSION} REQUIRED")
-endif()
 
-if(BUILD_EIGEN)
-    find_package(Eigen3 3.3.7 QUIET)
-    if(NOT Eigen3_FOUND)
-        download_package(Eigen3 3.3.7)
-        find_package(Eigen3 3.3.7)
-    endif()
-    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE Eigen3::Eigen)
-    list(APPEND CTRL_UTILS_DEPENDENCIES "Eigen3 ${Eigen3_VERSION} REQUIRED")
-endif()
+    # Catch2::Catch2)
+    # pybind11::pybind11)
+# include_package(cpp_redis 4.3.1)
+# include_package(Eigen3 3.3.7)
+# include_package(nlohmann_json 3.6.1)
+# include_package(pybind11 2.3.0)
+# include_package(yaml-cpp 0.6.3)
+# include_package(Catch2 2.11.3)
 
-if(BUILD_NLOHMANN_JSON)
-    find_package(nlohmann_json 3.6.1 QUIET)
-    if(NOT nlohmann_json_FOUND)
-        download_package(nlohmann_json 3.6.1)
-        find_package(nlohmann_json 3.6.1)
-    endif()
-    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE nlohmann_json::nlohmann_json)
-    list(APPEND CTRL_UTILS_DEPENDENCIES "nlohmann_json ${nlohmann_json_VERSION} REQUIRED")
-endif()
+# function(download_package PACKAGE_NAME)
+#     set(EXT_PACKAGE_VERSION ${ARGV1})
+#     if(EXISTS ${LIB_CMAKE_DIR}/Find${PACKAGE_NAME}.cmake.in)
+#         configure_file(${LIB_CMAKE_DIR}/Find${PACKAGE_NAME}.cmake.in
+#             ${CMAKE_BINARY_DIR}/Find${PACKAGE_NAME}.cmake @ONLY)
+#     endif()
+#     configure_file(${LIB_CMAKE_DIR}/${PACKAGE_NAME}-CMakeLists.txt.in
+#         ${CMAKE_BINARY_DIR}/${PACKAGE_NAME}/CMakeLists.txt @ONLY)
+#     execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
+#         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${PACKAGE_NAME})
+#     execute_process(COMMAND ${CMAKE_COMMAND} --build .
+#         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/${PACKAGE_NAME})
+# endfunction()
 
-if(BUILD_OPENCV)
-    find_package(OpenCV 4.1.0 QUIET)
-    if(NOT OpenCV_FOUND)
-        download_package(OpenCV 4.1.0)
-        find_package(OpenCV 4.1.0 REQUIRED)
-    endif()
-    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE OpenCV::OpenCV)
-    list(APPEND CTRL_UTILS_DEPENDENCIES "OpenCV ${OpenCV_VERSION} REQUIRED")
-endif()
+# # Export for build tree
+# if(BUILD_CPP_REDIS)
+#     find_package(cpp_redis 4.3.1 QUIET)
+#     if(NOT cpp_redis_FOUND)
+#         download_package(cpp_redis 4.3.1)
+#         find_package(cpp_redis 4.3.1 REQUIRED)
+#     endif()
+#     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE cpp_redis::cpp_redis)
+#     list(APPEND CTRL_UTILS_DEPENDENCIES "cpp_redis ${cpp_redis_VERSION} REQUIRED")
+# endif()
 
-if(BUILD_PYBIND11)
-    find_package(pybind11 2.3.0 QUIET)
-    if(NOT pybind11_FOUND)
-        download_package(pybind11 2.3.0)
-    endif()
-endif()
+# if(BUILD_EIGEN)
+#     find_package(Eigen3 3.3.7 QUIET)
+#     if(NOT Eigen3_FOUND)
+#         download_package(Eigen3 3.3.7)
+#         find_package(Eigen3 3.3.7)
+#     endif()
+#     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE Eigen3::Eigen)
+#     list(APPEND CTRL_UTILS_DEPENDENCIES "Eigen3 ${Eigen3_VERSION} REQUIRED")
+# endif()
 
-if(BUILD_YAML_CPP)
-    find_package(yaml-cpp 0.6.3 QUIET)
-    if(NOT yaml-cpp_FOUND)
-        download_package(yaml-cpp 0.6.3)
-        find_package(yaml-cpp 0.6.3 REQUIRED)
-    elseif(NOT TARGET yaml-cpp::yaml-cpp)
-        add_library(yaml-cpp::yaml-cpp INTERFACE IMPORTED)
-        set_target_properties(yaml-cpp::yaml-cpp PROPERTIES
-            INTERFACE_LINK_LIBRARIES yaml-cpp
-            INTERFACE_INCLUDE_DIRECTORIES ${YAML_CPP_INCLUDE_DIR})
-    endif()
-    target_link_libraries(${CTRL_UTILS_LIB} INTERFACE yaml-cpp::yaml-cpp)
-    list(APPEND CTRL_UTILS_DEPENDENCIES "yaml-cpp ${yaml-cpp_VERSION} REQUIRED")
-endif()
+# if(BUILD_NLOHMANN_JSON)
+#     find_package(nlohmann_json 3.6.1 QUIET)
+#     if(NOT nlohmann_json_FOUND)
+#         download_package(nlohmann_json 3.6.1)
+#         find_package(nlohmann_json 3.6.1)
+#     endif()
+#     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE nlohmann_json::nlohmann_json)
+#     list(APPEND CTRL_UTILS_DEPENDENCIES "nlohmann_json ${nlohmann_json_VERSION} REQUIRED")
+# endif()
 
-if(BUILD_CATCH2)
-    find_package(Catch2 2.11.3 QUIET)
-    if(NOT Catch2_FOUND)
-        download_package(Catch2 2.11.3)
-        add_library(Catch2 INTERFACE)
-        set(CATCH2_INCLUDE_DIR ${LIB_EXTERNAL_DIR}/Catch2.git/single_include)
-        target_include_directories(Catch2 INTERFACE
-            $<BUILD_INTERFACE:${CATCH2_INCLUDE_DIR}>
-            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-        )
-        install(TARGETS Catch2
-            EXPORT Catch2Targets
-            ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-            RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        )
-        install(EXPORT Catch2Targets
-            DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ctrl_utils
-            NAMESPACE Catch2::
-            FILE Catch2Targets.cmake
-        )
-        export(TARGETS Catch2
-            NAMESPACE Catch2::
-            FILE ${CMAKE_BINARY_DIR}/Catch2Targets.cmake)
-        install(DIRECTORY ${CATCH2_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-    endif()
-    list(APPEND CTRL_UTILS_DEPENDENCIES "Catch2 ${Catch2_VERSION}")
-endif()
+# if(BUILD_OPENCV)
+#     find_package(OpenCV 4.1.0 QUIET)
+#     if(NOT OpenCV_FOUND)
+#         download_package(OpenCV 4.1.0)
+#         find_package(OpenCV 4.1.0 REQUIRED)
+#     endif()
+#     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE OpenCV::OpenCV)
+#     list(APPEND CTRL_UTILS_DEPENDENCIES "OpenCV ${OpenCV_VERSION} REQUIRED")
+# endif()
+
+# if(BUILD_PYBIND11)
+#     find_package(pybind11 2.3.0 QUIET)
+#     if(NOT pybind11_FOUND)
+#         download_package(pybind11 2.3.0)
+#     endif()
+# endif()
+
+# if(BUILD_YAML_CPP)
+#     find_package(yaml-cpp 0.6.3 QUIET)
+#     if(NOT yaml-cpp_FOUND)
+#         download_package(yaml-cpp 0.6.3)
+#         find_package(yaml-cpp 0.6.3 REQUIRED)
+#     elseif(NOT TARGET yaml-cpp::yaml-cpp)
+#         add_library(yaml-cpp::yaml-cpp INTERFACE IMPORTED)
+#         set_target_properties(yaml-cpp::yaml-cpp PROPERTIES
+#             INTERFACE_LINK_LIBRARIES yaml-cpp
+#             INTERFACE_INCLUDE_DIRECTORIES ${YAML_CPP_INCLUDE_DIR})
+#     endif()
+#     target_link_libraries(${CTRL_UTILS_LIB} INTERFACE yaml-cpp::yaml-cpp)
+#     list(APPEND CTRL_UTILS_DEPENDENCIES "yaml-cpp ${yaml-cpp_VERSION} REQUIRED")
+# endif()
+
+# if(BUILD_CATCH2)
+#     find_package(Catch2 2.11.3 QUIET)
+#     if(NOT Catch2_FOUND)
+#         download_package(Catch2 2.11.3)
+#         add_library(Catch2 INTERFACE)
+#         set(CATCH2_INCLUDE_DIR ${LIB_EXTERNAL_DIR}/Catch2.git/single_include)
+#         target_include_directories(Catch2 INTERFACE
+#             $<BUILD_INTERFACE:${CATCH2_INCLUDE_DIR}>
+#             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+#         )
+#         install(TARGETS Catch2
+#             EXPORT Catch2Targets
+#             ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#             LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#             RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#         )
+#         install(EXPORT Catch2Targets
+#             DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ctrl_utils
+#             NAMESPACE Catch2::
+#             FILE Catch2Targets.cmake
+#         )
+#         export(TARGETS Catch2
+#             NAMESPACE Catch2::
+#             FILE ${CMAKE_BINARY_DIR}/Catch2Targets.cmake)
+#         install(DIRECTORY ${CATCH2_INCLUDE_DIR} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+#     endif()
+#     list(APPEND CTRL_UTILS_DEPENDENCIES "Catch2 ${Catch2_VERSION}")
+# endif()
 
 # Set include directories
 target_include_directories(${CTRL_UTILS_LIB}
@@ -204,9 +247,9 @@ install(FILES
 )
 
 # Build Python wrapper
-if(BUILD_PYTHON)
-    add_subdirectory(${LIB_SOURCE_DIR}/python)
-endif()
+# if(BUILD_PYTHON)
+#     add_subdirectory(${LIB_SOURCE_DIR}/python)
+# endif()
 
 export(TARGETS ${CTRL_UTILS_LIB}
     NAMESPACE ${CTRL_UTILS_LIB}::
@@ -214,4 +257,5 @@ export(TARGETS ${CTRL_UTILS_LIB}
 
 # Register package in user registry
 export(PACKAGE ${CTRL_UTILS_LIB})
+endif()
 

@@ -23,16 +23,16 @@ void to_json(nlohmann::json& json, const Eigen::DenseBase<Derived>& matrix) {
   json = nlohmann::json::array();
 
   if (matrix.cols() == 1) {
-    for (size_t i = 0; i < matrix.rows(); i++) {
+    for (int i = 0; i < matrix.rows(); i++) {
       json.push_back(matrix(i));
     }
     return;
   }
 
-  for (size_t i = 0; i < matrix.rows(); i++) {
+  for (int i = 0; i < matrix.rows(); i++) {
     json.emplace_back(nlohmann::json::array());
     nlohmann::json& json_i = json[i];
-    for (size_t j = 0; j < matrix.cols(); j++) {
+    for (int j = 0; j < matrix.cols(); j++) {
       json_i.push_back(matrix(i, j));
     }
   }
@@ -51,29 +51,29 @@ void from_json(const nlohmann::json& json, Eigen::DenseBase<Derived>& matrix) {
     return;
   }
 
-  const size_t kNumRows = json.size();
+  const int kNumRows = json.size();
   if (json[0].type() != nlohmann::json::value_t::array) {
     if (matrix.size() == 0) {
       matrix.resize(kNumRows);
     } else if (matrix.rows() != kNumRows) {
       throw std::runtime_error("Eigen::from_json(): Json array is not the same size.");
     }
-    for (size_t i = 0; i < kNumRows; i++) {
+    for (int i = 0; i < kNumRows; i++) {
       matrix(i) = json[i];
     }
     return;
   }
 
-  const size_t kNumCols = json[0].size();
+  const int kNumCols = json[0].size();
   if (matrix.size() == 0) {
     matrix.resize(kNumRows, kNumCols);
   } else if (matrix.rows() != kNumRows || matrix.cols() != kNumCols) {
     throw std::runtime_error("Eigen::from_json(): Json array is not the same size.");
   }
 
-  for (size_t i = 0; i < kNumRows; i++) {
+  for (int i = 0; i < kNumRows; i++) {
     const nlohmann::json& json_i = json[i];
-    for (size_t j = 0; j < kNumCols; j++) {
+    for (int j = 0; j < kNumCols; j++) {
       matrix(i, j) = json_i[j];
     }
   }
