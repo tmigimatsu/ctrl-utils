@@ -12,7 +12,7 @@ if(NOT TARGET Eigen3::Eigen)
 
     if(NOT Eigen3_FOUND)
         init_git_submodule(eigen-git-mirror.git)
-        add_subdirectory(eigen-git-mirror.git ${CMAKE_BINARY_DIR}/Eigen3)
+        add_subdirectory(eigen-git-mirror.git)
         add_library(Eigen3::Eigen INTERFACE IMPORTED GLOBAL)
         target_link_libraries(Eigen3::Eigen INTERFACE eigen)
     else()

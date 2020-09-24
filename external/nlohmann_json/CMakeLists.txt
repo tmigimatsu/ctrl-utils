@@ -16,7 +16,7 @@ if(NOT TARGET nlohmann_json::nlohmann_json)
         set(BUILD_TESTING OFF CACHE BOOL "" FORCE)
 
         init_git_submodule(json.git)
-        add_subdirectory(json.git ${CMAKE_BINARY_DIR}/nlohmann_json)
+        add_subdirectory(json.git)
 
         set(BUILD_TESTING ${PREV_BUILD_TESTING} CACHE BOOL "" FORCE)
     endif()
