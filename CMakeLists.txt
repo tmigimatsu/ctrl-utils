@@ -7,8 +7,8 @@
 # Authors: Toki Migimatsu
 ############################################################
 
-# Require 3.6 to support pkg_check_modules IMPORTED_TARGET
-cmake_minimum_required(VERSION 3.6)
+# Require 3.11 to support setting INTERFACE_INCLUDE_DIRECTORIES on imported targets.
+cmake_minimum_required(VERSION 3.11)
 
 if(DEFINED PROJECT_NAME)
     set(IS_SUBPROJECT ON)
