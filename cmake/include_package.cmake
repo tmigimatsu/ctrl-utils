@@ -26,3 +26,8 @@ function(init_git_submodule GIT_SUBMODULE)
         message(FATAL_ERROR "${GIT_EXECUTABLE} submodule update --init ${RECURSIVE} ${GIT_SUBMODULE} failed with error:\n ${git_submodule_result}")
     endif()
 endfunction()
+
+function(ctrl_utils_add_subdirectory SUBDIRECTORY)
+    set(EXTERNAL_BINARY_DIR ${PROJECT_BINARY_DIR}/external)
+    add_subdirectory(${ctrl_utils_EXTERNAL_DIR}/${SUBDIRECTORY} ${EXTERNAL_BINARY_DIR}/${SUBDIRECTORY})
+endfunction()
