@@ -8,14 +8,11 @@
 ############################################################
 
 if(NOT TARGET yaml-cpp::yaml-cpp)
-    find_package(yaml-cpp 0.6.3 QUIET)
-    if(NOT yaml-cpp_FOUND)
-        option(YAML_CPP_BUILD_TESTS "" OFF)
-        option(YAML_BUILD_SHARED_LIBS "" ON)
+    init_git_submodule(yaml-cpp.git)
 
-        init_git_submodule(yaml-cpp.git)
-        add_subdirectory(yaml-cpp.git)
-    endif()
+    option(YAML_CPP_BUILD_TESTS "" OFF)
+    option(YAML_BUILD_SHARED_LIBS "" ON)
+    add_subdirectory(yaml-cpp.git)
 
     add_library(yaml-cpp::yaml-cpp INTERFACE IMPORTED GLOBAL)
 
