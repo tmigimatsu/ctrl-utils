@@ -785,6 +785,7 @@ RedisClient& RedisClient::request(const std::string& key_pub, const TPub& value_
   sub->commit();
 
   publish(key_pub, value_pub);
+  return *this;
 }
 
 template<typename TSub, typename TPub>
