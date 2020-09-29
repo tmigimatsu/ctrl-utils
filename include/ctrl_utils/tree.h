@@ -12,7 +12,9 @@
 
 #include <algorithm>      // std::find
 #include <exception>      // std::invalid_argument
+#include <functional>     // std::function
 #include <limits>         // std::numeric_limits
+#include <ostream>        // std::ostream
 #include <queue>          // std::queue
 #include <type_traits>    // std::conditional_t
 #include <unordered_map>  // std::unordered_map
@@ -217,6 +219,17 @@ class Tree {
   }
 
   /**
+   * Returns the depth of the node in the tree, where 0 is the depth of a root
+   * node.
+   *
+   * Returns in O(d) time, where d is the depth of the tree.
+   */
+  size_t depth(const Key& id) const {
+    const std::optional<Key>& id_parent = parent(id);
+    return id_parent ? depth(*id_parent) + 1 : 0;
+  }
+
+  /**
    * Inserts a new node without a parent.
    *
    * Insertion is O(1).
@@ -394,6 +407,40 @@ class Tree {
    */
   bool is_descendant(const Key& id_descendant, const Key& id) const {
     return is_ancestor(id, id_descendant);
+  }
+
+  /**
+   * Prints the tree with tab-indented nodes using depth first search.
+   *
+   * @param os Stream to print to.
+   * @param StringifyValue Functions that converts the node value to a string.
+   */
+  void printf(std::ostream& os,
+              const std::function<std::string(const Key& key, const T& val)>&
+                  StringifyValue) const {
+    for (const auto& key_val : nodes(SearchType::kDepthFirstSearch)) {
+      const Key& key = key_val.first;
+      for (size_t i = 0; i < depth(key); i++) {
+        os << "  ";
+      }
+      os << "- " << key << ": " << StringifyValue(key, key_val.second) << std::endl;
+    }
+    os << std::endl;
+  }
+
+  /**
+   * Prints the tree with tab-indented nodes using depth first search.
+   */
+  friend std::ostream& operator<<(std::ostream& os, const Tree<Key, T>& tree) {
+    for (const auto& key_val : tree.nodes(SearchType::kDepthFirstSearch)) {
+      const Key& key = key_val.first;
+      for (size_t i = 0; i < tree.depth(key); i++) {
+        os << "  ";
+      }
+      os << key << ": " << key_val.second << std::endl;
+    }
+    os << std::endl;
+    return os;
   }
 
  protected:
@@ -669,7 +716,7 @@ class Tree<Key, T>::RootView {
     std::vector<Key> roots;
     for (const auto& key_val : tree->nodes()) {
       const Key& key = key_val.first;
-      if (tree->parent(key)) roots.push_back(key);
+      if (!tree->parent(key)) roots.push_back(key);
     }
     return roots;
   }
