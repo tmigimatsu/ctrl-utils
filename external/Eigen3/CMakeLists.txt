@@ -8,7 +8,7 @@
 ############################################################
 
 if(NOT TARGET Eigen3::Eigen)
-    find_package(Eigen3 3.3.7 QUIET)
+    #find_package(Eigen3 3.3.7 QUIET)
 
     if(NOT Eigen3_FOUND)
         init_git_submodule(eigen-git-mirror.git)
