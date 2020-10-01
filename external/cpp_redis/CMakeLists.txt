@@ -32,6 +32,12 @@ if(NOT TARGET cpp_redis::cpp_redis)
 
         init_git_submodule(cpp_redis.git TRUE)
         add_subdirectory(cpp_redis.git)
+        set_target_properties(cpp_redis PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+        )
+        set_target_properties(tacopie PROPERTIES
+            LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+        )
 
         target_link_libraries(cpp_redis::cpp_redis INTERFACE cpp_redis)
 

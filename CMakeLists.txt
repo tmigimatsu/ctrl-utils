@@ -44,6 +44,7 @@ add_library(${CTRL_UTILS_LIB}::${CTRL_UTILS_LIB} ALIAS ${CTRL_UTILS_LIB})
 
 # Find dependencies
 include(${LIB_CMAKE_DIR}/include_package.cmake)
+include(${LIB_CMAKE_DIR}/utils.cmake)
 
 # Set include directories
 target_include_directories(${CTRL_UTILS_LIB}
