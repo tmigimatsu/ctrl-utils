@@ -7,7 +7,7 @@
  * Authors: Toki Migimatsu
  */
 
-#if __cplusplus >= 201703L
+#if __cplusplus >= 201703L && (!__GNUG__ || __GNUC__ > 7)
 #include <filesystem>  // std::filesystem
 #else   // __cplusplus
 
