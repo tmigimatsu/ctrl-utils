@@ -9,5 +9,8 @@
 
 function(ctrl_utils_add_subdirectory SUBDIRECTORY)
     set(EXTERNAL_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR}/external)
-    add_subdirectory(${ctrl_utils_EXTERNAL_DIR}/${SUBDIRECTORY} ${EXTERNAL_BINARY_DIR}/${SUBDIRECTORY})
+    add_subdirectory(${ctrl_utils_EXTERNAL_DIR}/${SUBDIRECTORY}
+        ${EXTERNAL_BINARY_DIR}/${SUBDIRECTORY}
+        EXCLUDE_FROM_ALL
+    )
 endfunction()
