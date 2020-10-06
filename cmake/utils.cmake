@@ -15,7 +15,7 @@
 #     init_git_submodule(ctrl-utils.git RECURSIVE)
 function(init_git_submodule submodule)
     set(RECURSIVE "")
-    if(DEFINED ARGV1 AND (ARGV1 STREQUAL "RECURSIVE"))
+    if((ARGC GREATER 1) AND (ARGV1 STREQUAL "RECURSIVE"))
         set(RECURSIVE "--recursive")
     endif()
 
@@ -39,7 +39,7 @@ endfunction()
 #     lib_add_subdirectory(ctrl_utils INCLUDE_ALL_TARGETS)
 function(lib_add_subdirectory subdirectory)
     set(INCLUDE_ALL_TARGETS "OFF")
-    if(DEFINED ARGV1 AND (ARGV1 STREQUAL "INCLUDE_ALL_TARGETS"))
+    if((ARGC GREATER 1) AND (ARGV1 STREQUAL "INCLUDE_ALL_TARGETS"))
         set(INCLUDE_ALL_TARGETS "ON")
     endif()
 
