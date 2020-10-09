@@ -8,11 +8,20 @@
 ############################################################
 
 if(NOT TARGET Eigen3::Eigen)
-    find_package(Eigen3 3.3.7 QUIET)
+    find_package(Eigen3 3.3.8 QUIET)
 
     if(NOT Eigen3_FOUND)
-        init_git_submodule(eigen-git-mirror.git)
-        add_subdirectory(eigen-git-mirror.git)
+        init_git_submodule(eigen.git)
+
+        # Disable Eigen tests.
+        set(TESTING_FILES "eigen.git/CMakeLists.txt eigen.git/unsupported/CMakeLists.txt eigen.git/blas/CMakeLists.txt")
+        execute_process(
+            COMMAND sed -i "s/(BUILD_TESTING/(EIGEN_BUILD_TESTING/g" "${TESTING_FILES}"
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        )
+        option(EIGEN_BUILD_TESTING "" OFF)
+
+        add_subdirectory(eigen.git)
         add_library(Eigen3::Eigen INTERFACE IMPORTED GLOBAL)
         target_link_libraries(Eigen3::Eigen INTERFACE eigen)
     else()

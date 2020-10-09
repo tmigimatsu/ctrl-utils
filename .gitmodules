@@ -1,9 +1,6 @@
 [submodule "external/cpp_redis/cpp_redis.git"]
 	path = external/cpp_redis/cpp_redis.git
 	url = https://github.com/cpp-redis/cpp_redis.git
-[submodule "external/Eigen3/eigen-git-mirror.git"]
-	path = external/Eigen3/eigen-git-mirror.git
-	url = https://github.com/eigenteam/eigen-git-mirror.git
 [submodule "external/nlohmann_json/json.git"]
 	path = external/nlohmann_json/json.git
 	url = https://github.com/nlohmann/json.git
@@ -16,3 +13,9 @@
 [submodule "external/Catch2/Catch2.git"]
 	path = external/Catch2/Catch2.git
 	url = https://github.com/catchorg/Catch2.git
+[submodule "external/doctest/doctest.git"]
+	path = external/doctest/doctest.git
+	url = https://github.com/onqtam/doctest.git
+[submodule "external/Eigen3/eigen.git"]
+	path = external/Eigen3/eigen.git
+	url = https://gitlab.com/libeigen/eigen.git
