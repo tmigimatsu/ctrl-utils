@@ -1,5 +1,5 @@
 ############################################################
-# CMakeLists for the control_utils library.
+# CMakeLists for the ctrl_utils library.
 #
 # Copyright 2018. All Rights Reserved.
 #
@@ -10,103 +10,114 @@
 # Require 3.11 to support setting INTERFACE_INCLUDE_DIRECTORIES on imported targets.
 cmake_minimum_required(VERSION 3.11)
 
-if(DEFINED PROJECT_NAME)
-    set(IS_SUBPROJECT ON)
-endif()
+# Define project.
+project(ctrl_utils
+    VERSION 1.4.0
+    DESCRIPTION "Utility library for robot control"
+    LANGUAGES CXX
+)
+string(TOUPPER ${PROJECT_NAME} LIB_CMAKE_NAME)
 
-# Define project
-project(ctrl_utils VERSION 1.3.0 LANGUAGES CXX)
+# Include custom CMake utilities.
+include(cmake/ctrl_utils_add_subdirectory.cmake)
+include(cmake/utils.cmake)
 
-# Define options
-option(CTRL_UTILS_BUILD_PYTHON "Build Python library" OFF)
-
-# Set CMake flags
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-if(NOT CMAKE_BUILD_TYPE OR CMAKE_BUILD_TYPE STREQUAL "")
-    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "" FORCE)
-endif()
-
-# Define directories
-set(CTRL_UTILS_LIB ctrl_utils)
-set(LIB_CMAKE_DIR ${PROJECT_SOURCE_DIR}/cmake)
-set(LIB_EXTERNAL_DIR ${PROJECT_SOURCE_DIR}/external)
-set(LIB_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
-set(LIB_SOURCE_DIR ${PROJECT_SOURCE_DIR}/src)
-set(ctrl_utils_EXTERNAL_DIR ${LIB_EXTERNAL_DIR} CACHE INTERNAL "")
-
-# Create control_utils library
-if(NOT TARGET ${CTRL_UTILS_LIB})
-add_library(${CTRL_UTILS_LIB} INTERFACE)
-
-# Create namespaced alias for use inside the build tree
-add_library(${CTRL_UTILS_LIB}::${CTRL_UTILS_LIB} ALIAS ${CTRL_UTILS_LIB})
-
-# Find dependencies
-include(${LIB_CMAKE_DIR}/include_package.cmake)
-include(${LIB_CMAKE_DIR}/utils.cmake)
-
-# Set include directories
-target_include_directories(${CTRL_UTILS_LIB}
-    INTERFACE
-        $<INSTALL_INTERFACE:include>
-        $<BUILD_INTERFACE:${LIB_INCLUDE_DIR}>
+# Detect whether this project is built by itself or included as a subdirectory.
+lib_dependent_option(${LIB_CMAKE_NAME}_MAIN_BUILD
+    "Build ${PROJECT_NAME} as a main project."
+    "CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME"
 )
 
-# Use GNUInstalDirs to install ibraries into correct locations on all platforms
+# Generate a compilation database for autocompletion.
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Define CMake options.
+lib_option(BUILD_DOCS "Build docs." OFF)
+lib_option(BUILD_PYTHON "Build Python library." OFF)
+lib_option(CLANG_TIDY "Perform clang-tidy checks." OFF)
+
+# Set default build type to release.
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to 'Release' as none was specified.")
+    set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
+
+# Set output directories.
+if(${LIB_CMAKE_NAME}_MAIN_BUILD)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/lib)
+endif()
+
+# Standardize install directories.
 include(GNUInstallDirs)
 
-set(CTRL_UTILS_TARGETS ${CTRL_UTILS_LIB}Targets)
-set(CTRL_UTILS_CONFIG ${CTRL_UTILS_LIB}Config)
-set(CTRL_UTILS_CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${CTRL_UTILS_LIB})
+# Build the library.
+add_subdirectory(src)
 
-# Install the library
-install(TARGETS ${CTRL_UTILS_LIB}
-    EXPORT ${CTRL_UTILS_TARGETS}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-)
-
-# Install the headers
-install(DIRECTORY ${LIB_INCLUDE_DIR}/${CTRL_UTILS_LIB} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-# Export targets to Targets.cmake
-install(EXPORT ${CTRL_UTILS_TARGETS}
-    DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR}
-    NAMESPACE ${CTRL_UTILS_LIB}::
-    FILE ${CTRL_UTILS_TARGETS}.cmake
-)
-
-# Create ConfigVersion.cmake
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}Version.cmake
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMinorVersion
-)
-
-# Create Config.cmake
-configure_package_config_file(${LIB_CMAKE_DIR}/${CTRL_UTILS_CONFIG}.cmake.in
-    ${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}.cmake
-    INSTALL_DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR})
-
-# Install config script files
-install(FILES
-    ${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}.cmake
-    ${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}Version.cmake
-    DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR}
-)
-
-# Build Python wrapper
-if(CTRL_UTILS_BUILD_PYTHON)
-    add_subdirectory(${LIB_SOURCE_DIR}/python)
+# Build docs.
+if(${LIB_CMAKE_NAME}_BUILD_DOCS)
+    find_package(Doxygen)
+    if(NOT Doxygen_FOUND)
+        message(WARNING "Unable to find Doxygen for ${PROJECT_NAME} docs.")
+    else()
+        add_subdirectory(docs)
+    endif()
 endif()
 
-export(TARGETS ${CTRL_UTILS_LIB}
-    NAMESPACE ${CTRL_UTILS_LIB}::
-    FILE ${CMAKE_BINARY_DIR}/${CTRL_UTILS_TARGETS}.cmake)
-
-# Register package in user registry
-export(PACKAGE ${CTRL_UTILS_LIB})
+# Build Python wrapper.
+if(${LIB_CMAKE_NAME}_BUILD_PYTHON)
+    add_subdirectory(python)
 endif()
+
+
+
+
+
+# if(DEFINED PROJECT_NAME)
+#     set(IS_SUBPROJECT ON)
+# endif()
+
+
+# set(CTRL_UTILS_TARGETS ${CTRL_UTILS_LIB}Targets)
+# set(CTRL_UTILS_CONFIG ${CTRL_UTILS_LIB}Config)
+# set(CTRL_UTILS_CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${CTRL_UTILS_LIB})
+
+# # Install the headers
+# install(DIRECTORY ${LIB_INCLUDE_DIR}/${CTRL_UTILS_LIB} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+# # Export targets to Targets.cmake
+# install(EXPORT ${CTRL_UTILS_TARGETS}
+#     DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR}
+#     NAMESPACE ${CTRL_UTILS_LIB}::
+#     FILE ${CTRL_UTILS_TARGETS}.cmake
+# )
+
+# # Create ConfigVersion.cmake
+# include(CMakePackageConfigHelpers)
+# write_basic_package_version_file(${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}Version.cmake
+#     VERSION ${PROJECT_VERSION}
+#     COMPATIBILITY SameMinorVersion
+# )
+
+# # Create Config.cmake
+# configure_package_config_file(${LIB_CMAKE_DIR}/${CTRL_UTILS_CONFIG}.cmake.in
+#     ${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}.cmake
+#     INSTALL_DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR})
+
+# # Install config script files
+# install(FILES
+#     ${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}.cmake
+#     ${CMAKE_BINARY_DIR}/${CTRL_UTILS_CONFIG}Version.cmake
+#     DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR}
+# )
+
+# export(TARGETS ${CTRL_UTILS_LIB}
+#     NAMESPACE ${CTRL_UTILS_LIB}::
+#     FILE ${CMAKE_BINARY_DIR}/${CTRL_UTILS_TARGETS}.cmake)
+
+# # Register package in user registry
+# export(PACKAGE ${CTRL_UTILS_LIB})
+# endif()
 
