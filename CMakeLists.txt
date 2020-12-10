@@ -19,6 +19,7 @@ project(ctrl_utils
 string(TOUPPER ${PROJECT_NAME} LIB_CMAKE_NAME)
 
 # Include custom CMake utilities.
+set(CTRL_UTILS_EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/external" CACHE INTERNAL "")
 include(cmake/ctrl_utils_add_subdirectory.cmake)
 include(cmake/utils.cmake)
 

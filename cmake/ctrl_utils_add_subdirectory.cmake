@@ -19,7 +19,6 @@ function(ctrl_utils_add_subdirectory subdirectory)
         set(INCLUDE_ALL_TARGETS "")
     endif()
 
-    set(CTRL_UTILS_EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/external")
     set(EXTERNAL_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/external")
 
     add_subdirectory("${CTRL_UTILS_EXTERNAL_DIR}/${subdirectory}"
