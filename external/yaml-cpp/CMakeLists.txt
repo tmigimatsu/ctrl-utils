@@ -19,3 +19,7 @@ if(NOT TARGET yaml-cpp::yaml-cpp)
     target_link_libraries(yaml-cpp::yaml-cpp INTERFACE
         yaml-cpp)
 endif()
+
+function(lib_install_subdirectory_yaml_cpp)
+    install(TARGETS yaml-cpp)
+endfunction()
