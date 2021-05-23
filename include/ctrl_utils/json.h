@@ -11,14 +11,28 @@
 #define CTRL_UTILS_JSON_H_
 
 #include <exception>  // std::runtime_error
-
 #include <nlohmann/json.hpp>
 
-#include "ctrl_utils/eigen.h"
+#include "eigen.h"
+#include "string.h"
+
+namespace ctrl_utils {
+
+template <>
+inline std::string ToString(const nlohmann::json& value) {
+  return value.dump();
+}
+
+template <>
+inline nlohmann::json FromString(const std::string& str) {
+  return nlohmann::json::parse(str);
+}
+
+}  // namespace ctrl_utils
 
 namespace Eigen {
 
-template<typename Derived>
+template <typename Derived>
 void to_json(nlohmann::json& json, const Eigen::DenseBase<Derived>& matrix) {
   json = nlohmann::json::array();
 
@@ -38,13 +52,14 @@ void to_json(nlohmann::json& json, const Eigen::DenseBase<Derived>& matrix) {
   }
 }
 
-template<typename Derived>
+template <typename Derived>
 void from_json(const nlohmann::json& json, Eigen::DenseBase<Derived>& matrix) {
   if (json.type() != nlohmann::json::value_t::array) {
     throw std::runtime_error("Eigen::from_json(): Json type is not an array.");
   }
 
-  if (json.empty() || (json[0].type() == nlohmann::json::value_t::array && json[0].empty())) {
+  if (json.empty() ||
+      (json[0].type() == nlohmann::json::value_t::array && json[0].empty())) {
     if (matrix.size() != 0) {
       throw std::runtime_error("Eigen::from_json(): Json array is empty.");
     }
@@ -56,7 +71,8 @@ void from_json(const nlohmann::json& json, Eigen::DenseBase<Derived>& matrix) {
     if (matrix.size() == 0) {
       matrix.resize(kNumRows);
     } else if (matrix.rows() != kNumRows) {
-      throw std::runtime_error("Eigen::from_json(): Json array is not the same size.");
+      throw std::runtime_error(
+          "Eigen::from_json(): Json array is not the same size.");
     }
     for (int i = 0; i < kNumRows; i++) {
       matrix(i) = json[i];
@@ -68,7 +84,8 @@ void from_json(const nlohmann::json& json, Eigen::DenseBase<Derived>& matrix) {
   if (matrix.size() == 0) {
     matrix.resize(kNumRows, kNumCols);
   } else if (matrix.rows() != kNumRows || matrix.cols() != kNumCols) {
-    throw std::runtime_error("Eigen::from_json(): Json array is not the same size.");
+    throw std::runtime_error(
+        "Eigen::from_json(): Json array is not the same size.");
   }
 
   for (int i = 0; i < kNumRows; i++) {
@@ -79,7 +96,7 @@ void from_json(const nlohmann::json& json, Eigen::DenseBase<Derived>& matrix) {
   }
 }
 
-template<typename Derived>
+template <typename Derived>
 void to_json(nlohmann::json& json, const Eigen::QuaternionBase<Derived>& quat) {
   json["w"] = quat.w();
   json["x"] = quat.x();
@@ -87,8 +104,9 @@ void to_json(nlohmann::json& json, const Eigen::QuaternionBase<Derived>& quat) {
   json["z"] = quat.z();
 }
 
-template<typename Derived>
-void from_json(const nlohmann::json& json, Eigen::QuaternionBase<Derived>& quat) {
+template <typename Derived>
+void from_json(const nlohmann::json& json,
+               Eigen::QuaternionBase<Derived>& quat) {
   quat.w() = json["w"].get<typename Derived::Scalar>();
   quat.x() = json["x"].get<typename Derived::Scalar>();
   quat.y() = json["y"].get<typename Derived::Scalar>();

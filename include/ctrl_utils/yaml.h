@@ -13,13 +13,22 @@
 #include <yaml-cpp/yaml.h>
 
 #include <Eigen/Eigen>
+
 #include "ctrl_utils/eigen.h"
+
+namespace ctrl_utils {
+
+template <>
+inline YAML::Node FromString(const std::string& str) {
+  return YAML::Load(str);
+}
+
+}  // namespace ctrl_utils
 
 namespace YAML {
 
-template<typename Scalar, int Rows, int Cols>
+template <typename Scalar, int Rows, int Cols>
 struct convert<Eigen::Matrix<Scalar, Rows, Cols>> {
-
   static Node encode(const Eigen::Matrix<Scalar, Rows, Cols>& rhs) {
     Node node;
     if (rhs.cols() == 1) {
@@ -47,7 +56,8 @@ struct convert<Eigen::Matrix<Scalar, Rows, Cols>> {
         rhs.resize(node.size(), 1);
       } else {
         if ((rhs.rows() != 0 && rhs.rows() != static_cast<int>(node.size())) ||
-            (rhs.cols() != 0 && rhs.cols() != static_cast<int>(node[0].size()))) return false;
+            (rhs.cols() != 0 && rhs.cols() != static_cast<int>(node[0].size())))
+          return false;
         rhs.resize(node.size(), node[0].size());
       }
     }
@@ -66,12 +76,10 @@ struct convert<Eigen::Matrix<Scalar, Rows, Cols>> {
     }
     return true;
   }
-
 };
 
-template<typename Scalar>
+template <typename Scalar>
 struct convert<Eigen::Quaternion<Scalar>> {
-
   static Node encode(const Eigen::Quaternion<Scalar>& rhs) {
     Node node;
     node["w"] = rhs.w();
@@ -82,7 +90,8 @@ struct convert<Eigen::Quaternion<Scalar>> {
   }
 
   static bool decode(const Node& node, Eigen::Quaternion<Scalar>& rhs) {
-    if (!node.IsMap() || !node["w"] || !node["x"] || !node["y"] || !node["z"]) return false;
+    if (!node.IsMap() || !node["w"] || !node["x"] || !node["y"] || !node["z"])
+      return false;
     rhs.w() = node["w"].as<Scalar>();
     rhs.x() = node["x"].as<Scalar>();
     rhs.y() = node["y"].as<Scalar>();
@@ -90,12 +99,10 @@ struct convert<Eigen::Quaternion<Scalar>> {
     rhs.normalize();
     return true;
   }
-
 };
 
-template<>
+template <>
 struct convert<Eigen::Isometry3d> {
-
   static Node encode(const Eigen::Isometry3d& rhs) {
     Node node;
     node["pos"] = Eigen::Vector3d(rhs.translation());
@@ -111,7 +118,6 @@ struct convert<Eigen::Isometry3d> {
     rhs = Eigen::Translation3d(pos) * ori;
     return true;
   }
-
 };
 
 }  // namespace YAML

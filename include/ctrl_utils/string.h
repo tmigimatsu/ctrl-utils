@@ -13,61 +13,51 @@
 #include <sstream>  // std::string
 #include <string>   // std::stringstream
 
-#include <nlohmann/json.hpp>
-#include <yaml-cpp/yaml.h>
-
-#include "eigen_string.h"
-
 namespace ctrl_utils {
 
-template<typename T>
+/**
+ * Converts the value to a string using stringstream.
+ */
+template <typename T>
 inline std::string ToString(const T& value) {
   std::stringstream ss;
   ss << value;
   return ss.str();
 }
 
-template<>
+/**
+ * Template specialization for strings.
+ */
+template <>
 inline std::string ToString(const std::string& value) {
   return value;
 }
 
-template<>
-inline std::string ToString(const nlohmann::json& value) {
-  return value.dump();
-}
-
-template<typename T>
-inline void ToString(std::string& str, const T& value) {
-  str = ToString(value);
-}
-
-template<typename T>
-inline T FromString(const std::string& str) {
-  T value;
+/**
+ * Converts the string to a value using stringstream.
+ */
+template <typename T>
+inline void FromString(const std::string& str, T& value) {
   std::stringstream ss(str);
   ss >> value;
+}
+
+/**
+ * Converts the string to a value using stringstream.
+ */
+template <typename T>
+inline T FromString(const std::string& str) {
+  T value;
+  FromString(str, value);
   return value;
 }
 
-template<>
-inline std::string FromString(const std::string& str) {
-  return str;
-}
-
-template<>
-inline nlohmann::json FromString(const std::string& str) {
-  return nlohmann::json::parse(str);
-}
-
-template<>
-inline YAML::Node FromString(const std::string& str) {
-  return YAML::Load(str);
-}
-
-template<typename T>
-inline void FromString(const std::string& str, T& value) {
-  value = FromString<T>(str);
+/**
+ * Template specialization for strings.
+ */
+template <>
+inline void FromString(const std::string& str, std::string& value) {
+  value = str;
 }
 
 }  // namespace ctrl_utils

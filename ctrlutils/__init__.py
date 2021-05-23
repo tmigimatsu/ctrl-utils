@@ -1,2 +1,2 @@
 from .timer import Timer
-from .ctrlutils import *
+from .redis import RedisClient
