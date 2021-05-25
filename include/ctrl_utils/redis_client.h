@@ -86,6 +86,31 @@ class RedisClient : public ::cpp_redis::client {
   std::future<T> get(const std::string& key);
 
   /**
+   * Asynchronous Redis GET command with preallocated value.
+   *
+   * Values will get converted from strings with ctrl_utils::FromString<T>(), or
+   * if a specialization for that type doesn't exist,
+   * std::stringstream::operator>>(). These specializations can be defined
+   * locally for custom types in your code.
+   *
+   * Commands are not sent until RedisClient::commit() is called.
+   *
+   * __Example__
+   * ~~~~~~~~~~ {.cc}
+   * double value;
+   * std::future<void> fut = redis_client.get("key", value);
+   * redis_client.commit();
+   * fut.wait();
+   * std::cout << "Value: " << value << std::endl;
+   * ~~~~~~~~~~
+   *
+   * @param key Redis key.
+   * @return Future Redis value.
+   */
+  template <typename T>
+  std::future<void> get(const std::string& key, T& val);
+
+  /**
    * Asynchronous Redis GET command with callbacks.
    *
    * Values will get converted from strings with ctrl_utils::FromString<T>(), or
@@ -528,6 +553,30 @@ std::future<T> RedisClient::get(const std::string& key) {
 }
 
 template <typename T>
+std::future<void> RedisClient::get(const std::string& key, T& value) {
+  auto promise = std::make_shared<std::promise<void>>();
+  get<std::string>(
+      key,
+      [promise, key, &value](std::string&& str_value) {
+        try {
+          FromString(str_value, value);
+          promise->set_value();
+        } catch (const std::exception& e) {
+          const std::string error =
+              "RedisClient::get(): Exception thrown on key: " + key + "\n\t" +
+              e.what();
+          promise->set_exception(
+              std::make_exception_ptr(std::runtime_error(error)));
+        }
+      },
+      [promise](const std::string& error) {
+        promise->set_exception(
+            std::make_exception_ptr(std::runtime_error(error)));
+      });
+  return promise->get_future();
+}
+
+template <typename T>
 T RedisClient::sync_get(const std::string& key) {
   std::future<T> future = get<T>(key);
   commit();
@@ -849,6 +898,7 @@ RedisClient& RedisClient::request(const std::string& key_pub,
   sub->commit();
 
   publish(key_pub, value_pub);
+  return *this;
 }
 
 template <typename TSub, typename TPub>
