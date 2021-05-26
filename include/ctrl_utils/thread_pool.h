@@ -56,13 +56,13 @@ class ThreadPool {
    * @param job Job to submit.
    * @returns Future value returned by the job.
    */
-  std::future<T> Submit(std::function<T(void)>&& job) {
+  std::future<T> Submit(std::function<T()>&& job) {
     auto promise = std::make_shared<std::promise<T>>();
     jobs_.Push(std::make_pair(std::move(job), promise));
     return promise->get_future();
   }
 
-  std::future<T> Submit(std::function<T(void)>& job) {
+  std::future<T> Submit(std::function<T()>& job) {
     auto promise = std::make_shared<std::promise<T>>();
     jobs_.Push(std::make_pair(job, promise));
     return promise->get_future();
@@ -81,10 +81,13 @@ class ThreadPool {
  private:
   using Promise = std::shared_ptr<std::promise<T>>;
 
+  /**
+   * Pops jobs from the queue in an infinite loop.
+   */
   void InfiniteLoop() {
     while (!terminate_) {
-      std::pair<std::function<T(void)>, Promise> job_promise = jobs_.Pop();
-      std::function<T(void)>& job = job_promise.first;
+      std::pair<std::function<T()>, Promise> job_promise = jobs_.Pop();
+      std::function<T()>& job = job_promise.first;
       Promise& promise = job_promise.second;
 
       // If terminated, raise an exception instead of processing.
@@ -96,16 +99,33 @@ class ThreadPool {
       }
 
       // Run the job and return the promised value.
-      promise->set_value(job());
+      ExecuteJob(promise, job);
     }
+  }
+
+  /**
+   * Executes the job and sets the promised value.
+   */
+  void ExecuteJob(Promise& promise, std::function<T()>& job) {
+    promise->set_value(job());
   }
 
   std::vector<std::thread> threads_;
 
-  AtomicQueue<std::pair<std::function<T(void)>, Promise>> jobs_;
+  AtomicQueue<std::pair<std::function<T()>, Promise>> jobs_;
 
   std::sig_atomic_t terminate_ = false;
 };
+
+/**
+ * Executes the job and sets the promised value to void.
+ */
+template <>
+void ThreadPool<void>::ExecuteJob(Promise& promise,
+                                  std::function<void()>& job) {
+  job();
+  promise->set_value();
+}
 
 }  // namespace ctrl_utils
 
