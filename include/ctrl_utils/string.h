@@ -34,6 +34,14 @@ inline std::string ToString(const std::string& value) {
 }
 
 /**
+ * Converts the value to a preallocated string.
+ */
+template <typename T>
+inline void ToString(std::string& str, const T& value) {
+  str = ToString(value);
+}
+
+/**
  * Converts the string to a value using stringstream.
  */
 template <typename T>
