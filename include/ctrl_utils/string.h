@@ -68,6 +68,32 @@ inline void FromString(const std::string& str, std::string& value) {
   value = str;
 }
 
+#if __cplusplus >= 201703L
+}  // namespace
+
+#include <string_view>
+
+namespace ctrl_utils {
+
+template <typename T>
+inline T FromString(const std::string_view& str) {
+  T value;
+  FromString(std::string{str}, value);
+  return value;
+}
+
+template <>
+inline void FromString(const std::string& str, std::string_view& value) {
+  value = str;
+}
+
+#endif  // __cplusplus >= 201703L
+
+std::ostream& bold(std::ostream& os) { return os << "\e[1m"; }
+std::ostream& underline(std::ostream& os) { return os << "\e[4m"; }
+std::ostream& bold_underline(std::ostream& os) { return os << "\e[1;4m"; }
+std::ostream& normal(std::ostream& os) { return os << "\e[0m"; }
+
 }  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_STRING_H_
