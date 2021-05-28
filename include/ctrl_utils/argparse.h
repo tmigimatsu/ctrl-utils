@@ -13,6 +13,7 @@
 #include <ctrl_utils/string.h>
 
 #include <exception>      // std::invalid_argument
+#include <iomanip>        // std::setw, std::left
 #include <iostream>       // std::cout
 #include <list>           // std::list
 #include <optional>       // std::optional
@@ -87,15 +88,7 @@ class Args {
   /**
    * Prints the parsed fields of the Args object.
    */
-  friend std::ostream& operator<<(std::ostream& os, const Args& args) {
-    os << "Parsed args:" << std::endl;
-    for (const std::pair<std::string_view, std::string>& key_val :
-         args.parsed_args_) {
-      os << "\t" << bold << key_val.first << normal << ":\t" << key_val.second
-         << std::endl;
-    }
-    return os;
-  }
+  friend std::ostream& operator<<(std::ostream& os, const Args& args);
 
  protected:
   /**
@@ -149,6 +142,8 @@ class Args {
   }
 
  private:
+  static constexpr std::string_view kTab = "    ";
+
   class Param {
    public:
     Param(std::string_view name, std::string_view description)
@@ -158,7 +153,11 @@ class Args {
     std::string_view description;
 
    protected:
+    static constexpr size_t kLenKey = 2 * Args::kTab.size();
+
     virtual void Print(std::ostream& os) const = 0;
+
+    void PrintDescription(std::ostream& os, size_t len_keys) const;
 
     friend std::ostream& operator<<(std::ostream& os, const Param& param) {
       param.Print(os);
@@ -457,29 +456,60 @@ void Args::Parser::CheckRemainingArguments() const {
 //////////////////////
 
 void Args::PositionalParam::Print(std::ostream& os) const {
-  os << "\t" << bold << name << normal << std::endl << "\t\t" << description;
+  // Print name.
+  os << Args::kTab << bold << name << normal;
+
+  // Print description.
+  Param::PrintDescription(os, name.size());
 }
 
 void Args::KeywordParam::Print(std::ostream& os) const {
-  os << "\t";
+  size_t len_keys = 0;
+
+  // Print keywords.
+  os << Args::kTab;
   std::string_view delimiter;
   for (const std::string& keyword : keywords) {
     os << delimiter << bold << keyword << normal;
+    len_keys += delimiter.size() + keyword.size();
     if (delimiter.empty()) delimiter = ", ";
   }
-  os << " " << underline << name << normal << std::endl
-     << "\t\t" << description << " [default: " << default_value << "]";
+
+  // Print name.
+  os << " " << underline << name << normal;
+  len_keys += 1 + name.size();
+
+  // Print description.
+  Param::PrintDescription(os, len_keys);
+  os << " [default: " << default_value << "]";
 }
 
 void Args::FlagParam::Print(std::ostream& os) const {
-  os << "\t" << bold << positive_keyword << normal << "/" << bold
-     << negative_keyword << normal << std::endl
-     << "\t\t" << description << " [default: " << default_keyword << "]";
+  // Print keywords.
+  os << Args::kTab << bold << positive_keyword << normal << "/" << bold
+     << negative_keyword << normal;
+
+  // Print description.
+  const size_t len_keys = positive_keyword.size() + 1 + negative_keyword.size();
+  Param::PrintDescription(os, len_keys);
+  os << " [default: " << default_keyword << "]";
+}
+
+void Args::Param::PrintDescription(std::ostream& os, size_t len_keys) const {
+  // Print spacing.
+  if (len_keys < Param::kLenKey) {
+    os << std::setw(Param::kLenKey - len_keys) << " ";
+  } else {
+    os << std::endl << Args::kTab << std::setw(Param::kLenKey) << " ";
+  }
+
+  // Print description.
+  os << description;
 }
 
 std::string Args::Parser::GenerateHelpString() const {
   std::stringstream ss;
-  ss << "Usage:" << std::endl << "\t" << bold << name_app_ << normal;
+  ss << "Usage:" << std::endl << Args::kTab << bold << name_app_ << normal;
   for (const std::shared_ptr<Param>& param : required_params_) {
     ss << " " << param->name;
   }
@@ -494,6 +524,25 @@ std::string Args::Parser::GenerateHelpString() const {
     ss << *param << std::endl;
   }
   return ss.str();
+}
+
+std::ostream& operator<<(std::ostream& os, const Args& args) {
+  // Get max key length;
+  size_t max_len_key = 0;
+  for (const std::pair<std::string_view, std::string>& key_val :
+       args.parsed_args_) {
+    if (key_val.first.size() > max_len_key) {
+      max_len_key = key_val.first.size();
+    }
+  }
+
+  os << "Parsed args:" << std::endl;
+  for (const std::pair<std::string_view, std::string>& key_val :
+       args.parsed_args_) {
+    os << Args::kTab << bold << std::setw(max_len_key + 2) << std::left
+       << key_val.first << normal << key_val.second << std::endl;
+  }
+  return os;
 }
 
 /////////////////////
