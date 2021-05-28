@@ -25,13 +25,68 @@
 
 namespace ctrl_utils {
 
+/**
+ * Parses the arguments.
+ *
+ * Example:
+ * @code
+ * struct Args : ctrl_utils::Args {
+ *   // Mandatory constructor boilerplate.
+ *   explicit Args(ctrl_utils::Args&& args)
+ *     : ctrl_utils::Args(std::move(args)) {}
+ *
+ *   // Create a positional string argument.
+ *   // E.g. `./hello joe`
+ *   std::string name = Arg<std::string>("name", "Your name.");
+ *
+ *   // Create an optional int argument.
+ *   // E.g. `./hello joe --num-repeat 5` or `./hello joe -n 5`.
+ *   int num_repeat = Kwarg<int>("n,num-repeat", 1,
+ *       "Number of times to repeat the greeting");
+ *
+ *   // Create a flag argument.
+ *   // E.g. `./bin joe -n 5 --print-name` or `./bin joe -n 5 --no-print-name`.
+ *   bool print_name = Flag<bool>("print-name", true, "Print your name.");
+ * };
+ *
+ * int main(int argc, char* argv[]) {
+ *   // Parse the arguments into an Args object.
+ *   std::optional<Args> args = ctrl_utils::ParseArgs<Args>(argc, argv);
+ *
+ *   // If the optional is empty, the args could not be parsed.
+ *   if (!args) return 1;
+ *
+ *   // Access the parsed args as normal fields in the struct.
+ *   const std::string entity = args->print_name ? args->name : "world";
+ *   for (int i = 0; i < args->num_repeat; i++) {
+ *     std::cout << "Hello " << entity << "!" << std::endl;
+ *   }
+ *   return 0;
+ * }
+ * @endcode
+ *
+ * @returns A child class of ctrl_utils::Args with its fields populated with the
+ *          command line arguments, or an empty optional if the parsing fails.
+ */
 template <typename Derived>
 std::optional<Derived> ParseArgs(int argc, char* argv[]);
 
+/**
+ * Base Args class.
+ *
+ * Subclass this class and use the `Arg()`, `Kwarg()`, and `Flag()` methods to
+ * declare and initialize the fields of the subclass.
+ */
 class Args {
  public:
+  /**
+   * Help string generated from the defined arguments.
+   */
   const std::string& help_string() const { return help_string_; }
 
+  /**
+   * Prints the parsed fields of the Args object.
+   */
   friend std::ostream& operator<<(std::ostream& os, const Args& args) {
     os << "Parsed args:" << std::endl;
     for (const std::pair<std::string_view, std::string>& key_val :
@@ -43,23 +98,54 @@ class Args {
   }
 
  protected:
+  /**
+   * Declares a positional argument.
+   *
+   * Prints an error if the argument cannot be parsed.
+   *
+   * @param name Name of the argument (only used to generate the help string).
+   * @param description Description of the argument.
+   * @returns The parsed positional argument.
+   */
   template <typename T>
   T Arg(std::string_view name, std::string_view description) {
     return InitializeOrParseArg<PositionalParam, T>(true, name, {},
                                                     description);
   }
 
+  /**
+   * Declares a keyword argument.
+   *
+   * Single-character keywords use the form `-k`, and multi-character keywords
+   * use the form `--keyword`. Prints an error if the argument cannot be parsed.
+   *
+   * @param keys Comma-separated string of keywords (e.g. "k,keyword").
+   * @param default_value Default value of the argument.
+   * @param description Description of the argument.
+   * @returns The parsed keyword argument.
+   */
   template <typename T>
   T Kwarg(std::string_view keys, T&& default_value,
           std::string_view description) {
     return InitializeOrParseArg<KeywordParam>(
-        false, keys, std::move(default_value), description);
+        false, keys, std::forward<T>(default_value), description);
   }
 
+  /**
+   * Declares a flag argument.
+   *
+   * Positive flags use the form `--flag`, and negative flags use the form
+   * `--no-flag`. Prints an error if the argument cannot be parsed.
+   *
+   * @param name Name of the flag (e.g. "flag").
+   * @param default_value Default value of the flag.
+   * @param description Description of the argument.
+   * @returns The parsed flag argument.
+   */
   bool Flag(std::string_view name, bool default_value,
             std::string_view description) {
-    return InitializeOrParseArg<FlagParam>(
-        false, name, std::move(default_value), description);
+    return InitializeOrParseArg<FlagParam>(false, name, default_value,
+                                           description);
   }
 
  private:
@@ -101,7 +187,7 @@ class Args {
                  std::string_view description)
         : Param({}, description),
           keywords(ParseKeysAndName(keys, name)),
-          default_value(ParseValue(default_value)) {}
+          default_value(Args::ParseValue(default_value)) {}
 
     std::vector<std::string> keywords;
     std::string default_value;
@@ -110,9 +196,6 @@ class Args {
     void Parse(std::list<std::string_view>& args, T& val) const;
 
    protected:
-    template <typename T>
-    static std::string ParseValue(const T& default_value);
-
     static std::vector<std::string> ParseKeysAndName(std::string_view keys,
                                                      std::string_view& name);
 
@@ -187,6 +270,9 @@ class Args {
 
   void Cleanup();
 
+  template <typename T>
+  static std::string ParseValue(const T& default_value);
+
   bool initializing_ = true;
 
   std::string help_string_;
@@ -243,9 +329,10 @@ T Args::InitializeOrParseArg(bool is_required, std::string_view key,
                              T&& default_value, std::string_view description) {
   if (initializing_) {
     return parser_->InitializeArg<ParamT>(
-        is_required, key, std::move(default_value), description);
+        is_required, key, std::forward<T>(default_value), description);
   }
-  return parser_->ParseArg<ParamT>(key, std::move(default_value), parsed_args_);
+  return parser_->ParseArg<ParamT>(key, std::forward<T>(default_value),
+                                   parsed_args_);
 }
 
 template <typename ParamT, typename T>
@@ -257,7 +344,7 @@ T Args::Parser::InitializeArg(bool is_required, std::string_view key,
   std::vector<std::shared_ptr<Param>>& ordered_params =
       is_required ? required_params_ : optional_params_;
   ordered_params.push_back(std::move(param));
-  return std::move(default_value);
+  return std::forward<T>(default_value);
 }
 
 template <typename ParamT, typename T>
@@ -268,8 +355,8 @@ T Args::Parser::ParseArg(
       dynamic_cast<const ParamT*>(params_.at(std::string{key}).get());
   param->Parse(args_, val);
 
-  parsed_args.emplace_back(param->name, ctrl_utils::ToString(val));
-  return std::move(val);
+  parsed_args.emplace_back(param->name, Args::ParseValue(val));
+  return std::forward<T>(val);
 }
 
 /////////////////////
@@ -287,7 +374,14 @@ void Args::PositionalParam::Parse(std::list<std::string_view>& args,
   }
 
   // Remove positional arg from args.
-  val = ctrl_utils::FromString<T>(args.front());
+  try {
+    val = ctrl_utils::FromString<T>(args.front());
+  } catch (...) {
+    std::stringstream ss;
+    ss << "Unable to parse positional argument: " << bold << args.front()
+       << normal;
+    throw std::invalid_argument(ss.str());
+  }
   args.pop_front();
 }
 
@@ -304,7 +398,19 @@ void Args::KeywordParam::Parse(std::list<std::string_view>& args,
     // Parse value.
     auto it_val = it;
     ++it_val;
-    val = ctrl_utils::FromString<T>(*it_val);
+    if (it_val == args.end()) {
+      std::stringstream ss;
+      ss << "Missing value for keyword: " << bold << arg << normal;
+      throw std::invalid_argument(ss.str());
+    }
+    try {
+      val = ctrl_utils::FromString<T>(*it_val);
+    } catch (...) {
+      std::stringstream ss;
+      ss << "Unable to parse value for keyword argument: " << bold << arg << " "
+         << *it_val << normal;
+      throw std::invalid_argument(ss.str());
+    }
 
     // Remove keyword and value from args.
     ++it_val;
@@ -395,7 +501,7 @@ std::string Args::Parser::GenerateHelpString() const {
 /////////////////////
 
 template <typename T>
-std::string Args::KeywordParam::ParseValue(const T& default_value) {
+std::string Args::ParseValue(const T& default_value) {
   std::string str_default = ToString(default_value);
   if (str_default.empty()) str_default = "\'\'";
   return str_default;
