@@ -153,7 +153,7 @@ class Args {
     std::string_view description;
 
    protected:
-    static constexpr size_t kLenKey = 2 * Args::kTab.size();
+    static constexpr size_t kLenKey = 3 * Args::kTab.size();
 
     virtual void Print(std::ostream& os) const = 0;
 
@@ -481,7 +481,7 @@ void Args::KeywordParam::Print(std::ostream& os) const {
 
   // Print description.
   Param::PrintDescription(os, len_keys);
-  os << " [default: " << default_value << "]";
+  os << " [default " << bold << default_value << normal << "]";
 }
 
 void Args::FlagParam::Print(std::ostream& os) const {
@@ -492,15 +492,15 @@ void Args::FlagParam::Print(std::ostream& os) const {
   // Print description.
   const size_t len_keys = positive_keyword.size() + 1 + negative_keyword.size();
   Param::PrintDescription(os, len_keys);
-  os << " [default: " << default_keyword << "]";
+  os << " [default " << bold << default_keyword << normal << "]";
 }
 
 void Args::Param::PrintDescription(std::ostream& os, size_t len_keys) const {
   // Print spacing.
-  if (len_keys < Param::kLenKey) {
-    os << std::setw(Param::kLenKey - len_keys) << " ";
+  if (len_keys < kLenKey) {
+    os << std::setw(kLenKey - len_keys) << " ";
   } else {
-    os << std::endl << Args::kTab << std::setw(Param::kLenKey) << " ";
+    os << std::endl << Args::kTab << std::setw(kLenKey) << " ";
   }
 
   // Print description.
