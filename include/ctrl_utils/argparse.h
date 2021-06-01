@@ -515,15 +515,18 @@ std::string Args::Parser::GenerateHelpString() const {
   for (const std::shared_ptr<Param>& param : required_params_) {
     ss << " " << param->name;
   }
-  ss << " [options...]" << std::endl
-     << std::endl
-     << "Required arguments:" << std::endl;
-  for (const std::shared_ptr<Param>& param : required_params_) {
-    ss << *param << std::endl;
+  ss << " [options...]" << std::endl;
+  if (!required_params_.empty()) {
+    ss << std::endl << "Required arguments:" << std::endl;
+    for (const std::shared_ptr<Param>& param : required_params_) {
+      ss << *param << std::endl;
+    }
   }
-  ss << std::endl << "Optional arguments:" << std::endl;
-  for (const std::shared_ptr<Param>& param : optional_params_) {
-    ss << *param << std::endl;
+  if (!optional_params_.empty()) {
+    ss << std::endl << "Optional arguments:" << std::endl;
+    for (const std::shared_ptr<Param>& param : optional_params_) {
+      ss << *param << std::endl;
+    }
   }
   return ss.str();
 }
