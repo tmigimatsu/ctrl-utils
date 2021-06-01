@@ -12,10 +12,12 @@
 
 #include <ctrl_utils/string.h>
 
+#include <algorithm>      // std::find
 #include <exception>      // std::invalid_argument
 #include <iomanip>        // std::setw, std::left
 #include <iostream>       // std::cout
 #include <list>           // std::list
+#include <memory>         // std::shared_ptr
 #include <optional>       // std::optional
 #include <sstream>        // std::stringstream
 #include <string>         // std::string
