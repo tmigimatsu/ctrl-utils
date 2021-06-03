@@ -116,4 +116,5 @@ setuptools.setup(
     cmdclass={
         "build_ext": CMakeBuild,
     },
+    install_requires=["numpy", "redis"]
 )

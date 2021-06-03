@@ -89,10 +89,10 @@ inline void FromString(const std::string& str, std::string_view& value) {
 
 #endif  // __cplusplus >= 201703L
 
-std::ostream& bold(std::ostream& os) { return os << "\e[1m"; }
-std::ostream& underline(std::ostream& os) { return os << "\e[4m"; }
-std::ostream& bold_underline(std::ostream& os) { return os << "\e[1;4m"; }
-std::ostream& normal(std::ostream& os) { return os << "\e[0m"; }
+inline std::ostream& bold(std::ostream& os) { return os << "\e[1m"; }
+inline std::ostream& underline(std::ostream& os) { return os << "\e[4m"; }
+inline std::ostream& bold_underline(std::ostream& os) { return os << "\e[1;4m"; }
+inline std::ostream& normal(std::ostream& os) { return os << "\e[0m"; }
 
 }  // namespace ctrl_utils
 

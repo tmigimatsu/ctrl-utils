@@ -14,7 +14,7 @@
 
 #include <Eigen/Eigen>
 
-#include "ctrl_utils/eigen.h"
+#include "ctrl_utils/string.h"
 
 namespace ctrl_utils {
 

@@ -11,11 +11,37 @@
 # Pybind11 #
 #############
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/ctrlutils)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${LIB_SOURCE_DIR}/ctrlutils")
 
-set(PYBIND11_LIB_DIR ${LIB_EXTERNAL_DIR}/pybind11.git)
-add_subdirectory(${PYBIND11_LIB_DIR} ${CMAKE_CURRENT_BINARY_DIR}/pybind11)
+ctrl_utils_add_subdirectory(pybind11)
+ctrl_utils_add_subdirectory(Eigen3)
 
-pybind11_add_module(ctrlutils ctrl_utils.cc)
-target_link_libraries(ctrlutils PUBLIC pybind11::pybind11 ctrl_utils::ctrl_utils)
+# Create ctrl-utils wrapper.
+pybind11_add_module(ctrlutils ctrl_utils.cc eigen.cc)
 
+# Link library dependencies.
+target_link_libraries(ctrlutils
+  PUBLIC
+    Eigen3::Eigen
+    pybind11::pybind11
+    ctrl_utils::ctrl_utils
+)
+
+# Create Eigen wrapper.
+pybind11_add_module(ctrlutilseigen eigen.cc)
+
+# Link library dependencies.
+target_link_libraries(ctrlutilseigen
+  PUBLIC
+    Eigen3::Eigen
+    pybind11::pybind11
+    ctrl_utils::ctrl_utils
+)
+
+# Put binary for installation temporarily in build/src/python.
+install(TARGETS ctrlutils
+    LIBRARY DESTINATION "${PROJECT_BINARY_DIR}"
+)
+install(TARGETS ctrlutilseigen
+    LIBRARY DESTINATION "${PROJECT_BINARY_DIR}"
+)
