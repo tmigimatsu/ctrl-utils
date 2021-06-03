@@ -9,6 +9,13 @@
 
 include(CMakeFindDependencyMacro)
 
+set(LIB_NAME @LIB_NAME@)
+set(LIB_BINARY_DIR @PROJECT_BINARY_DIR@)
+
+if(NOT TARGET ${LIB_NAME}::${LIB_NAME})
+    include("${LIB_BINARY_DIR}/${LIB_NAME}Targets.cmake")
+endif()
+
 list(INSERT CMAKE_MODULE_PATH 0 @CMAKE_BINARY_DIR@ @LIB_CMAKE_DIR@)
 set(CTRL_UTILS_DEPENDENCIES "@CTRL_UTILS_DEPENDENCIES@")
 foreach(DEPENDENCY ${CTRL_UTILS_DEPENDENCIES})
@@ -18,7 +25,6 @@ endforeach()
 
 @PACKAGE_INIT@
 
-include("@CMAKE_BINARY_DIR@/@CTRL_UTILS_TARGETS@.cmake")
 check_required_components(@PROJECT_NAME@)
 set(ctrl_utils_EXTERNAL_DIR @LIB_EXTERNAL_DIR@)
 set(ctrl_utils_CMAKE_DIR @LIB_CMAKE_DIR@)

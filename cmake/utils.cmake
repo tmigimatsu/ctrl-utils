@@ -34,17 +34,6 @@ function(init_git_submodule GIT_SUBMODULE)
 endfunction()
 
 ##########
-# Add an external dependency as a subdirectory.
-#
-# Usage:
-#     lib_add_subdirectory(ctrl_utils)
-#     lib_add_subdirectory(ctrl_utils INCLUDE_ALL_TARGETS)
-function(ctrl_utils_add_subdirectory SUBDIRECTORY)
-    set(EXTERNAL_BINARY_DIR ${PROJECT_BINARY_DIR}/external)
-    add_subdirectory(${ctrl_utils_EXTERNAL_DIR}/${SUBDIRECTORY} ${EXTERNAL_BINARY_DIR}/${SUBDIRECTORY})
-endfunction()
-
-##########
 # Set an option to be true by default if the condition is true.
 #
 # Usage:

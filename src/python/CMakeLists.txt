@@ -7,9 +7,7 @@
 # Authors: Toki Migimatsu
 ############################################################
 
-#############
-# Pybind11 #
-#############
+project(ctrlutils)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${LIB_SOURCE_DIR}/ctrlutils")
 

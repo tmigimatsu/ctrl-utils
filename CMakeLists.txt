@@ -23,6 +23,7 @@ set(LIB_EXTERNAL_DIR "${LIB_SOURCE_DIR}/external")
 set(ctrl_utils_EXTERNAL_DIR ${LIB_EXTERNAL_DIR} CACHE INTERNAL "")
 
 # Include custom CMake utilities.
+include(cmake/include_package.cmake)
 include(cmake/utils.cmake)
 
 # Detect whether this project is built by itself or included as a subdirectory.
