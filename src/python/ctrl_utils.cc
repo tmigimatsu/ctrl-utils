@@ -168,7 +168,7 @@ PYBIND11_MODULE(ctrlutils, m) {
         throw std::invalid_argument(
             "pd_control(): kp_kv must be of size [2,] or [n, 2].");
       },
-      "x"_a, "x_des"_a, "dx"_a, "kp_kv"_a, "x_err_max"_a = 0., R"pbdoc(
+      "x"_a, "x_des"_a, "dx"_a, "kp_kv"_a, "ddx_max"_a = 0., R"pbdoc(
     General PD control law for reaching a goal position with velocity damping.
 
     Outputs a desired acceleration given a desired position, as well as the
@@ -184,9 +184,9 @@ PYBIND11_MODULE(ctrlutils, m) {
         kp_kv: Gains matrix as a 2D vector [kp, kv] or an N x 2 matrix, where
             the first and second columns correspond to kp and kv, respectively,
             and the N rows represent per-dimension gains.
-        x_err_max: Optional maximum position error to prevent the acceleration
-            from becoming too large when the position error is large. This value
-            is ignored when less than or equal to 0.
+        ddx_max: Optional maximum acceleration due to the position error. This
+            value clips the acceleration when the distance to the goal is large
+            and is ignored when less than or equal to 0.
 
     Returns:
         2-tuple (ddx, x_err).
@@ -215,7 +215,7 @@ PYBIND11_MODULE(ctrlutils, m) {
         throw std::invalid_argument(
             "pd_control(): kp_kv must be of size [2,] or [3, 2].");
       },
-      "quat"_a, "quat_des"_a, "w"_a, "kp_kv"_a, "ori_err_max"_a = 0., R"pbdoc(
+      "quat"_a, "quat_des"_a, "w"_a, "kp_kv"_a, "dw_max"_a = 0., R"pbdoc(
     Special PD control law for 3D orientations.
 
     Outputs a desired acceleration given a desired orientation, as well as the
@@ -232,9 +232,9 @@ PYBIND11_MODULE(ctrlutils, m) {
         kp_kv: Gains matrix as a 2D vector [kp, kv] or a 3 x 2 matrix, where
             the first and second columns correspond to kp and kv, respectively,
             and the 3 rows represent per-dimension (x, y, z) gains.
-        ori_err_max: Optional maximum orientation error to prevent the
-           acceleration from becoming too large when the orientation error is
-           large. This value is ignored when less than or equal to 0.
+        dw_max: Optional maximum acceleration due to the orientation error. This
+            value clips the acceleration when the distance to the goal is large
+            and is ignored when less than or equal to 0.
 
     Returns:
         2-tuple (dw, w_err).
