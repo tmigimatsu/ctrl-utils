@@ -151,14 +151,18 @@ PYBIND11_MODULE(ctrlutils, m) {
          Eigen::Ref<const Eigen::VectorXd> x_des,
          Eigen::Ref<const Eigen::VectorXd> dx,
          Eigen::Ref<const Eigen::MatrixXd> kp_kv,
-         double x_err_max) -> Eigen::VectorXd {
+         double x_err_max) -> std::pair<Eigen::VectorXd, Eigen::VectorXd> {
         if (kp_kv.rows() == 2 && kp_kv.cols() == 1) {
           Eigen::Map<const Eigen::Vector2d> kp_kv_in(kp_kv.data());
-          return PdControl(x, x_des, dx, kp_kv_in, x_err_max);
+          Eigen::VectorXd x_err;
+          Eigen::VectorXd ddx = PdControl(x, x_des, dx, kp_kv_in, x_err_max, &x_err);
+          return std::make_pair(std::move(ddx), std::move(x_err));
         } else if (kp_kv.rows() == x.rows() && kp_kv.cols() == 2) {
           Eigen::Map<const Eigen::Matrix<double, Eigen::Dynamic, 2>> kp_kv_in(
               kp_kv.data(), kp_kv.rows(), 2);
-          return PdControl(x, x_des, dx, kp_kv_in, x_err_max);
+          Eigen::VectorXd x_err;
+          Eigen::VectorXd ddx = PdControl(x, x_des, dx, kp_kv_in, x_err_max, &x_err);
+          return std::make_pair(std::move(ddx), std::move(x_err));
         }
 
         throw std::invalid_argument(
@@ -185,7 +189,7 @@ PYBIND11_MODULE(ctrlutils, m) {
             is ignored when less than or equal to 0.
 
     Returns:
-        Desired acceleration.
+        2-tuple (ddx, x_err).
 
     .. seealso C++: :ctrlutils:`ctrl_utils::PdControl`.
         )pbdoc");
@@ -195,13 +199,17 @@ PYBIND11_MODULE(ctrlutils, m) {
       [](Eigen::Quaterniond& quat, Eigen::Quaterniond& quat_des,
          Eigen::Ref<const Eigen::Vector3d> w,
          Eigen::Ref<const Eigen::MatrixXd> kp_kv,
-         double ori_err_max) -> Eigen::Vector3d {
+         double ori_err_max) -> std::pair<Eigen::Vector3d, Eigen::Vector3d> {
         if (kp_kv.rows() == 2 && kp_kv.cols() == 1) {
           Eigen::Map<const Eigen::Vector2d> kp_kv_in(kp_kv.data());
-          return PdControl(quat, quat_des, w, kp_kv_in, ori_err_max);
+          Eigen::Vector3d w_err;
+          Eigen::Vector3d dw = PdControl(quat, quat_des, w, kp_kv_in, ori_err_max, &w_err);
+          return std::make_pair(std::move(dw), std::move(w_err));
         } else if (kp_kv.rows() == 3 && kp_kv.cols() == 2) {
           Eigen::Map<const Eigen::Matrix<double, 3, 2>> kp_kv_in(kp_kv.data());
-          return PdControl(quat, quat_des, w, kp_kv_in, ori_err_max);
+          Eigen::Vector3d w_err;
+          Eigen::Vector3d dw = PdControl(quat, quat_des, w, kp_kv_in, ori_err_max, &w_err);
+          return std::make_pair(std::move(dw), std::move(w_err));
         }
 
         throw std::invalid_argument(
@@ -229,7 +237,7 @@ PYBIND11_MODULE(ctrlutils, m) {
            large. This value is ignored when less than or equal to 0.
 
     Returns:
-        Desired angular acceleration.
+        2-tuple (dw, w_err).
 
     .. seealso C++: :ctrlutils:`ctrl_utils::PdControl`.
       )pbdoc");

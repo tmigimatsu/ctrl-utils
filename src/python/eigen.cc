@@ -74,6 +74,7 @@ PYBIND11_MODULE(ctrlutilseigen, m) {
           })
       .def("normalized", &Quaterniond::normalized)
       .def("inverse", &Quaterniond::inverse)
+      .def("matrix", &Quaterniond::matrix)
       .def("set",
            [](Quaterniond& quat, const Quaterniond& other) { quat = other; })
       .def("__mul__", [](const Quaterniond& quat,
@@ -98,7 +99,7 @@ PYBIND11_MODULE(ctrlutilseigen, m) {
           "axis", (double (AngleAxisd::*)(void) const) & AngleAxisd::angle,
           [](AngleAxisd& aa, const Eigen::Vector3d& axis) { aa.axis() = axis; })
       .def("inverse", &AngleAxisd::inverse)
-      .def("to_rotation_matrix", &AngleAxisd::toRotationMatrix)
+      .def("matrix", &AngleAxisd::matrix)
       .def("__mul__", (Quaterniond(AngleAxisd::*)(const Quaterniond&) const) &
                           AngleAxisd::operator*)
       .def("__mul__", (Quaterniond(AngleAxisd::*)(const AngleAxisd&) const) &
