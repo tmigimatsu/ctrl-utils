@@ -36,6 +36,7 @@ lib_dependent_option(${LIB_CMAKE_NAME}_MAIN_BUILD
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Define CMake options
+lib_option(BUILD_DOCS "Build docs." OFF)
 lib_option(BUILD_PYTHON "Build Python library" OFF)
 
 # Set default build type to release.
@@ -57,3 +58,13 @@ include(GNUInstallDirs)
 
 # Build the library.
 add_subdirectory(src)
+
+# Build docs.
+if(${LIB_CMAKE_NAME}_BUILD_DOCS)
+    find_package(Doxygen)
+    if(NOT Doxygen_FOUND)
+        message(WARNING "Unable to find Doxygen for ${PROJECT_NAME} docs.")
+    else()
+        add_subdirectory(docs)
+    endif()
+endif()
