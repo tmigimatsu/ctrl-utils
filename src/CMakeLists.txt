@@ -27,6 +27,11 @@ target_include_directories(${LIB_NAME}
     "$<BUILD_INTERFACE:${LIB_INCLUDE_DIR}>"
 )
 
+# Build python wrapper.
+if(${LIB_CMAKE_NAME}_BUILD_PYTHON)
+    add_subdirectory(python)
+endif()
+
 # Install the library.
 install(TARGETS ${LIB_NAME}
     EXPORT ${LIB_NAME}Targets

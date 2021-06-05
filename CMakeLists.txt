@@ -70,8 +70,3 @@ if(${LIB_CMAKE_NAME}_BUILD_DOCS)
         add_subdirectory(docs)
     endif()
 endif()
-
-# Build python wrapper.
-if(${LIB_CMAKE_NAME}_BUILD_PYTHON)
-    add_subdirectory(python)
-endif()

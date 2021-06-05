@@ -18,7 +18,7 @@ namespace Eigen {
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-PYBIND11_MODULE(ctrlutilseigen, m) {
+PYBIND11_MODULE(ctrlutils_eigen, m) {
   // Isometry3d
   py::class_<Isometry3d>(m, "Isometry3d")
       .def(py::init<const Isometry3d&>())
