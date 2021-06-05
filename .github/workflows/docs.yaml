@@ -22,6 +22,7 @@ jobs:
       - name: Generate cpp_redis Docs
         run: |
           cd external/cpp_redis/cpp_redis.git
+          git submodule update --init .
           sed -i.old -E "s/^GENERATE_TAGFILE( +)=$/GENERATE_TAGFILE\1= cpp_redis.tag/" .doxygen
           doxygen .doxygen
 

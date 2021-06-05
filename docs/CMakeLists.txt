@@ -15,4 +15,4 @@ add_custom_target(ctrlutils_docs ALL
 )
 
 ctrl_utils_add_subdirectory(cpp_redis)
-add_dependencies(ctrlutils_docs ctrlutils ctrlutilseigen cpp_redis::cpp_redis)
+add_dependencies(ctrlutils_docs ctrlutils ctrlutilseigen)
