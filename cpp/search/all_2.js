@@ -14,6 +14,5 @@ var searchData=
   ['convert_3c_20eigen_3a_3aisometry3d_20_3e_23',['convert&lt; Eigen::Isometry3d &gt;',['../structYAML_1_1convert_3_01Eigen_1_1Isometry3d_01_4.html',1,'YAML']]],
   ['convert_3c_20eigen_3a_3amatrix_3c_20scalar_2c_20rows_2c_20cols_20_3e_20_3e_24',['convert&lt; Eigen::Matrix&lt; Scalar, Rows, Cols &gt; &gt;',['../structYAML_1_1convert_3_01Eigen_1_1Matrix_3_01Scalar_00_01Rows_00_01Cols_01_4_01_4.html',1,'YAML']]],
   ['convert_3c_20eigen_3a_3aquaternion_3c_20scalar_20_3e_20_3e_25',['convert&lt; Eigen::Quaternion&lt; Scalar &gt; &gt;',['../structYAML_1_1convert_3_01Eigen_1_1Quaternion_3_01Scalar_01_4_01_4.html',1,'YAML']]],
-  ['ctrl_5futils_26',['ctrl_utils',['../namespacectrl__utils.html',1,'']]],
-  ['control_2dutils_27',['control-utils',['../index.html',1,'']]]
+  ['ctrl_5futils_26',['ctrl_utils',['../namespacectrl__utils.html',1,'']]]
 ];

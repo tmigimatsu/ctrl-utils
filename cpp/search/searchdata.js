@@ -5,8 +5,7 @@ var indexSectionsWithContent =
   2: "ces",
   3: "acdefghiklmnoprst~",
   4: "cnp",
-  5: "op",
-  6: "c"
+  5: "op"
 };
 
 var indexSectionNames =
@@ -16,8 +15,7 @@ var indexSectionNames =
   2: "namespaces",
   3: "functions",
   4: "variables",
-  5: "related",
-  6: "pages"
+  5: "related"
 };
 
 var indexSectionLabels =
@@ -27,7 +25,6 @@ var indexSectionLabels =
   2: "Namespaces",
   3: "Functions",
   4: "Variables",
-  5: "Friends",
-  6: "Pages"
+  5: "Friends"
 };
 
