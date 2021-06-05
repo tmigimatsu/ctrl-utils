@@ -1,4 +1,4 @@
-name: Tests
+name: Builds
 on:
   push:
     branches:
@@ -78,4 +78,4 @@ jobs:
 
       - name: Install
         run: |
-          pip install .
+          pip3 install .
