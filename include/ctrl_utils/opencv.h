@@ -10,11 +10,11 @@
 #ifndef CTRL_UTILS_OPENCV_H_
 #define CTRL_UTILS_OPENCV_H_
 
-#include <sstream>  // std::stringstream
-
 #include <opencv2/opencv.hpp>
 
-namespace cv {
+#include "string.h"
+
+namespace ctrl_utils {
 
 /**
  * Decode a cv::Mat from a string for Redis.
@@ -22,20 +22,47 @@ namespace cv {
  * Format:
  *   "nrows ncols cvtype bytedata"
  */
-inline std::stringstream& operator>>(std::stringstream& ss, Mat& image) {
-  // Read image dimensions
-  int rows, cols, type;
-  ss >> rows >> cols >> type;
-  assert(ss.get() == ' ');
+template <>
+inline void FromString(const std::string& str, cv::Mat& image) {
+  // Read image type.
+  std::stringstream ss(str);
+  int type;
+  ss >> type;
 
-  // Resize output image if necessary
-  image.create(rows, cols, type);
+  switch (type) {
+    case CV_8UC1:
+    case CV_8UC2:
+    case CV_8UC3:
+    case CV_8UC4:
+    case CV_16UC1:
+    case CV_16UC2:
+    case CV_16UC3:
+    case CV_16UC4:
+    case CV_32FC1:
+    case CV_32FC2:
+    case CV_32FC3:
+    case CV_32FC4: {
+      // Read buffer.
+      int size;
+      ss >> size;
+      ss.get();  // Extract space.
+      std::vector<unsigned char> buffer(size);
+      ss.read(reinterpret_cast<char*>(buffer.data()), size);
 
-  // Read raw image data
-  const size_t num_bytes = image.total() * image.elemSize();
-  ss.read(reinterpret_cast<char*>(image.data), num_bytes);
+      // Decode png.
+      cv::imdecode(buffer, cv::IMREAD_UNCHANGED, &image);
+    } break;
+    default: {
+      // Prepare image.
+      int rows, cols;
+      ss >> rows >> cols;
+      image.create(rows, cols, type);
 
-  return ss;
+      // Read raw bytes.
+      ss.read(reinterpret_cast<char*>(image.data),
+              image.total() * image.elemSize());
+    } break;
+  }
 }
 
 /**
@@ -44,17 +71,52 @@ inline std::stringstream& operator>>(std::stringstream& ss, Mat& image) {
  * Format:
  *   "nrows ncols cvtype bytedata"
  */
-inline std::stringstream& operator<<(std::stringstream& ss, const Mat& image) {
-  // Write image dimensions
-  ss << image.rows << " " << image.cols << " " << image.type() << " ";
+inline std::string ToString(const cv::Mat& image) {
+  // Write image type.
+  std::stringstream ss;
+  ss << image.type() << " ";
 
-  // Write raw image data
-  const size_t num_bytes = image.total() * image.elemSize();
-  ss.write(reinterpret_cast<char*>(image.data), num_bytes);
+  std::vector<unsigned char> buffer;
+  switch (image.type()) {
+    case CV_8UC1:
+    case CV_8UC2:
+    case CV_8UC3:
+    case CV_8UC4:
+    case CV_16UC1:
+    case CV_16UC2:
+    case CV_16UC3:
+    case CV_16UC4:
+      // Encode png.
+      cv::imencode(".png", image, buffer);
 
-  return ss;
+      // Write buffer.
+      ss << buffer.size() << " ";
+      ss.write(reinterpret_cast<char*>(buffer.data()), buffer.size());
+      break;
+    case CV_32FC1:
+    case CV_32FC2:
+    case CV_32FC3:
+    case CV_32FC4:
+      // Encode exr.
+      cv::imencode(".exr", image, buffer);
+
+      // Write buffer.
+      ss << buffer.size() << " ";
+      ss.write(reinterpret_cast<char*>(buffer.data()), buffer.size());
+      break;
+    default:
+      // Write image dimensions.
+      ss << image.rows << " " << image.cols << " ";
+
+      // Write raw bytes.
+      ss.write(reinterpret_cast<char*>(image.data),
+               image.total() * image.elemSize());
+      break;
+  }
+
+  return ss.str();
 }
 
-}  // namespace cv
+}  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_OPENCV_H_

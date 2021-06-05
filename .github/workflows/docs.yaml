@@ -1,0 +1,42 @@
+name: Documentation
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  generate_docs:
+    name: Generate Docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt install doxygen
+          pip install pipenv
+          pipenv install --dev
+
+      - name: Configure
+        run: |
+          mkdir -p build
+          cmake -B build -DBUILD_PYTHON=ON -DBUILD_DOCS=ON
+
+      - name: Generate cpp_redis Docs
+        run: |
+          cd external/cpp_redis/cpp_redis.git
+          git submodule update --init .
+          sed -i.old -E "s/^GENERATE_TAGFILE( +)=$/GENERATE_TAGFILE\1= cpp_redis.tag/" .doxygen
+          doxygen .doxygen
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/_build/html

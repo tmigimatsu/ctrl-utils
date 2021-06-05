@@ -1,6 +1,9 @@
-build/*
-doc/*
-lib/*
+build/
+lib/
+ctrlutils/
+
+.cache/
+
 *.so
 *.pyc
 *.egg-info

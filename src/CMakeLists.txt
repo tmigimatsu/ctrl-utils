@@ -10,6 +10,7 @@
 set(LIB_NAME ${PROJECT_NAME})
 
 # Create the library.
+if(NOT TARGET ${LIB_NAME})
 add_library(${LIB_NAME} INTERFACE)
 add_library(${LIB_NAME}::${LIB_NAME} ALIAS ${LIB_NAME})
 
@@ -35,7 +36,9 @@ install(TARGETS ${LIB_NAME}
 )
 
 # Install the headers.
-install(DIRECTORY "${LIB_INCLUDE_DIR}" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
+install(DIRECTORY "${LIB_INCLUDE_DIR}/${LIB_NAME}"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+)
 
 # Create LibConfig.cmake
 set(LIB_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/${LIB_NAME}")
@@ -57,12 +60,12 @@ write_basic_package_version_file(
 install(FILES
     "${PROJECT_BINARY_DIR}/${LIB_NAME}Config.cmake"
     "${PROJECT_BINARY_DIR}/${LIB_NAME}ConfigVersion.cmake"
-    DESTINATION ${LIB_CONFIG_INSTALL_DIR}
+    DESTINATION "${LIB_CONFIG_INSTALL_DIR}"
 )
 
 # Export targets to LibTargets.cmake.
 install(EXPORT ${LIB_NAME}Targets
-    DESTINATION ${LIB_CONFIG_INSTALL_DIR}
+    DESTINATION "${LIB_CONFIG_INSTALL_DIR}"
     NAMESPACE ${LIB_NAME}::
 )
 
@@ -71,3 +74,5 @@ export(TARGETS ${LIB_NAME}
     NAMESPACE ${LIB_NAME}::
     FILE ${LIB_NAME}Targets.cmake
 )
+
+endif()

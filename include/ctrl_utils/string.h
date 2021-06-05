@@ -13,62 +13,86 @@
 #include <sstream>  // std::string
 #include <string>   // std::stringstream
 
-#include <nlohmann/json.hpp>
-#include <yaml-cpp/yaml.h>
-
-#include "eigen_string.h"
-
 namespace ctrl_utils {
 
-template<typename T>
+/**
+ * Converts the value to a string using stringstream.
+ */
+template <typename T>
 inline std::string ToString(const T& value) {
   std::stringstream ss;
   ss << value;
   return ss.str();
 }
 
-template<>
+/**
+ * Template specialization for strings.
+ */
+template <>
 inline std::string ToString(const std::string& value) {
   return value;
 }
 
-template<>
-inline std::string ToString(const nlohmann::json& value) {
-  return value.dump();
-}
-
-template<typename T>
+/**
+ * Converts the value to a preallocated string.
+ */
+template <typename T>
 inline void ToString(std::string& str, const T& value) {
   str = ToString(value);
 }
 
-template<typename T>
-inline T FromString(const std::string& str) {
-  T value;
+/**
+ * Converts the string to a value using stringstream.
+ */
+template <typename T>
+inline void FromString(const std::string& str, T& value) {
   std::stringstream ss(str);
   ss >> value;
+}
+
+/**
+ * Converts the string to a value using stringstream.
+ */
+template <typename T>
+inline T FromString(const std::string& str) {
+  T value;
+  FromString(str, value);
   return value;
 }
 
-template<>
-inline std::string FromString(const std::string& str) {
-  return str;
+/**
+ * Template specialization for strings.
+ */
+template <>
+inline void FromString(const std::string& str, std::string& value) {
+  value = str;
 }
 
-template<>
-inline nlohmann::json FromString(const std::string& str) {
-  return nlohmann::json::parse(str);
+#if __cplusplus >= 201703L
+}  // namespace
+
+#include <string_view>
+
+namespace ctrl_utils {
+
+template <typename T>
+inline T FromString(const std::string_view& str) {
+  T value;
+  FromString(std::string{str}, value);
+  return value;
 }
 
-template<>
-inline YAML::Node FromString(const std::string& str) {
-  return YAML::Load(str);
+template <>
+inline void FromString(const std::string& str, std::string_view& value) {
+  value = str;
 }
 
-template<typename T>
-inline void FromString(const std::string& str, T& value) {
-  value = FromString<T>(str);
-}
+#endif  // __cplusplus >= 201703L
+
+inline std::ostream& bold(std::ostream& os) { return os << "\e[1m"; }
+inline std::ostream& underline(std::ostream& os) { return os << "\e[4m"; }
+inline std::ostream& bold_underline(std::ostream& os) { return os << "\e[1;4m"; }
+inline std::ostream& normal(std::ostream& os) { return os << "\e[0m"; }
 
 }  // namespace ctrl_utils
 
