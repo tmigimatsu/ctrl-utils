@@ -37,8 +37,8 @@ jobs:
           doxygen .doxygen
 
       - name: Build
-        # spatialdyn needs to be in the virtual environment.
-        run: pipenv run pip install -e . -vvv
+        # ctrlutils neeeds to be in the virtual environment.
+        run: pipenv run pip install -e .
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
