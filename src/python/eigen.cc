@@ -51,7 +51,7 @@ PYBIND11_MODULE(ctrlutils_eigen, m) {
   py::class_<Quaterniond>(m, "Quaterniond")
       .def(py::init<const Quaterniond&>())
       .def(py::init<const double&, const double&, const double&,
-                    const double&>())
+                    const double&>(), "w"_a, "x"_a, "y"_a, "z"_a)
       .def(py::init<const AngleAxisd&>())
       .def(py::init<const Matrix3d&>())
       .def_property(
@@ -89,14 +89,16 @@ PYBIND11_MODULE(ctrlutils_eigen, m) {
   // AngleAxisd
   py::class_<AngleAxisd>(m, "AngleAxisd")
       .def(py::init<const AngleAxisd&>())
-      .def(py::init<const double&, const Eigen::Vector3d&>())
+      .def(py::init<const double&, const Eigen::Vector3d&>(), "angle"_a, "axis"_a)
       .def(py::init<const Quaterniond&>())
       .def(py::init<const Matrix3d&>())
       .def_property("angle",
                     (double (AngleAxisd::*)(void) const) & AngleAxisd::angle,
                     [](AngleAxisd& aa, double angle) { aa.angle() = angle; })
       .def_property(
-          "axis", (double (AngleAxisd::*)(void) const) & AngleAxisd::angle,
+          "axis",
+          (const Eigen::Vector3d& (AngleAxisd::*)(void) const) &
+              AngleAxisd::axis,
           [](AngleAxisd& aa, const Eigen::Vector3d& axis) { aa.axis() = axis; })
       .def("inverse", &AngleAxisd::inverse)
       .def("matrix", &AngleAxisd::matrix)
@@ -104,11 +106,11 @@ PYBIND11_MODULE(ctrlutils_eigen, m) {
                           AngleAxisd::operator*)
       .def("__mul__", (Quaterniond(AngleAxisd::*)(const AngleAxisd&) const) &
                           AngleAxisd::operator*)
-      .def("__repr__", [](const Quaterniond& quat) {
-        return "<eigen.Quaterniond (x=" + std::to_string(quat.x()) +
-               ", y=" + std::to_string(quat.y()) +
-               ", z=" + std::to_string(quat.z()) +
-               ", w=" + std::to_string(quat.w()) + ")>";
+      .def("__repr__", [](const Eigen::AngleAxisd& aa) {
+        return "<eigen.AngleAxisd (angle=" + std::to_string(aa.angle()) +
+               ", axis=[" + std::to_string(aa.axis()[0]) +
+               ", " + std::to_string(aa.axis()[1]) +
+               ", " + std::to_string(aa.axis()[2]) + "])>";
       });
 
   // LDLT<Eigen::MatrixXd>
