@@ -1,0 +1,39 @@
+ctrlutils.eigen.Quaterniond
+===========================
+
+.. currentmodule:: ctrlutils.eigen
+
+.. autoclass:: Quaterniond
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Quaterniond.__init__
+      ~Quaterniond.inverse
+      ~Quaterniond.matrix
+      ~Quaterniond.normalized
+      ~Quaterniond.set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Quaterniond.coeffs
+      ~Quaterniond.w
+      ~Quaterniond.x
+      ~Quaterniond.y
+      ~Quaterniond.z
+   
+   

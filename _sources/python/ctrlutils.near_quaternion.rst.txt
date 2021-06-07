@@ -1,0 +1,6 @@
+ctrlutils.near\_quaternion
+==========================
+
+.. currentmodule:: ctrlutils
+
+.. autofunction:: near_quaternion

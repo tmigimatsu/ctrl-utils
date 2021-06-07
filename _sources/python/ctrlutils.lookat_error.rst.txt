@@ -1,0 +1,6 @@
+ctrlutils.lookat\_error
+=======================
+
+.. currentmodule:: ctrlutils
+
+.. autofunction:: lookat_error

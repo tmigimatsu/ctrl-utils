@@ -1,0 +1,6 @@
+ctrlutils.decode\_matlab
+========================
+
+.. currentmodule:: ctrlutils
+
+.. autofunction:: decode_matlab

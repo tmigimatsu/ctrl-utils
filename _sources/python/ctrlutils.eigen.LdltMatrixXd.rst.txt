@@ -1,0 +1,26 @@
+ctrlutils.eigen.LdltMatrixXd
+============================
+
+.. currentmodule:: ctrlutils.eigen
+
+.. autoclass:: LdltMatrixXd
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LdltMatrixXd.__init__
+      ~LdltMatrixXd.solve
+   
+   
+
+   
+   
+   

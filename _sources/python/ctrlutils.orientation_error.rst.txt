@@ -1,0 +1,6 @@
+ctrlutils.orientation\_error
+============================
+
+.. currentmodule:: ctrlutils
+
+.. autofunction:: orientation_error

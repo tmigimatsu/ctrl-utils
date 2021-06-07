@@ -1,0 +1,37 @@
+ctrlutils.Timer
+===============
+
+.. currentmodule:: ctrlutils
+
+.. autoclass:: Timer
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Timer.__init__
+      ~Timer.reset
+      ~Timer.sleep
+      ~Timer.time
+      ~Timer.time_elapsed
+      ~Timer.time_sim
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Timer.freq
+      ~Timer.num_iters
+   
+   

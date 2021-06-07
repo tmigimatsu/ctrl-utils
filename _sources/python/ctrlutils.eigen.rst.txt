@@ -1,0 +1,35 @@
+﻿ctrlutils.eigen
+===============
+
+.. automodule:: ctrlutils.eigen
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom_class.rst
+   
+      AngleAxisd
+      Isometry3d
+      LdltMatrixXd
+      Quaterniond
+      Translation3d
+   
+   
+
+   
+   
+   
+
+
+

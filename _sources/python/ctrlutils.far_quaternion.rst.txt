@@ -1,0 +1,6 @@
+ctrlutils.far\_quaternion
+=========================
+
+.. currentmodule:: ctrlutils
+
+.. autofunction:: far_quaternion

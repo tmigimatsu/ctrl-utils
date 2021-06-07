@@ -1,0 +1,6 @@
+ctrlutils.pd\_control
+=====================
+
+.. currentmodule:: ctrlutils
+
+.. autofunction:: pd_control

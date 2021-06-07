@@ -1,0 +1,266 @@
+ctrlutils.RedisClient
+=====================
+
+.. currentmodule:: ctrlutils
+
+.. autoclass:: RedisClient
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RedisClient.__init__
+      ~RedisClient.acl_cat
+      ~RedisClient.acl_deluser
+      ~RedisClient.acl_genpass
+      ~RedisClient.acl_getuser
+      ~RedisClient.acl_list
+      ~RedisClient.acl_load
+      ~RedisClient.acl_save
+      ~RedisClient.acl_setuser
+      ~RedisClient.acl_users
+      ~RedisClient.acl_whoami
+      ~RedisClient.append
+      ~RedisClient.bgrewriteaof
+      ~RedisClient.bgsave
+      ~RedisClient.bitcount
+      ~RedisClient.bitfield
+      ~RedisClient.bitop
+      ~RedisClient.bitpos
+      ~RedisClient.blpop
+      ~RedisClient.brpop
+      ~RedisClient.brpoplpush
+      ~RedisClient.bzpopmax
+      ~RedisClient.bzpopmin
+      ~RedisClient.client
+      ~RedisClient.client_getname
+      ~RedisClient.client_id
+      ~RedisClient.client_kill
+      ~RedisClient.client_kill_filter
+      ~RedisClient.client_list
+      ~RedisClient.client_pause
+      ~RedisClient.client_setname
+      ~RedisClient.client_unblock
+      ~RedisClient.close
+      ~RedisClient.cluster
+      ~RedisClient.config_get
+      ~RedisClient.config_resetstat
+      ~RedisClient.config_rewrite
+      ~RedisClient.config_set
+      ~RedisClient.dbsize
+      ~RedisClient.debug_object
+      ~RedisClient.decr
+      ~RedisClient.decrby
+      ~RedisClient.delete
+      ~RedisClient.dump
+      ~RedisClient.echo
+      ~RedisClient.eval
+      ~RedisClient.evalsha
+      ~RedisClient.execute_command
+      ~RedisClient.exists
+      ~RedisClient.expire
+      ~RedisClient.expireat
+      ~RedisClient.flushall
+      ~RedisClient.flushdb
+      ~RedisClient.from_url
+      ~RedisClient.geoadd
+      ~RedisClient.geodist
+      ~RedisClient.geohash
+      ~RedisClient.geopos
+      ~RedisClient.georadius
+      ~RedisClient.georadiusbymember
+      ~RedisClient.get
+      ~RedisClient.get_image
+      ~RedisClient.get_matrix
+      ~RedisClient.getbit
+      ~RedisClient.getrange
+      ~RedisClient.getset
+      ~RedisClient.hdel
+      ~RedisClient.hexists
+      ~RedisClient.hget
+      ~RedisClient.hgetall
+      ~RedisClient.hincrby
+      ~RedisClient.hincrbyfloat
+      ~RedisClient.hkeys
+      ~RedisClient.hlen
+      ~RedisClient.hmget
+      ~RedisClient.hmset
+      ~RedisClient.hscan
+      ~RedisClient.hscan_iter
+      ~RedisClient.hset
+      ~RedisClient.hsetnx
+      ~RedisClient.hstrlen
+      ~RedisClient.hvals
+      ~RedisClient.incr
+      ~RedisClient.incrby
+      ~RedisClient.incrbyfloat
+      ~RedisClient.info
+      ~RedisClient.keys
+      ~RedisClient.lastsave
+      ~RedisClient.lindex
+      ~RedisClient.linsert
+      ~RedisClient.llen
+      ~RedisClient.lock
+      ~RedisClient.lpop
+      ~RedisClient.lpush
+      ~RedisClient.lpushx
+      ~RedisClient.lrange
+      ~RedisClient.lrem
+      ~RedisClient.lset
+      ~RedisClient.ltrim
+      ~RedisClient.memory_purge
+      ~RedisClient.memory_stats
+      ~RedisClient.memory_usage
+      ~RedisClient.mget
+      ~RedisClient.migrate
+      ~RedisClient.monitor
+      ~RedisClient.move
+      ~RedisClient.mset
+      ~RedisClient.msetnx
+      ~RedisClient.object
+      ~RedisClient.parse_response
+      ~RedisClient.persist
+      ~RedisClient.pexpire
+      ~RedisClient.pexpireat
+      ~RedisClient.pfadd
+      ~RedisClient.pfcount
+      ~RedisClient.pfmerge
+      ~RedisClient.ping
+      ~RedisClient.pipeline
+      ~RedisClient.psetex
+      ~RedisClient.pttl
+      ~RedisClient.publish
+      ~RedisClient.pubsub
+      ~RedisClient.pubsub_channels
+      ~RedisClient.pubsub_numpat
+      ~RedisClient.pubsub_numsub
+      ~RedisClient.randomkey
+      ~RedisClient.readonly
+      ~RedisClient.readwrite
+      ~RedisClient.register_script
+      ~RedisClient.rename
+      ~RedisClient.renamenx
+      ~RedisClient.restore
+      ~RedisClient.rpop
+      ~RedisClient.rpoplpush
+      ~RedisClient.rpush
+      ~RedisClient.rpushx
+      ~RedisClient.sadd
+      ~RedisClient.save
+      ~RedisClient.scan
+      ~RedisClient.scan_iter
+      ~RedisClient.scard
+      ~RedisClient.script_exists
+      ~RedisClient.script_flush
+      ~RedisClient.script_kill
+      ~RedisClient.script_load
+      ~RedisClient.sdiff
+      ~RedisClient.sdiffstore
+      ~RedisClient.sentinel
+      ~RedisClient.sentinel_get_master_addr_by_name
+      ~RedisClient.sentinel_master
+      ~RedisClient.sentinel_masters
+      ~RedisClient.sentinel_monitor
+      ~RedisClient.sentinel_remove
+      ~RedisClient.sentinel_sentinels
+      ~RedisClient.sentinel_set
+      ~RedisClient.sentinel_slaves
+      ~RedisClient.set
+      ~RedisClient.set_matrix
+      ~RedisClient.set_response_callback
+      ~RedisClient.setbit
+      ~RedisClient.setex
+      ~RedisClient.setnx
+      ~RedisClient.setrange
+      ~RedisClient.shutdown
+      ~RedisClient.sinter
+      ~RedisClient.sinterstore
+      ~RedisClient.sismember
+      ~RedisClient.slaveof
+      ~RedisClient.slowlog_get
+      ~RedisClient.slowlog_len
+      ~RedisClient.slowlog_reset
+      ~RedisClient.smembers
+      ~RedisClient.smove
+      ~RedisClient.sort
+      ~RedisClient.spop
+      ~RedisClient.srandmember
+      ~RedisClient.srem
+      ~RedisClient.sscan
+      ~RedisClient.sscan_iter
+      ~RedisClient.strlen
+      ~RedisClient.substr
+      ~RedisClient.sunion
+      ~RedisClient.sunionstore
+      ~RedisClient.swapdb
+      ~RedisClient.time
+      ~RedisClient.touch
+      ~RedisClient.transaction
+      ~RedisClient.ttl
+      ~RedisClient.type
+      ~RedisClient.unlink
+      ~RedisClient.unwatch
+      ~RedisClient.wait
+      ~RedisClient.watch
+      ~RedisClient.xack
+      ~RedisClient.xadd
+      ~RedisClient.xclaim
+      ~RedisClient.xdel
+      ~RedisClient.xgroup_create
+      ~RedisClient.xgroup_delconsumer
+      ~RedisClient.xgroup_destroy
+      ~RedisClient.xgroup_setid
+      ~RedisClient.xinfo_consumers
+      ~RedisClient.xinfo_groups
+      ~RedisClient.xinfo_stream
+      ~RedisClient.xlen
+      ~RedisClient.xpending
+      ~RedisClient.xpending_range
+      ~RedisClient.xrange
+      ~RedisClient.xread
+      ~RedisClient.xreadgroup
+      ~RedisClient.xrevrange
+      ~RedisClient.xtrim
+      ~RedisClient.zadd
+      ~RedisClient.zcard
+      ~RedisClient.zcount
+      ~RedisClient.zincrby
+      ~RedisClient.zinterstore
+      ~RedisClient.zlexcount
+      ~RedisClient.zpopmax
+      ~RedisClient.zpopmin
+      ~RedisClient.zrange
+      ~RedisClient.zrangebylex
+      ~RedisClient.zrangebyscore
+      ~RedisClient.zrank
+      ~RedisClient.zrem
+      ~RedisClient.zremrangebylex
+      ~RedisClient.zremrangebyrank
+      ~RedisClient.zremrangebyscore
+      ~RedisClient.zrevrange
+      ~RedisClient.zrevrangebylex
+      ~RedisClient.zrevrangebyscore
+      ~RedisClient.zrevrank
+      ~RedisClient.zscan
+      ~RedisClient.zscan_iter
+      ~RedisClient.zscore
+      ~RedisClient.zunionstore
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RedisClient.RESPONSE_CALLBACKS
+   
+   

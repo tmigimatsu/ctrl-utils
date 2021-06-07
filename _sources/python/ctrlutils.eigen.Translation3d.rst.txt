@@ -1,0 +1,27 @@
+ctrlutils.eigen.Translation3d
+=============================
+
+.. currentmodule:: ctrlutils.eigen
+
+.. autoclass:: Translation3d
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Translation3d.__init__
+      ~Translation3d.inverse
+      ~Translation3d.translation
+   
+   
+
+   
+   
+   
