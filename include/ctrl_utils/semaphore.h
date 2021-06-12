@@ -19,14 +19,20 @@ class binary_semaphore {
  public:
   explicit binary_semaphore(bool desired) : val_(desired) {}
 
-  void acquire() {
+  inline void acquire() {
     std::unique_lock<std::mutex> lock(m_);
     cv_.wait(lock, [this]() { return val_; });
     val_ = false;
-    lock.unlock();
   }
 
-  void release() {
+  bool try_acquire() {
+    std::unique_lock<std::mutex> try_lock(m_, std::try_to_lock);
+    if (!try_lock) return false;
+    val_ = false;
+    return true;
+  }
+
+  inline void release() {
     std::unique_lock<std::mutex> lock(m_);
     val_ = true;
     lock.unlock();
