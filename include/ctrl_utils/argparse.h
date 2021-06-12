@@ -143,6 +143,11 @@ class Args {
                                            description);
   }
 
+  /**
+   * Optional app description string.
+   */
+  virtual std::string_view description() const { return ""; };
+
  private:
   static constexpr std::string_view kTab = "    ";
 
@@ -240,7 +245,7 @@ class Args {
 
     static std::list<std::string_view> TokenizeArgs(int argc, char* argv[]);
 
-    std::string GenerateHelpString() const;
+    std::string GenerateHelpString(std::string_view app_description) const;
 
     void CheckRemainingArguments() const;
 
@@ -315,12 +320,12 @@ std::optional<Derived> ParseArgs(int argc, char* argv[]) {
   return {};
 }
 
-void Args::SwitchToParsingStage() {
+inline void Args::SwitchToParsingStage() {
   initializing_ = false;
-  help_string_ = parser_->GenerateHelpString();
+  help_string_ = parser_->GenerateHelpString(description());
 }
 
-void Args::Cleanup() {
+inline void Args::Cleanup() {
   parser_->CheckRemainingArguments();
   parser_.reset();
 }
@@ -421,8 +426,8 @@ void Args::KeywordParam::Parse(std::list<std::string_view>& args,
 }
 
 template <>
-void Args::FlagParam::Parse(std::list<std::string_view>& args,
-                            bool& val) const {
+inline void Args::FlagParam::Parse(std::list<std::string_view>& args,
+                                   bool& val) const {
   for (auto it = args.begin(); it != args.end(); ++it) {
     const std::string_view& arg = *it;
 
@@ -441,7 +446,7 @@ void Args::FlagParam::Parse(std::list<std::string_view>& args,
   }
 }
 
-void Args::Parser::CheckRemainingArguments() const {
+inline void Args::Parser::CheckRemainingArguments() const {
   if (!args_.empty()) {
     std::stringstream ss;
     ss << "Unrecognized arguments:" << bold;
@@ -457,7 +462,7 @@ void Args::Parser::CheckRemainingArguments() const {
 // Printing methods //
 //////////////////////
 
-void Args::PositionalParam::Print(std::ostream& os) const {
+inline void Args::PositionalParam::Print(std::ostream& os) const {
   // Print name.
   os << Args::kTab << bold << name << normal;
 
@@ -465,7 +470,7 @@ void Args::PositionalParam::Print(std::ostream& os) const {
   Param::PrintDescription(os, name.size());
 }
 
-void Args::KeywordParam::Print(std::ostream& os) const {
+inline void Args::KeywordParam::Print(std::ostream& os) const {
   size_t len_keys = 0;
 
   // Print keywords.
@@ -486,7 +491,7 @@ void Args::KeywordParam::Print(std::ostream& os) const {
   os << " [default " << bold << default_value << normal << "]";
 }
 
-void Args::FlagParam::Print(std::ostream& os) const {
+inline void Args::FlagParam::Print(std::ostream& os) const {
   // Print keywords.
   os << Args::kTab << bold << positive_keyword << normal << "/" << bold
      << negative_keyword << normal;
@@ -497,7 +502,8 @@ void Args::FlagParam::Print(std::ostream& os) const {
   os << " [default " << bold << default_keyword << normal << "]";
 }
 
-void Args::Param::PrintDescription(std::ostream& os, size_t len_keys) const {
+inline void Args::Param::PrintDescription(std::ostream& os,
+                                          size_t len_keys) const {
   // Print spacing.
   if (len_keys < kLenKey) {
     os << std::setw(kLenKey - len_keys) << " ";
@@ -509,8 +515,12 @@ void Args::Param::PrintDescription(std::ostream& os, size_t len_keys) const {
   os << description;
 }
 
-std::string Args::Parser::GenerateHelpString() const {
+inline std::string Args::Parser::GenerateHelpString(
+    std::string_view app_description) const {
   std::stringstream ss;
+  if (!app_description.empty()) {
+    ss << app_description << std::endl << std::endl;
+  }
   ss << "Usage:" << std::endl << Args::kTab << bold << name_app_ << normal;
   for (const std::shared_ptr<Param>& param : required_params_) {
     ss << " " << param->name;
@@ -531,7 +541,7 @@ std::string Args::Parser::GenerateHelpString() const {
   return ss.str();
 }
 
-std::ostream& operator<<(std::ostream& os, const Args& args) {
+inline std::ostream& operator<<(std::ostream& os, const Args& args) {
   // Get max key length;
   size_t max_len_key = 0;
   for (const std::pair<std::string_view, std::string>& key_val :
@@ -561,7 +571,7 @@ std::string Args::ParseValue(const T& default_value) {
   return str_default;
 }
 
-std::vector<std::string> Args::KeywordParam::ParseKeysAndName(
+inline std::vector<std::string> Args::KeywordParam::ParseKeysAndName(
     std::string_view keys, std::string_view& name) {
   std::vector<std::string> parsed_keys;
   std::string_view longest_key;
@@ -595,7 +605,8 @@ std::vector<std::string> Args::KeywordParam::ParseKeysAndName(
   return parsed_keys;
 }
 
-std::list<std::string_view> Args::Parser::TokenizeArgs(int argc, char* argv[]) {
+inline std::list<std::string_view> Args::Parser::TokenizeArgs(int argc,
+                                                              char* argv[]) {
   std::list<std::string_view> args;
   for (int i = 1; i < argc; i++) {
     args.emplace_back(argv[i]);
