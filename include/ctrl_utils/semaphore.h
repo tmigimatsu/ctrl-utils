@@ -45,6 +45,36 @@ class binary_semaphore {
   bool val_ = false;
 };
 
+class counting_semaphore {
+ public:
+  explicit counting_semaphore(ptrdiff_t desired) : val_(desired) {}
+
+  inline void acquire() {
+    std::unique_lock<std::mutex> lock(m_);
+    cv_.wait(lock, [this]() { return val_ > 0; });
+    --val_;
+  }
+
+  bool try_acquire() {
+    std::unique_lock<std::mutex> try_lock(m_, std::try_to_lock);
+    if (!try_lock) return false;
+    --val_;
+    return true;
+  }
+
+  inline void release() {
+    std::unique_lock<std::mutex> lock(m_);
+    ++val_;
+    lock.unlock();
+    cv_.notify_one();
+  }
+
+ private:
+  std::condition_variable cv_;
+  std::mutex m_;
+  ptrdiff_t val_ = 0;
+};
+
 }  // namespace std
 
 #endif  // CTRL_UTILS_SEMAPHORE_H_
