@@ -86,6 +86,11 @@ class RedisClient(redis.Redis):
     ):
         super().__init__(host=host, port=port, password=password)
 
+    def pipeline(self, transaction=True, shard_hint=None):
+        return Pipeline(
+            self.connection_pool, self.response_callbacks, transaction, shard_hint
+        )
+
     def get_image(self, key: str) -> np.ndarray:
         """Gets a cv::Mat image from Redis."""
         val = self.get(key)
@@ -95,6 +100,15 @@ class RedisClient(redis.Redis):
         """Gets an Eigen::Matrix or Eigen::Vector from Redis."""
         val = self.get(key).decode("utf8")
         return decode_matlab(val)
+
+    def set_matrix(self, key: str, val: np.ndarray):
+        """Sets an Eigen::Matrix or Eigen::Vector in Redis."""
+        self.set(key, encode_matlab(val))
+
+
+class Pipeline(redis.client.Pipeline):
+    def __init__(self, connection_pool, response_callbacks, transaction, shard_hint):
+        super().__init__(connection_pool, response_callbacks, transaction, shard_hint)
 
     def set_matrix(self, key: str, val: np.ndarray):
         """Sets an Eigen::Matrix or Eigen::Vector in Redis."""

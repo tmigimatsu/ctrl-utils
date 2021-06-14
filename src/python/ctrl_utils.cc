@@ -242,6 +242,13 @@ PYBIND11_MODULE(ctrlutils, m) {
     .. seealso C++: :ctrlutils:`ctrl_utils::PdControl`.
       )pbdoc");
 
+  m.def("pseudo_inverse",
+      [](const Eigen::MatrixXd& A, double svd_epsilon) -> std::pair<Eigen::MatrixXd, bool> {
+        bool is_singular = false;
+        Eigen::MatrixXd A_inv = PseudoInverse(A, svd_epsilon, &is_singular);
+        return std::make_pair(std::move(A_inv), is_singular);
+      }, "A"_a, "svd_epsilon"_a = 0.0);
+
   py::add_ostream_redirect(m);
 }
 

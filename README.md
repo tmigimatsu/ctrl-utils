@@ -1,4 +1,4 @@
-[![Build](https://github.com/tmigimatsu/ctrl-utils/actions/workflows/builds.yaml/badge.svg)](https://github.com/tmigimatsu/ctrl-utils/actions/workflows/builds.yaml)
+[![Builds](https://github.com/tmigimatsu/ctrl-utils/actions/workflows/builds.yaml/badge.svg)](https://github.com/tmigimatsu/ctrl-utils/actions/workflows/builds.yaml)
 [![Docs](https://github.com/tmigimatsu/ctrl-utils/actions/workflows/docs.yaml/badge.svg)](https://github.com/tmigimatsu/ctrl-utils/actions/workflows/docs.yaml)
 
 # ctrl-utils
