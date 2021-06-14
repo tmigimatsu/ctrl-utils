@@ -20,6 +20,7 @@
       near_quaternion
       orientation_error
       pd_control
+      pseudo_inverse
    
    
 

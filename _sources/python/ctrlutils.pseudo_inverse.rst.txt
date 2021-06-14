@@ -1,0 +1,6 @@
+ctrlutils.pseudo\_inverse
+=========================
+
+.. currentmodule:: ctrlutils
+
+.. autofunction:: pseudo_inverse
