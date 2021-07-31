@@ -133,8 +133,7 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="ctrlutils.RedisClient.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">host</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'127.0.0.1'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6379</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctrlutils.RedisClient.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="longtable docutils align-default">
@@ -144,7 +143,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.__init__" title="ctrlutils.RedisClient.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([host, port, password])</p></td>
-<td><p>Initialize self.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.acl_cat" title="ctrlutils.RedisClient.acl_cat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">acl_cat</span></code></a>([category])</p></td>
 <td><p>Returns a list of categories or commands within a category.</p></td>
@@ -614,241 +613,244 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.set" title="ctrlutils.RedisClient.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(name, value[, ex, px, nx, xx, keepttl])</p></td>
 <td><p>Set the value at key <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">value</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.set_matrix" title="ctrlutils.RedisClient.set_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_matrix</span></code></a>(key, val)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.set_image" title="ctrlutils.RedisClient.set_image"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_image</span></code></a>(key, val)</p></td>
+<td><p>Sets a cv::Mat in Redis.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.set_matrix" title="ctrlutils.RedisClient.set_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_matrix</span></code></a>(key, val)</p></td>
 <td><p>Sets an Eigen::Matrix or Eigen::Vector in Redis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.set_response_callback" title="ctrlutils.RedisClient.set_response_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_response_callback</span></code></a>(command, callback)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.set_response_callback" title="ctrlutils.RedisClient.set_response_callback"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_response_callback</span></code></a>(command, callback)</p></td>
 <td><p>Set a custom Response Callback</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.setbit" title="ctrlutils.RedisClient.setbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setbit</span></code></a>(name, offset, value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.setbit" title="ctrlutils.RedisClient.setbit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setbit</span></code></a>(name, offset, value)</p></td>
 <td><p>Flag the <code class="docutils literal notranslate"><span class="pre">offset</span></code> in <code class="docutils literal notranslate"><span class="pre">name</span></code> as <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.setex" title="ctrlutils.RedisClient.setex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setex</span></code></a>(name, time, value)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.setex" title="ctrlutils.RedisClient.setex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setex</span></code></a>(name, time, value)</p></td>
 <td><p>Set the value of key <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">value</span></code> that expires in <code class="docutils literal notranslate"><span class="pre">time</span></code> seconds.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.setnx" title="ctrlutils.RedisClient.setnx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setnx</span></code></a>(name, value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.setnx" title="ctrlutils.RedisClient.setnx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setnx</span></code></a>(name, value)</p></td>
 <td><p>Set the value of key <code class="docutils literal notranslate"><span class="pre">name</span></code> to <code class="docutils literal notranslate"><span class="pre">value</span></code> if key doesn’t exist</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.setrange" title="ctrlutils.RedisClient.setrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setrange</span></code></a>(name, offset, value)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.setrange" title="ctrlutils.RedisClient.setrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setrange</span></code></a>(name, offset, value)</p></td>
 <td><p>Overwrite bytes in the value of <code class="docutils literal notranslate"><span class="pre">name</span></code> starting at <code class="docutils literal notranslate"><span class="pre">offset</span></code> with <code class="docutils literal notranslate"><span class="pre">value</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.shutdown" title="ctrlutils.RedisClient.shutdown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shutdown</span></code></a>([save, nosave])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.shutdown" title="ctrlutils.RedisClient.shutdown"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shutdown</span></code></a>([save, nosave])</p></td>
 <td><p>Shutdown the Redis server.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sinter" title="ctrlutils.RedisClient.sinter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sinter</span></code></a>(keys, *args)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sinter" title="ctrlutils.RedisClient.sinter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sinter</span></code></a>(keys, *args)</p></td>
 <td><p>Return the intersection of sets specified by <code class="docutils literal notranslate"><span class="pre">keys</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sinterstore" title="ctrlutils.RedisClient.sinterstore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sinterstore</span></code></a>(dest, keys, *args)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sinterstore" title="ctrlutils.RedisClient.sinterstore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sinterstore</span></code></a>(dest, keys, *args)</p></td>
 <td><p>Store the intersection of sets specified by <code class="docutils literal notranslate"><span class="pre">keys</span></code> into a new set named <code class="docutils literal notranslate"><span class="pre">dest</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sismember" title="ctrlutils.RedisClient.sismember"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sismember</span></code></a>(name, value)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sismember" title="ctrlutils.RedisClient.sismember"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sismember</span></code></a>(name, value)</p></td>
 <td><p>Return a boolean indicating if <code class="docutils literal notranslate"><span class="pre">value</span></code> is a member of set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.slaveof" title="ctrlutils.RedisClient.slaveof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slaveof</span></code></a>([host, port])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.slaveof" title="ctrlutils.RedisClient.slaveof"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slaveof</span></code></a>([host, port])</p></td>
 <td><p>Set the server to be a replicated slave of the instance identified by the <code class="docutils literal notranslate"><span class="pre">host</span></code> and <code class="docutils literal notranslate"><span class="pre">port</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.slowlog_get" title="ctrlutils.RedisClient.slowlog_get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slowlog_get</span></code></a>([num])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.slowlog_get" title="ctrlutils.RedisClient.slowlog_get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slowlog_get</span></code></a>([num])</p></td>
 <td><p>Get the entries from the slowlog.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.slowlog_len" title="ctrlutils.RedisClient.slowlog_len"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slowlog_len</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.slowlog_len" title="ctrlutils.RedisClient.slowlog_len"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slowlog_len</span></code></a>()</p></td>
 <td><p>Get the number of items in the slowlog</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.slowlog_reset" title="ctrlutils.RedisClient.slowlog_reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slowlog_reset</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.slowlog_reset" title="ctrlutils.RedisClient.slowlog_reset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">slowlog_reset</span></code></a>()</p></td>
 <td><p>Remove all items in the slowlog</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.smembers" title="ctrlutils.RedisClient.smembers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smembers</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.smembers" title="ctrlutils.RedisClient.smembers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smembers</span></code></a>(name)</p></td>
 <td><p>Return all members of the set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.smove" title="ctrlutils.RedisClient.smove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smove</span></code></a>(src, dst, value)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.smove" title="ctrlutils.RedisClient.smove"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smove</span></code></a>(src, dst, value)</p></td>
 <td><p>Move <code class="docutils literal notranslate"><span class="pre">value</span></code> from set <code class="docutils literal notranslate"><span class="pre">src</span></code> to set <code class="docutils literal notranslate"><span class="pre">dst</span></code> atomically</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sort" title="ctrlutils.RedisClient.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>(name[, start, num, by, get, desc, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sort" title="ctrlutils.RedisClient.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>(name[, start, num, by, get, desc, …])</p></td>
 <td><p>Sort and return the list, set or sorted set at <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.spop" title="ctrlutils.RedisClient.spop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spop</span></code></a>(name[, count])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.spop" title="ctrlutils.RedisClient.spop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spop</span></code></a>(name[, count])</p></td>
 <td><p>Remove and return a random member of set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.srandmember" title="ctrlutils.RedisClient.srandmember"><code class="xref py py-obj docutils literal notranslate"><span class="pre">srandmember</span></code></a>(name[, number])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.srandmember" title="ctrlutils.RedisClient.srandmember"><code class="xref py py-obj docutils literal notranslate"><span class="pre">srandmember</span></code></a>(name[, number])</p></td>
 <td><p>If <code class="docutils literal notranslate"><span class="pre">number</span></code> is None, returns a random member of set <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.srem" title="ctrlutils.RedisClient.srem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">srem</span></code></a>(name, *values)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.srem" title="ctrlutils.RedisClient.srem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">srem</span></code></a>(name, *values)</p></td>
 <td><p>Remove <code class="docutils literal notranslate"><span class="pre">values</span></code> from set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sscan" title="ctrlutils.RedisClient.sscan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sscan</span></code></a>(name[, cursor, match, count])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sscan" title="ctrlutils.RedisClient.sscan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sscan</span></code></a>(name[, cursor, match, count])</p></td>
 <td><p>Incrementally return lists of elements in a set.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sscan_iter" title="ctrlutils.RedisClient.sscan_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sscan_iter</span></code></a>(name[, match, count])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sscan_iter" title="ctrlutils.RedisClient.sscan_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sscan_iter</span></code></a>(name[, match, count])</p></td>
 <td><p>Make an iterator using the SSCAN command so that the client doesn’t need to remember the cursor position.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.strlen" title="ctrlutils.RedisClient.strlen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strlen</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.strlen" title="ctrlutils.RedisClient.strlen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strlen</span></code></a>(name)</p></td>
 <td><p>Return the number of bytes stored in the value of <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.substr" title="ctrlutils.RedisClient.substr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">substr</span></code></a>(name, start[, end])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.substr" title="ctrlutils.RedisClient.substr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">substr</span></code></a>(name, start[, end])</p></td>
 <td><p>Return a substring of the string at key <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sunion" title="ctrlutils.RedisClient.sunion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sunion</span></code></a>(keys, *args)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sunion" title="ctrlutils.RedisClient.sunion"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sunion</span></code></a>(keys, *args)</p></td>
 <td><p>Return the union of sets specified by <code class="docutils literal notranslate"><span class="pre">keys</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sunionstore" title="ctrlutils.RedisClient.sunionstore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sunionstore</span></code></a>(dest, keys, *args)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.sunionstore" title="ctrlutils.RedisClient.sunionstore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sunionstore</span></code></a>(dest, keys, *args)</p></td>
 <td><p>Store the union of sets specified by <code class="docutils literal notranslate"><span class="pre">keys</span></code> into a new set named <code class="docutils literal notranslate"><span class="pre">dest</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.swapdb" title="ctrlutils.RedisClient.swapdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapdb</span></code></a>(first, second)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.swapdb" title="ctrlutils.RedisClient.swapdb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapdb</span></code></a>(first, second)</p></td>
 <td><p>Swap two databases</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.time" title="ctrlutils.RedisClient.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.time" title="ctrlutils.RedisClient.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a>()</p></td>
 <td><p>Returns the server time as a 2-item tuple of ints: (seconds since epoch, microseconds into this second).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.touch" title="ctrlutils.RedisClient.touch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">touch</span></code></a>(*args)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.touch" title="ctrlutils.RedisClient.touch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">touch</span></code></a>(*args)</p></td>
 <td><p>Alters the last access time of a key(s) <code class="docutils literal notranslate"><span class="pre">*args</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.transaction" title="ctrlutils.RedisClient.transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transaction</span></code></a>(func, *watches, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.transaction" title="ctrlutils.RedisClient.transaction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transaction</span></code></a>(func, *watches, **kwargs)</p></td>
 <td><p>Convenience method for executing the callable <cite>func</cite> as a transaction while watching all keys specified in <cite>watches</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.ttl" title="ctrlutils.RedisClient.ttl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ttl</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.ttl" title="ctrlutils.RedisClient.ttl"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ttl</span></code></a>(name)</p></td>
 <td><p>Returns the number of seconds until the key <code class="docutils literal notranslate"><span class="pre">name</span></code> will expire</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.type" title="ctrlutils.RedisClient.type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></a>(name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.type" title="ctrlutils.RedisClient.type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></a>(name)</p></td>
 <td><p>Returns the type of key <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.unlink" title="ctrlutils.RedisClient.unlink"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unlink</span></code></a>(*names)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.unlink" title="ctrlutils.RedisClient.unlink"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unlink</span></code></a>(*names)</p></td>
 <td><p>Unlink one or more keys specified by <code class="docutils literal notranslate"><span class="pre">names</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.unwatch" title="ctrlutils.RedisClient.unwatch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwatch</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.unwatch" title="ctrlutils.RedisClient.unwatch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unwatch</span></code></a>()</p></td>
 <td><p>Unwatches the value at key <code class="docutils literal notranslate"><span class="pre">name</span></code>, or None of the key doesn’t exist</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.wait" title="ctrlutils.RedisClient.wait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait</span></code></a>(num_replicas, timeout)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.wait" title="ctrlutils.RedisClient.wait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wait</span></code></a>(num_replicas, timeout)</p></td>
 <td><p>Redis synchronous replication That returns the number of replicas that processed the query when we finally have at least <code class="docutils literal notranslate"><span class="pre">num_replicas</span></code>, or when the <code class="docutils literal notranslate"><span class="pre">timeout</span></code> was reached.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.watch" title="ctrlutils.RedisClient.watch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watch</span></code></a>(*names)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.watch" title="ctrlutils.RedisClient.watch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">watch</span></code></a>(*names)</p></td>
 <td><p>Watches the values at keys <code class="docutils literal notranslate"><span class="pre">names</span></code>, or None if the key doesn’t exist</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xack" title="ctrlutils.RedisClient.xack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xack</span></code></a>(name, groupname, *ids)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xack" title="ctrlutils.RedisClient.xack"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xack</span></code></a>(name, groupname, *ids)</p></td>
 <td><p>Acknowledges the successful processing of one or more messages. name: name of the stream. groupname: name of the consumer group. <a href="#id1"><span class="problematic" id="id2">*</span></a>ids: message ids to acknowlege.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xadd" title="ctrlutils.RedisClient.xadd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xadd</span></code></a>(name, fields[, id, maxlen, approximate])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xadd" title="ctrlutils.RedisClient.xadd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xadd</span></code></a>(name, fields[, id, maxlen, approximate])</p></td>
 <td><p>Add to a stream.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xclaim" title="ctrlutils.RedisClient.xclaim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xclaim</span></code></a>(name, groupname, consumername, …[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xclaim" title="ctrlutils.RedisClient.xclaim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xclaim</span></code></a>(name, groupname, consumername, …[, …])</p></td>
 <td><p>Changes the ownership of a pending message. name: name of the stream. groupname: name of the consumer group. consumername: name of a consumer that claims the message. min_idle_time: filter messages that were idle less than this amount of milliseconds message_ids: non-empty list or tuple of message IDs to claim idle: optional. Set the idle time (last time it was delivered) of the  message in ms time: optional integer. This is the same as idle but instead of a  relative amount of milliseconds, it sets the idle time to a specific  Unix time (in milliseconds). retrycount: optional integer. set the retry counter to the specified  value. This counter is incremented every time a message is delivered  again. force: optional boolean, false by default. Creates the pending message  entry in the PEL even if certain specified IDs are not already in the  PEL assigned to a different client. justid: optional boolean, false by default. Return just an array of IDs  of messages successfully claimed, without returning the actual message.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xdel" title="ctrlutils.RedisClient.xdel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xdel</span></code></a>(name, *ids)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xdel" title="ctrlutils.RedisClient.xdel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xdel</span></code></a>(name, *ids)</p></td>
 <td><p>Deletes one or more messages from a stream. name: name of the stream. <a href="#id3"><span class="problematic" id="id4">*</span></a>ids: message ids to delete.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xgroup_create" title="ctrlutils.RedisClient.xgroup_create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xgroup_create</span></code></a>(name, groupname[, id, mkstream])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xgroup_create" title="ctrlutils.RedisClient.xgroup_create"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xgroup_create</span></code></a>(name, groupname[, id, mkstream])</p></td>
 <td><p>Create a new consumer group associated with a stream.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xgroup_delconsumer" title="ctrlutils.RedisClient.xgroup_delconsumer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xgroup_delconsumer</span></code></a>(name, groupname, consumername)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xgroup_delconsumer" title="ctrlutils.RedisClient.xgroup_delconsumer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xgroup_delconsumer</span></code></a>(name, groupname, consumername)</p></td>
 <td><p>Remove a specific consumer from a consumer group.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xgroup_destroy" title="ctrlutils.RedisClient.xgroup_destroy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xgroup_destroy</span></code></a>(name, groupname)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xgroup_destroy" title="ctrlutils.RedisClient.xgroup_destroy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xgroup_destroy</span></code></a>(name, groupname)</p></td>
 <td><p>Destroy a consumer group.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xgroup_setid" title="ctrlutils.RedisClient.xgroup_setid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xgroup_setid</span></code></a>(name, groupname, id)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xgroup_setid" title="ctrlutils.RedisClient.xgroup_setid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xgroup_setid</span></code></a>(name, groupname, id)</p></td>
 <td><p>Set the consumer group last delivered ID to something else.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xinfo_consumers" title="ctrlutils.RedisClient.xinfo_consumers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xinfo_consumers</span></code></a>(name, groupname)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xinfo_consumers" title="ctrlutils.RedisClient.xinfo_consumers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xinfo_consumers</span></code></a>(name, groupname)</p></td>
 <td><p>Returns general information about the consumers in the group.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xinfo_groups" title="ctrlutils.RedisClient.xinfo_groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xinfo_groups</span></code></a>(name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xinfo_groups" title="ctrlutils.RedisClient.xinfo_groups"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xinfo_groups</span></code></a>(name)</p></td>
 <td><p>Returns general information about the consumer groups of the stream.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xinfo_stream" title="ctrlutils.RedisClient.xinfo_stream"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xinfo_stream</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xinfo_stream" title="ctrlutils.RedisClient.xinfo_stream"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xinfo_stream</span></code></a>(name)</p></td>
 <td><p>Returns general information about the stream.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xlen" title="ctrlutils.RedisClient.xlen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xlen</span></code></a>(name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xlen" title="ctrlutils.RedisClient.xlen"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xlen</span></code></a>(name)</p></td>
 <td><p>Returns the number of elements in a given stream.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xpending" title="ctrlutils.RedisClient.xpending"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpending</span></code></a>(name, groupname)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xpending" title="ctrlutils.RedisClient.xpending"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpending</span></code></a>(name, groupname)</p></td>
 <td><p>Returns information about pending messages of a group.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xpending_range" title="ctrlutils.RedisClient.xpending_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpending_range</span></code></a>(name, groupname, min, max, count)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xpending_range" title="ctrlutils.RedisClient.xpending_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xpending_range</span></code></a>(name, groupname, min, max, count)</p></td>
 <td><p>Returns information about pending messages, in a range.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xrange" title="ctrlutils.RedisClient.xrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xrange</span></code></a>(name[, min, max, count])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xrange" title="ctrlutils.RedisClient.xrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xrange</span></code></a>(name[, min, max, count])</p></td>
 <td><p>Read stream values within an interval. name: name of the stream. start: first stream ID. defaults to ‘-’,        meaning the earliest available. finish: last stream ID. defaults to ‘+’,         meaning the latest available. count: if set, only return this many items, beginning with the        earliest available.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xread" title="ctrlutils.RedisClient.xread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xread</span></code></a>(streams[, count, block])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xread" title="ctrlutils.RedisClient.xread"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xread</span></code></a>(streams[, count, block])</p></td>
 <td><p>Block and monitor multiple streams for new data. streams: a dict of stream names to stream IDs, where            IDs indicate the last ID already seen. count: if set, only return this many items, beginning with the        earliest available. block: number of milliseconds to wait, if nothing already present.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xreadgroup" title="ctrlutils.RedisClient.xreadgroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xreadgroup</span></code></a>(groupname, consumername, streams)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xreadgroup" title="ctrlutils.RedisClient.xreadgroup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xreadgroup</span></code></a>(groupname, consumername, streams)</p></td>
 <td><p>Read from a stream via a consumer group. groupname: name of the consumer group. consumername: name of the requesting consumer. streams: a dict of stream names to stream IDs, where        IDs indicate the last ID already seen. count: if set, only return this many items, beginning with the        earliest available. block: number of milliseconds to wait, if nothing already present. noack: do not add messages to the PEL.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xrevrange" title="ctrlutils.RedisClient.xrevrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xrevrange</span></code></a>(name[, max, min, count])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xrevrange" title="ctrlutils.RedisClient.xrevrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xrevrange</span></code></a>(name[, max, min, count])</p></td>
 <td><p>Read stream values within an interval, in reverse order. name: name of the stream start: first stream ID. defaults to ‘+’,        meaning the latest available. finish: last stream ID. defaults to ‘-’,         meaning the earliest available. count: if set, only return this many items, beginning with the        latest available.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xtrim" title="ctrlutils.RedisClient.xtrim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xtrim</span></code></a>(name, maxlen[, approximate])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.xtrim" title="ctrlutils.RedisClient.xtrim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xtrim</span></code></a>(name, maxlen[, approximate])</p></td>
 <td><p>Trims old messages from a stream.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zadd" title="ctrlutils.RedisClient.zadd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zadd</span></code></a>(name, mapping[, nx, xx, ch, incr])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zadd" title="ctrlutils.RedisClient.zadd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zadd</span></code></a>(name, mapping[, nx, xx, ch, incr])</p></td>
 <td><p>Set any number of element-name, score pairs to the key <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zcard" title="ctrlutils.RedisClient.zcard"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zcard</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zcard" title="ctrlutils.RedisClient.zcard"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zcard</span></code></a>(name)</p></td>
 <td><p>Return the number of elements in the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zcount" title="ctrlutils.RedisClient.zcount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zcount</span></code></a>(name, min, max)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zcount" title="ctrlutils.RedisClient.zcount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zcount</span></code></a>(name, min, max)</p></td>
 <td><p>Returns the number of elements in the sorted set at key <code class="docutils literal notranslate"><span class="pre">name</span></code> with a score between <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zincrby" title="ctrlutils.RedisClient.zincrby"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zincrby</span></code></a>(name, amount, value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zincrby" title="ctrlutils.RedisClient.zincrby"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zincrby</span></code></a>(name, amount, value)</p></td>
 <td><p>Increment the score of <code class="docutils literal notranslate"><span class="pre">value</span></code> in sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> by <code class="docutils literal notranslate"><span class="pre">amount</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zinterstore" title="ctrlutils.RedisClient.zinterstore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zinterstore</span></code></a>(dest, keys[, aggregate])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zinterstore" title="ctrlutils.RedisClient.zinterstore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zinterstore</span></code></a>(dest, keys[, aggregate])</p></td>
 <td><p>Intersect multiple sorted sets specified by <code class="docutils literal notranslate"><span class="pre">keys</span></code> into a new sorted set, <code class="docutils literal notranslate"><span class="pre">dest</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zlexcount" title="ctrlutils.RedisClient.zlexcount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zlexcount</span></code></a>(name, min, max)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zlexcount" title="ctrlutils.RedisClient.zlexcount"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zlexcount</span></code></a>(name, min, max)</p></td>
 <td><p>Return the number of items in the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> between the lexicographical range <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zpopmax" title="ctrlutils.RedisClient.zpopmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zpopmax</span></code></a>(name[, count])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zpopmax" title="ctrlutils.RedisClient.zpopmax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zpopmax</span></code></a>(name[, count])</p></td>
 <td><p>Remove and return up to <code class="docutils literal notranslate"><span class="pre">count</span></code> members with the highest scores from the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zpopmin" title="ctrlutils.RedisClient.zpopmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zpopmin</span></code></a>(name[, count])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zpopmin" title="ctrlutils.RedisClient.zpopmin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zpopmin</span></code></a>(name[, count])</p></td>
 <td><p>Remove and return up to <code class="docutils literal notranslate"><span class="pre">count</span></code> members with the lowest scores from the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrange" title="ctrlutils.RedisClient.zrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrange</span></code></a>(name, start, end[, desc, withscores, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrange" title="ctrlutils.RedisClient.zrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrange</span></code></a>(name, start, end[, desc, withscores, …])</p></td>
 <td><p>Return a range of values from sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> between <code class="docutils literal notranslate"><span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">end</span></code> sorted in ascending order.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrangebylex" title="ctrlutils.RedisClient.zrangebylex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrangebylex</span></code></a>(name, min, max[, start, num])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrangebylex" title="ctrlutils.RedisClient.zrangebylex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrangebylex</span></code></a>(name, min, max[, start, num])</p></td>
 <td><p>Return the lexicographical range of values from sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> between <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrangebyscore" title="ctrlutils.RedisClient.zrangebyscore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrangebyscore</span></code></a>(name, min, max[, start, num, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrangebyscore" title="ctrlutils.RedisClient.zrangebyscore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrangebyscore</span></code></a>(name, min, max[, start, num, …])</p></td>
 <td><p>Return a range of values from the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> with scores between <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrank" title="ctrlutils.RedisClient.zrank"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrank</span></code></a>(name, value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrank" title="ctrlutils.RedisClient.zrank"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrank</span></code></a>(name, value)</p></td>
 <td><p>Returns a 0-based value indicating the rank of <code class="docutils literal notranslate"><span class="pre">value</span></code> in sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrem" title="ctrlutils.RedisClient.zrem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrem</span></code></a>(name, *values)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrem" title="ctrlutils.RedisClient.zrem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrem</span></code></a>(name, *values)</p></td>
 <td><p>Remove member <code class="docutils literal notranslate"><span class="pre">values</span></code> from sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zremrangebylex" title="ctrlutils.RedisClient.zremrangebylex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zremrangebylex</span></code></a>(name, min, max)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zremrangebylex" title="ctrlutils.RedisClient.zremrangebylex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zremrangebylex</span></code></a>(name, min, max)</p></td>
 <td><p>Remove all elements in the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> between the lexicographical range specified by <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zremrangebyrank" title="ctrlutils.RedisClient.zremrangebyrank"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zremrangebyrank</span></code></a>(name, min, max)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zremrangebyrank" title="ctrlutils.RedisClient.zremrangebyrank"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zremrangebyrank</span></code></a>(name, min, max)</p></td>
 <td><p>Remove all elements in the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> with ranks between <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zremrangebyscore" title="ctrlutils.RedisClient.zremrangebyscore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zremrangebyscore</span></code></a>(name, min, max)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zremrangebyscore" title="ctrlutils.RedisClient.zremrangebyscore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zremrangebyscore</span></code></a>(name, min, max)</p></td>
 <td><p>Remove all elements in the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> with scores between <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrevrange" title="ctrlutils.RedisClient.zrevrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrevrange</span></code></a>(name, start, end[, withscores, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrevrange" title="ctrlutils.RedisClient.zrevrange"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrevrange</span></code></a>(name, start, end[, withscores, …])</p></td>
 <td><p>Return a range of values from sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> between <code class="docutils literal notranslate"><span class="pre">start</span></code> and <code class="docutils literal notranslate"><span class="pre">end</span></code> sorted in descending order.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrevrangebylex" title="ctrlutils.RedisClient.zrevrangebylex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrevrangebylex</span></code></a>(name, max, min[, start, num])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrevrangebylex" title="ctrlutils.RedisClient.zrevrangebylex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrevrangebylex</span></code></a>(name, max, min[, start, num])</p></td>
 <td><p>Return the reversed lexicographical range of values from sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> between <code class="docutils literal notranslate"><span class="pre">max</span></code> and <code class="docutils literal notranslate"><span class="pre">min</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrevrangebyscore" title="ctrlutils.RedisClient.zrevrangebyscore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrevrangebyscore</span></code></a>(name, max, min[, start, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrevrangebyscore" title="ctrlutils.RedisClient.zrevrangebyscore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrevrangebyscore</span></code></a>(name, max, min[, start, …])</p></td>
 <td><p>Return a range of values from the sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code> with scores between <code class="docutils literal notranslate"><span class="pre">min</span></code> and <code class="docutils literal notranslate"><span class="pre">max</span></code> in descending order.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrevrank" title="ctrlutils.RedisClient.zrevrank"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrevrank</span></code></a>(name, value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zrevrank" title="ctrlutils.RedisClient.zrevrank"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zrevrank</span></code></a>(name, value)</p></td>
 <td><p>Returns a 0-based value indicating the descending rank of <code class="docutils literal notranslate"><span class="pre">value</span></code> in sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zscan" title="ctrlutils.RedisClient.zscan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zscan</span></code></a>(name[, cursor, match, count, …])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zscan" title="ctrlutils.RedisClient.zscan"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zscan</span></code></a>(name[, cursor, match, count, …])</p></td>
 <td><p>Incrementally return lists of elements in a sorted set.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zscan_iter" title="ctrlutils.RedisClient.zscan_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zscan_iter</span></code></a>(name[, match, count, score_cast_func])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zscan_iter" title="ctrlutils.RedisClient.zscan_iter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zscan_iter</span></code></a>(name[, match, count, score_cast_func])</p></td>
 <td><p>Make an iterator using the ZSCAN command so that the client doesn’t need to remember the cursor position.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zscore" title="ctrlutils.RedisClient.zscore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zscore</span></code></a>(name, value)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zscore" title="ctrlutils.RedisClient.zscore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zscore</span></code></a>(name, value)</p></td>
 <td><p>Return the score of element <code class="docutils literal notranslate"><span class="pre">value</span></code> in sorted set <code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zunionstore" title="ctrlutils.RedisClient.zunionstore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zunionstore</span></code></a>(dest, keys[, aggregate])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.RedisClient.zunionstore" title="ctrlutils.RedisClient.zunionstore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">zunionstore</span></code></a>(dest, keys[, aggregate])</p></td>
 <td><p>Union multiple sorted sets specified by <code class="docutils literal notranslate"><span class="pre">keys</span></code> into a new sorted set, <code class="docutils literal notranslate"><span class="pre">dest</span></code>.</p></td>
 </tr>
 </tbody>
@@ -1392,7 +1394,7 @@ inside the geospatial index represented by the sorted set.</p>
 <dd><p>Gets a cv::Mat image from Redis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1403,7 +1405,7 @@ inside the geospatial index represented by the sorted set.</p>
 <dd><p>Gets an Eigen::Matrix or Eigen::Vector from Redis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.20)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2115,6 +2117,12 @@ set named <code class="docutils literal notranslate"><span class="pre">dest</spa
 <dt><code class="docutils literal notranslate"><span class="pre">keepttl</span></code> if True, retain the time to live associated with the key.</dt><dd><p>(Available since Redis 6.0)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ctrlutils.RedisClient.set_image">
+<span class="sig-name descname"><span class="pre">set_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctrlutils.RedisClient.set_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets a cv::Mat in Redis.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2832,7 +2840,7 @@ aggregated based on the <code class="docutils literal notranslate"><span class="
     </p>
     <p>
         &copy; Copyright 2020, Toki Migimatsu.<br/>
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.0.2.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 4.1.2.<br/>
     </p>
   </div>
 </footer>

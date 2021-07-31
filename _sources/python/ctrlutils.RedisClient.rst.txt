@@ -173,6 +173,7 @@ ctrlutils.RedisClient
       ~RedisClient.sentinel_set
       ~RedisClient.sentinel_slaves
       ~RedisClient.set
+      ~RedisClient.set_image
       ~RedisClient.set_matrix
       ~RedisClient.set_response_callback
       ~RedisClient.setbit
