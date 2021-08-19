@@ -96,7 +96,9 @@ PYBIND11_MODULE(ctrlutilseigen, m) {
                     (double (AngleAxisd::*)(void) const) & AngleAxisd::angle,
                     [](AngleAxisd& aa, double angle) { aa.angle() = angle; })
       .def_property(
-          "axis", (double (AngleAxisd::*)(void) const) & AngleAxisd::angle,
+          "axis",
+          (const Eigen::Vector3d& (AngleAxisd::*)(void) const) &
+              AngleAxisd::axis,
           [](AngleAxisd& aa, const Eigen::Vector3d& axis) { aa.axis() = axis; })
       .def("inverse", &AngleAxisd::inverse)
       .def("matrix", &AngleAxisd::matrix)
@@ -104,11 +106,11 @@ PYBIND11_MODULE(ctrlutilseigen, m) {
                           AngleAxisd::operator*)
       .def("__mul__", (Quaterniond(AngleAxisd::*)(const AngleAxisd&) const) &
                           AngleAxisd::operator*)
-      .def("__repr__", [](const Quaterniond& quat) {
-        return "<eigen.Quaterniond (x=" + std::to_string(quat.x()) +
-               ", y=" + std::to_string(quat.y()) +
-               ", z=" + std::to_string(quat.z()) +
-               ", w=" + std::to_string(quat.w()) + ")>";
+      .def("__repr__", [](const Eigen::AngleAxisd& aa) {
+        return "<eigen.AngleAxisd (angle=" + std::to_string(aa.angle()) +
+               ", axis=[" + std::to_string(aa.axis()[0]) +
+               ", " + std::to_string(aa.axis()[1]) +
+               ", " + std::to_string(aa.axis()[2]) + "])>";
       });
 
   // LDLT<Eigen::MatrixXd>
