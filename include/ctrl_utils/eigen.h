@@ -234,6 +234,21 @@ OrthogonalProjection(const Eigen::MatrixBase<Derived1>& v1, const Eigen::MatrixB
   return v1 - Projection(v1, v2);
 }
 
+template<typename Derived>
+inline bool IsNan(const Eigen::ArrayBase<Derived>& a) {
+  return (a != a).any();
+}
+
+template<typename Derived>
+inline bool IsNan(const Eigen::MatrixBase<Derived>& m) {
+  return IsNan(m.array());
+}
+
+template<typename Derived>
+inline bool IsNan(const Eigen::QuaternionBase<Derived>& q) {
+  return IsNan(q.coeffs());
+}
+
 }  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_EIGEN_UTILS_H_

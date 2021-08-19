@@ -3,7 +3,7 @@
 #
 # Copyright 2018. All Rights Reserved.
 #
-# Created: June 7, 2018
+# Created: May 7, 2018
 # Authors: Toki Migimatsu
 ############################################################
 
@@ -11,9 +11,13 @@ set(LIB_NAME ${PROJECT_NAME})
 
 # Create the library.
 if(NOT TARGET ${LIB_NAME})
-
 add_library(${LIB_NAME} INTERFACE)
 add_library(${LIB_NAME}::${LIB_NAME} ALIAS ${LIB_NAME})
+
+# Enable clang tidy checks.
+if(${LIB_CMAKE_NAME}_CLANG_TIDY)
+    target_enable_clang_tidy(${LIB_NAME})
+endif()
 
 # Set include directories.
 set(LIB_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/include")
@@ -69,11 +73,6 @@ install(EXPORT ${LIB_NAME}Targets
     DESTINATION "${LIB_CONFIG_INSTALL_DIR}"
     NAMESPACE ${LIB_NAME}::
 )
-# install(EXPORT ${CTRL_UTILS_TARGETS}
-#     DESTINATION ${CTRL_UTILS_CONFIG_INSTALL_DIR}
-#     NAMESPACE ${CTRL_UTILS_LIB}::
-#     FILE ${CTRL_UTILS_TARGETS}.cmake
-# )
 
 # Export targets to LibTargets.cmake for the build tree.
 export(TARGETS ${LIB_NAME}

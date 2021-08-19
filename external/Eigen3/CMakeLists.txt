@@ -8,13 +8,13 @@
 ############################################################
 
 if(NOT TARGET Eigen3::Eigen)
-    #find_package(Eigen3 3.3.7 QUIET)
+    find_package(Eigen3 3.3.8 QUIET)
 
     if(NOT Eigen3_FOUND)
-        init_git_submodule(eigen-git-mirror.git)
-        add_subdirectory(eigen-git-mirror.git)
-        add_library(Eigen3::Eigen INTERFACE IMPORTED GLOBAL)
-        target_link_libraries(Eigen3::Eigen INTERFACE eigen)
+        init_git_submodule(eigen.git)
+        add_library(eigen INTERFACE IMPORTED GLOBAL)
+        target_include_directories(eigen INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/eigen.git")
+        add_library(Eigen3::Eigen ALIAS eigen)
     else()
         # Set IMPORTED_GLOBAL so parent projects can access Eigen.
         set_target_properties(Eigen3::Eigen PROPERTIES IMPORTED_GLOBAL TRUE)

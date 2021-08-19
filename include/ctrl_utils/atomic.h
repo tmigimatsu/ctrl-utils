@@ -20,19 +20,23 @@ class Atomic {
 
  public:
 
+  Atomic() = default;
+
   Atomic(const T& value) : value_(value) {}
-  Atomic(T&& value) : value_(std::move(value)) {}
+  explicit Atomic(T&& value) : value_(std::move(value)) {}
 
   Atomic(const Atomic<T>& other) : value_(other.value_) {}
-  Atomic(Atomic<T>&& other) : value_(std::move(other.value_)) {}
+  explicit Atomic(Atomic<T>&& other) : value_(std::move(other.value_)) {}
 
   Atomic<T>& operator=(const T& value) {
     std::lock_guard<std::mutex> lock(mtx_);
     value_ = value;
+    return *this;
   }
   Atomic<T>& operator=(T&& value) {
     std::lock_guard<std::mutex> lock(mtx_);
     value_ = std::move(value);
+    return *this;
   }
 
   T load() const {

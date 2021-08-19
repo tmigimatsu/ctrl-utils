@@ -1,5 +1,8 @@
-build/*
-doc/*
+build/
+lib/
+
+.cache/
+
 *.so
 *.pyc
 *.egg-info

@@ -18,7 +18,7 @@ namespace Eigen {
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-PYBIND11_MODULE(ctrlutilseigen, m) {
+PYBIND11_MODULE(ctrlutils_eigen, m) {
   // Isometry3d
   py::class_<Isometry3d>(m, "Isometry3d")
       .def(py::init<const Isometry3d&>())
@@ -51,7 +51,7 @@ PYBIND11_MODULE(ctrlutilseigen, m) {
   py::class_<Quaterniond>(m, "Quaterniond")
       .def(py::init<const Quaterniond&>())
       .def(py::init<const double&, const double&, const double&,
-                    const double&>())
+                    const double&>(), "w"_a, "x"_a, "y"_a, "z"_a)
       .def(py::init<const AngleAxisd&>())
       .def(py::init<const Matrix3d&>())
       .def_property(
@@ -89,7 +89,7 @@ PYBIND11_MODULE(ctrlutilseigen, m) {
   // AngleAxisd
   py::class_<AngleAxisd>(m, "AngleAxisd")
       .def(py::init<const AngleAxisd&>())
-      .def(py::init<const double&, const Eigen::Vector3d&>())
+      .def(py::init<const double&, const Eigen::Vector3d&>(), "angle"_a, "axis"_a)
       .def(py::init<const Quaterniond&>())
       .def(py::init<const Matrix3d&>())
       .def_property("angle",

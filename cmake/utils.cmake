@@ -13,25 +13,59 @@
 # Usage:
 #     init_git_submodule(ctrl-utils.git)
 #     init_git_submodule(ctrl-utils.git RECURSIVE)
-function(init_git_submodule GIT_SUBMODULE)
+function(init_git_submodule submodule)
     set(RECURSIVE "")
-    if(DEFINED ARGV1)
-        if (${ARGV1})
-            set(RECURSIVE "--recursive")
-        endif()
+    if((ARGC GREATER 1) AND (ARGV1 STREQUAL "RECURSIVE"))
+        set(RECURSIVE "--recursive")
     endif()
 
     # Update submodule
     find_package(Git REQUIRED)
     execute_process(
-        COMMAND ${GIT_EXECUTABLE} submodule update --init ${RECURSIVE} ${GIT_SUBMODULE}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        COMMAND "${GIT_EXECUTABLE}" submodule update --init ${RECURSIVE} ${submodule}
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
         RESULT_VARIABLE git_submodule_result
     )
     if(git_submodule_result EQUAL "128")
         message(WARNING "${GIT_EXECUTABLE} submodule update --init ${RECURSIVE} ${GIT_SUBMODULE} failed with error:\n ${git_submodule_result}. Current directory is an orphaned git repo.")
     elseif(NOT git_submodule_result EQUAL "0")
         message(FATAL_ERROR "${GIT_EXECUTABLE} submodule update --init ${RECURSIVE} ${GIT_SUBMODULE} failed with error:\n ${git_submodule_result}")
+    endif()
+endfunction()
+
+##########
+# Add an external dependency as a subdirectory.
+#
+# Usage:
+#     lib_add_subdirectory(ctrl_utils)
+#     lib_add_subdirectory(ctrl_utils INCLUDE_ALL_TARGETS)
+function(lib_add_subdirectory subdirectory)
+    set(INCLUDE_ALL_TARGETS "EXCLUDE_FROM_ALL")
+    if((ARGC GREATER 1) AND (ARGV1 STREQUAL "INCLUDE_ALL_TARGETS"))
+        set(INCLUDE_ALL_TARGETS "")
+    endif()
+
+    set(LIB_EXTERNAL_DIR "${PROJECT_SOURCE_DIR}/external")
+    set(EXTERNAL_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/external")
+
+    add_subdirectory("${LIB_EXTERNAL_DIR}/${subdirectory}"
+        "${EXTERNAL_BINARY_DIR}/${subdirectory}"
+        ${INCLUDE_ALL_TARGETS}
+    )
+endfunction()
+
+##########
+# Enable clang-tidy checks if clang-tidy exists.
+#
+# Usage:
+#     target_enable_clang_tidy(my_bin)
+function(target_enable_clang_tidy target)
+    find_program(CLANG_TIDY_EXECUTABLE NAMES "clang-tidy")
+    if(CLANG_TIDY_EXECUTABLE STREQUAL "CLANG_TIDY_EXECUTABLE-NOTFOUND")
+        message(WARNING "Unable to find clang-tidy for ${target}.")
+    else()
+        message(STATUS "Enabling clang-tidy for ${target}.")
+        set_target_properties(${target} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXECUTABLE}")
     endif()
 endfunction()
 
