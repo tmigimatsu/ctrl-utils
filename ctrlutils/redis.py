@@ -82,7 +82,7 @@ def encode_opencv(img: np.ndarray) -> bytes:
     import cv2
     def np_to_cv_type(img: np.ndarray):
         if img.dtype == np.uint8:
-            if img.shape[2] == 1:
+            if len(img.shape) == 2 or img.shape[2] == 1:
                 return cv2.CV_8UC1
             elif img.shape[2] == 2:
                 return cv2.CV_8UC2
@@ -91,7 +91,7 @@ def encode_opencv(img: np.ndarray) -> bytes:
             elif img.shape[2] == 4:
                 return cv2.CV_8UC4
         elif img.dtype == np.uint16:
-            if img.shape[2] == 1:
+            if len(img.shape) == 2 or img.shape[2] == 1:
                 return cv2.CV_16UC1
             elif img.shape[2] == 2:
                 return cv2.CV_16UC2
@@ -100,7 +100,7 @@ def encode_opencv(img: np.ndarray) -> bytes:
             elif img.shape[2] == 4:
                 return cv2.CV_16UC4
         elif img.dtype == np.float32:
-            if img.shape[2] == 1:
+            if len(img.shape) == 2 or img.shape[2] == 1:
                 return cv2.CV_32FC1
             elif img.shape[2] == 2:
                 return cv2.CV_32FC2
