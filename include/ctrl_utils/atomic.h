@@ -22,10 +22,10 @@ class Atomic {
 
   Atomic() = default;
 
-  explicit Atomic(const T& value) : value_(value) {}
+  Atomic(const T& value) : value_(value) {}
   explicit Atomic(T&& value) : value_(std::move(value)) {}
 
-  explicit Atomic(const Atomic<T>& other) : value_(other.value_) {}
+  Atomic(const Atomic<T>& other) : value_(other.value_) {}
   explicit Atomic(Atomic<T>&& other) : value_(std::move(other.value_)) {}
 
   Atomic<T>& operator=(const T& value) {
