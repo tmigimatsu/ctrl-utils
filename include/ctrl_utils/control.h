@@ -145,6 +145,37 @@ inline typename Derived1::PlainObject PdControl(
   return ori_err - kp_kv(1) * w;
 }
 
+template <typename Derived1, typename Derived2, typename Derived3, typename Derived4>
+inline typename Derived1::PlainObject LookatPdControl(
+    const ::Eigen::MatrixBase<Derived1>& vec, const ::Eigen::MatrixBase<Derived2>& vec_des,
+    const ::Eigen::MatrixBase<Derived3>& w,
+    const ::Eigen::MatrixBase<Derived4>& kp_kv, double dw_max = 0.,
+    typename Derived1::PlainObject* ori_err_out = nullptr) {
+  static_assert(
+      (Derived4::RowsAtCompileTime == 3 && Derived4::ColsAtCompileTime == 2) ||
+          (Derived4::RowsAtCompileTime == 2 &&
+           Derived4::ColsAtCompileTime == 1),
+      "kp_kv must be a vector of size 2 or a matrix of size x.rows() x 2.");
+
+  // Output orientation error
+  typename Derived1::PlainObject ori_err;
+  ori_err = ctrl_utils::LookatError(vec, vec_des);
+  if (ori_err_out != nullptr) {
+    *ori_err_out = ori_err;
+  }
+
+  // Apply kp gains
+  ori_err = -kp_kv(0) * ori_err;
+
+  // Limit maximum error
+  if (dw_max > 0. && ori_err.norm() > dw_max) {
+    ori_err = dw_max * ori_err.normalized();
+  }
+
+  // Apply kv gains
+  return ori_err - kp_kv(1) * w;
+}
+
 }  // namespace ctrl_utils
 
 #endif  // CTRL_UTILS_CONTROL_H_
