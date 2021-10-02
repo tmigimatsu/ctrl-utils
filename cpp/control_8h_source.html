@@ -159,11 +159,43 @@ $(function() {
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;  <span class="keywordflow">return</span> ori_err - kp_kv(1) * w;</div>
 <div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;}</div>
 <div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;}  <span class="comment">// namespace ctrl_utils</span></div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">#endif  // CTRL_UTILS_CONTROL_H_</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Derived1, <span class="keyword">typename</span> Derived2, <span class="keyword">typename</span> Derived3, <span class="keyword">typename</span> Derived4&gt;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="keyword">inline</span> <span class="keyword">typename</span> Derived1::PlainObject LookatPdControl(</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    const ::Eigen::MatrixBase&lt;Derived1&gt;&amp; vec, const ::Eigen::MatrixBase&lt;Derived2&gt;&amp; vec_des,</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    const ::Eigen::MatrixBase&lt;Derived3&gt;&amp; w,</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    const ::Eigen::MatrixBase&lt;Derived4&gt;&amp; kp_kv, <span class="keywordtype">double</span> dw_max = 0.,</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="keyword">typename</span> Derived1::PlainObject* ori_err_out = <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  static_assert(</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;      (Derived4::RowsAtCompileTime == 3 &amp;&amp; Derived4::ColsAtCompileTime == 2) ||</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;          (Derived4::RowsAtCompileTime == 2 &amp;&amp;</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;           Derived4::ColsAtCompileTime == 1),</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;      <span class="stringliteral">&quot;kp_kv must be a vector of size 2 or a matrix of size x.rows() x 2.&quot;</span>);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;  <span class="comment">// Output orientation error</span></div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keyword">typename</span> Derived1::PlainObject ori_err;</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  ori_err = <a class="code" href="namespacectrl__utils.html#ae45429d707d6914b9d62137fd5258d33">ctrl_utils::LookatError</a>(vec, vec_des);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;  <span class="keywordflow">if</span> (ori_err_out != <span class="keyword">nullptr</span>) {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    *ori_err_out = ori_err;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;  }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;  <span class="comment">// Apply kp gains</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  ori_err = -kp_kv(0) * ori_err;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  <span class="comment">// Limit maximum error</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;  <span class="keywordflow">if</span> (dw_max &gt; 0. &amp;&amp; ori_err.norm() &gt; dw_max) {</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    ori_err = dw_max * ori_err.normalized();</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  }</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;  <span class="comment">// Apply kv gains</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keywordflow">return</span> ori_err - kp_kv(1) * w;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;}</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;}  <span class="comment">// namespace ctrl_utils</span></div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;<span class="preprocessor">#endif  // CTRL_UTILS_CONTROL_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <div class="ttc" id="anamespacectrl__utils_html"><div class="ttname"><a href="namespacectrl__utils.html">ctrl_utils</a></div><div class="ttdef"><b>Definition:</b> ctrl_utils.cc:18</div></div>
+<div class="ttc" id="anamespacectrl__utils_html_ae45429d707d6914b9d62137fd5258d33"><div class="ttname"><a href="namespacectrl__utils.html#ae45429d707d6914b9d62137fd5258d33">ctrl_utils::LookatError</a></div><div class="ttdeci">Eigen::Vector3d LookatError(const Eigen::Vector3d &amp;vec, const Eigen::Vector3d &amp;vec_des)</div><div class="ttdef"><b>Definition:</b> euclidian.h:224</div></div>
 <div class="ttc" id="anamespacectrl__utils_html_a8b7f5d1cf7252ed15f5dd323c57de883"><div class="ttname"><a href="namespacectrl__utils.html#a8b7f5d1cf7252ed15f5dd323c57de883">ctrl_utils::OrientationError</a></div><div class="ttdeci">Eigen::Vector3d OrientationError(const Eigen::Quaterniond &amp;quat, const Eigen::Quaterniond &amp;quat_des)</div><div class="ttdef"><b>Definition:</b> euclidian.h:215</div></div>
 <div class="ttc" id="anamespacectrl__utils_html_a66cb08d4573ef38d06cdafa33880a15e"><div class="ttname"><a href="namespacectrl__utils.html#a66cb08d4573ef38d06cdafa33880a15e">ctrl_utils::PdControl</a></div><div class="ttdeci">Derived1::PlainObject PdControl(const ::Eigen::MatrixBase&lt; Derived1 &gt; &amp;x, const ::Eigen::MatrixBase&lt; Derived2 &gt; &amp;x_des, const ::Eigen::MatrixBase&lt; Derived3 &gt; &amp;dx, const ::Eigen::MatrixBase&lt; Derived4 &gt; &amp;kp_kv, double ddx_max=0., typename Derived1::PlainObject *x_err_out=nullptr)</div><div class="ttdef"><b>Definition:</b> control.h:44</div></div>
 <!-- start footer part -->
