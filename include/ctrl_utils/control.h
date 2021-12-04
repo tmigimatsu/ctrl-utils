@@ -40,43 +40,92 @@ namespace ctrl_utils {
  * @see Python: ctrlutils.pd_control()
  */
 template <typename Derived1, typename Derived2, typename Derived3,
-          typename Derived4>
+          typename Derived5>
 inline typename Derived1::PlainObject PdControl(
     const ::Eigen::MatrixBase<Derived1>& x,
     const ::Eigen::MatrixBase<Derived2>& x_des,
     const ::Eigen::MatrixBase<Derived3>& dx,
-    const ::Eigen::MatrixBase<Derived4>& kp_kv, double ddx_max = 0.,
+    const ::Eigen::MatrixBase<Derived5>& kp_kv, double ddx_max = 0.,
     typename Derived1::PlainObject* x_err_out = nullptr) {
   static_assert(
-      Derived4::ColsAtCompileTime == 2 || (Derived4::ColsAtCompileTime == 1 &&
-                                           Derived4::RowsAtCompileTime == 2),
+      Derived5::ColsAtCompileTime == 2 || (Derived5::ColsAtCompileTime == 1 &&
+                                           Derived5::RowsAtCompileTime == 2),
       "kp_kv must be a vector of size 2 or a matrix of size x.rows() x 2.");
 
-  // Output position error
-  typename Derived1::PlainObject x_err;
-  x_err = x - x_des;
+  // Output error.
+  typename Derived1::PlainObject x_err = x - x_des;
   if (x_err_out != nullptr) {
     *x_err_out = x_err;
   }
+  typename Derived3::PlainObject dx_err = dx;
 
-  // Apply kp gains
-  if (Derived4::ColsAtCompileTime == 1) {
+  // Apply gains.
+  if (Derived5::ColsAtCompileTime == 1) {
     x_err = -kp_kv(0) * x_err;
+    dx_err = -kp_kv(1) * dx_err;
   } else {
     x_err = -kp_kv.block(0, 0, x_err.size(), 1).array() * x_err.array();
+    dx_err = -kp_kv.block(0, 1, dx_err.size(), 1).array() * dx_err.array();
   }
 
   // Limit maximum error
-  if (ddx_max > 0. && x_err.norm() > ddx_max) {
-    x_err = ddx_max * x_err.normalized();
+  if (ddx_max > 0.) {
+    if (x_err.norm() > ddx_max) {
+      x_err = ddx_max * x_err.normalized();
+    }
+    if (dx_err.norm() > ddx_max) {
+      dx_err = ddx_max * dx_err.normalized();
+    }
   }
 
-  // Apply kv gains
-  if (Derived4::ColsAtCompileTime == 1) {
-    return x_err - kp_kv(1) * dx;
-  } else {
-    return x_err.array() - kp_kv.block(0, 1, dx.size(), 1).array() * dx.array();
+  return x_err + dx_err;
+}
+
+template <typename Derived1, typename Derived2, typename Derived3,
+          typename Derived4, typename Derived5>
+inline typename Derived1::PlainObject PdControl(
+    const ::Eigen::MatrixBase<Derived1>& x,
+    const ::Eigen::MatrixBase<Derived2>& x_des,
+    const ::Eigen::MatrixBase<Derived3>& dx,
+    const ::Eigen::MatrixBase<Derived4>& dx_des,
+    const ::Eigen::MatrixBase<Derived5>& kp_kv, double ddx_max = 0.,
+    typename Derived1::PlainObject* x_err_out = nullptr,
+    typename Derived3::PlainObject* dx_err_out = nullptr) {
+  static_assert(
+      Derived5::ColsAtCompileTime == 2 || (Derived5::ColsAtCompileTime == 1 &&
+                                           Derived5::RowsAtCompileTime == 2),
+      "kp_kv must be a vector of size 2 or a matrix of size x.rows() x 2.");
+
+  // Output error.
+  typename Derived1::PlainObject x_err = x - x_des;
+  if (x_err_out != nullptr) {
+    *x_err_out = x_err;
   }
+  typename Derived3::PlainObject dx_err = dx - dx_des;
+  if (dx_err_out != nullptr) {
+    *dx_err_out = dx_err;
+  }
+
+  // Apply gains.
+  if (Derived5::ColsAtCompileTime == 1) {
+    x_err = -kp_kv(0) * x_err;
+    dx_err = -kp_kv(1) * dx_err;
+  } else {
+    x_err = -kp_kv.block(0, 0, x_err.size(), 1).array() * x_err.array();
+    dx_err = -kp_kv.block(0, 1, dx_err.size(), 1).array() * dx_err.array();
+  }
+
+  // Limit maximum error
+  if (ddx_max > 0.) {
+    if (x_err.norm() > ddx_max) {
+      x_err = ddx_max * x_err.normalized();
+    }
+    if (dx_err.norm() > ddx_max) {
+      dx_err = ddx_max * dx_err.normalized();
+    }
+  }
+
+  return x_err + dx_err;
 
   // With velocity clipping
   // if (dx_max > 0.) {
@@ -105,49 +154,97 @@ inline typename Derived1::PlainObject PdControl(
  * @param kp_kv Gains matrix as a 2D vector [kp, kv] or a 3 x 2 matrix, where
  *        the first and second columns correspond to kp and kv, respectively,
  *        and the 3 rows represent per-dimension (x, y, z) gains.
- * @param dw_max Optional maximum acceleration due to the orientation error. This
- *        value clips the acceleration when the distance to the goal is large
- *        and is ignored when less than or equal to 0.
+ * @param dw_max Optional maximum acceleration due to the orientation error.
+ * This value clips the acceleration when the distance to the goal is large and
+ * is ignored when less than or equal to 0.
  * @param ori_err_out Optional output of the orientation error.
  *
  * @returns Desired angular acceleration.
  *
  * @see Python: ctrlutils.pd_control()
  */
-template <typename Derived1, typename Derived2>
+template <typename Derived1, typename Derived3>
 inline typename Derived1::PlainObject PdControl(
     const ::Eigen::Quaterniond& quat, const ::Eigen::Quaterniond& quat_des,
     const ::Eigen::MatrixBase<Derived1>& w,
-    const ::Eigen::MatrixBase<Derived2>& kp_kv, double dw_max = 0.,
+    const ::Eigen::MatrixBase<Derived3>& kp_kv, double dw_max = 0.,
     typename Derived1::PlainObject* ori_err_out = nullptr) {
   static_assert(
-      (Derived2::RowsAtCompileTime == 3 && Derived2::ColsAtCompileTime == 2) ||
-          (Derived2::RowsAtCompileTime == 2 &&
-           Derived2::ColsAtCompileTime == 1),
+      (Derived3::RowsAtCompileTime == 3 && Derived3::ColsAtCompileTime == 2) ||
+          (Derived3::RowsAtCompileTime == 2 &&
+           Derived3::ColsAtCompileTime == 1),
       "kp_kv must be a vector of size 2 or a matrix of size x.rows() x 2.");
 
-  // Output orientation error
-  typename Derived1::PlainObject ori_err;
-  ori_err = ctrl_utils::OrientationError(quat, quat_des);
+  // Output error.
+  typename Derived1::PlainObject ori_err = ctrl_utils::OrientationError(quat, quat_des);
   if (ori_err_out != nullptr) {
     *ori_err_out = ori_err;
   }
+  typename Derived1::PlainObject w_err = w;
 
-  // Apply kp gains
+  // Apply kp .
   ori_err = -kp_kv(0) * ori_err;
+  w_err = -kp_kv(1) * w_err;
 
   // Limit maximum error
-  if (dw_max > 0. && ori_err.norm() > dw_max) {
-    ori_err = dw_max * ori_err.normalized();
+  if (dw_max > 0.) {
+    if (ori_err.norm() > dw_max) {
+      ori_err = dw_max * ori_err.normalized();
+    }
+    if (w_err.norm() > dw_max) {
+      w_err = dw_max * w_err.normalized();
+    }
   }
 
-  // Apply kv gains
-  return ori_err - kp_kv(1) * w;
+  return ori_err + w_err;
 }
 
-template <typename Derived1, typename Derived2, typename Derived3, typename Derived4>
+template <typename Derived1, typename Derived2, typename Derived3>
+inline typename Derived1::PlainObject PdControl(
+    const ::Eigen::Quaterniond& quat, const ::Eigen::Quaterniond& quat_des,
+    const ::Eigen::MatrixBase<Derived1>& w,
+    const ::Eigen::MatrixBase<Derived2>& w_des,
+    const ::Eigen::MatrixBase<Derived3>& kp_kv, double dw_max = 0.,
+    typename Derived1::PlainObject* ori_err_out = nullptr,
+    typename Derived2::PlainObject* w_err_out = nullptr) {
+  static_assert(
+      (Derived3::RowsAtCompileTime == 3 && Derived3::ColsAtCompileTime == 2) ||
+          (Derived3::RowsAtCompileTime == 2 &&
+           Derived3::ColsAtCompileTime == 1),
+      "kp_kv must be a vector of size 2 or a matrix of size x.rows() x 2.");
+
+  // Output error.
+  typename Derived1::PlainObject ori_err = ctrl_utils::OrientationError(quat, quat_des);
+  if (ori_err_out != nullptr) {
+    *ori_err_out = ori_err;
+  }
+  typename Derived1::PlainObject w_err = w - w_des;
+  if (w_err_out != nullptr) {
+    *w_err_out = w_err;
+  }
+
+  // Apply kp .
+  ori_err = -kp_kv(0) * ori_err;
+  w_err = -kp_kv(1) * w_err;
+
+  // Limit maximum error
+  if (dw_max > 0.) {
+    if (ori_err.norm() > dw_max) {
+      ori_err = dw_max * ori_err.normalized();
+    }
+    if (w_err.norm() > dw_max) {
+      w_err = dw_max * w_err.normalized();
+    }
+  }
+
+  return ori_err + w_err;
+}
+
+template <typename Derived1, typename Derived2, typename Derived3,
+          typename Derived4>
 inline typename Derived1::PlainObject LookatPdControl(
-    const ::Eigen::MatrixBase<Derived1>& vec, const ::Eigen::MatrixBase<Derived2>& vec_des,
+    const ::Eigen::MatrixBase<Derived1>& vec,
+    const ::Eigen::MatrixBase<Derived2>& vec_des,
     const ::Eigen::MatrixBase<Derived3>& w,
     const ::Eigen::MatrixBase<Derived4>& kp_kv, double dw_max = 0.,
     typename Derived1::PlainObject* ori_err_out = nullptr) {
