@@ -102,12 +102,20 @@ Functions</h2></td></tr>
 <tr class="separator:a214795bbf6f53cbc8ec5e922102d9abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a5c06f458de6a231d79fbb1640f71e8"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacectrl__utils.html#a9a5c06f458de6a231d79fbb1640f71e8">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classctrl__utils_1_1Args.html">Args</a> &amp;args)</td></tr>
 <tr class="separator:a9a5c06f458de6a231d79fbb1640f71e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a66cb08d4573ef38d06cdafa33880a15e"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 , typename Derived3 , typename Derived4 &gt; </td></tr>
-<tr class="memitem:a66cb08d4573ef38d06cdafa33880a15e"><td class="memTemplItemLeft" align="right" valign="top">Derived1::PlainObject&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacectrl__utils.html#a66cb08d4573ef38d06cdafa33880a15e">PdControl</a> (const ::Eigen::MatrixBase&lt; Derived1 &gt; &amp;x, const ::Eigen::MatrixBase&lt; Derived2 &gt; &amp;x_des, const ::Eigen::MatrixBase&lt; Derived3 &gt; &amp;dx, const ::Eigen::MatrixBase&lt; Derived4 &gt; &amp;kp_kv, double ddx_max=0., typename Derived1::PlainObject *x_err_out=nullptr)</td></tr>
-<tr class="separator:a66cb08d4573ef38d06cdafa33880a15e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad01b75b3b4a1847eb1e10ce4e62c6ace"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 &gt; </td></tr>
-<tr class="memitem:ad01b75b3b4a1847eb1e10ce4e62c6ace"><td class="memTemplItemLeft" align="right" valign="top">Derived1::PlainObject&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacectrl__utils.html#ad01b75b3b4a1847eb1e10ce4e62c6ace">PdControl</a> (const ::Eigen::Quaterniond &amp;quat, const ::Eigen::Quaterniond &amp;quat_des, const ::Eigen::MatrixBase&lt; Derived1 &gt; &amp;w, const ::Eigen::MatrixBase&lt; Derived2 &gt; &amp;kp_kv, double dw_max=0., typename Derived1::PlainObject *ori_err_out=nullptr)</td></tr>
-<tr class="separator:ad01b75b3b4a1847eb1e10ce4e62c6ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad326455379590e87a4e0cce836e6210f"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived2 , typename Derived3 , typename Derived5 &gt; </td></tr>
+<tr class="memitem:ad326455379590e87a4e0cce836e6210f"><td class="memTemplItemLeft" align="right" valign="top">Derived1::PlainObject&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacectrl__utils.html#ad326455379590e87a4e0cce836e6210f">PdControl</a> (const ::Eigen::MatrixBase&lt; Derived1 &gt; &amp;x, const ::Eigen::MatrixBase&lt; Derived2 &gt; &amp;x_des, const ::Eigen::MatrixBase&lt; Derived3 &gt; &amp;dx, const ::Eigen::MatrixBase&lt; Derived5 &gt; &amp;kp_kv, double ddx_max=0., typename Derived1::PlainObject *x_err_out=nullptr)</td></tr>
+<tr class="separator:ad326455379590e87a4e0cce836e6210f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0ac14e0af3966f6c0a13afe857141b3"><td class="memTemplParams" colspan="2"><a id="ad0ac14e0af3966f6c0a13afe857141b3"></a>
+template&lt;typename Derived1 , typename Derived2 , typename Derived3 , typename Derived4 , typename Derived5 &gt; </td></tr>
+<tr class="memitem:ad0ac14e0af3966f6c0a13afe857141b3"><td class="memTemplItemLeft" align="right" valign="top">Derived1::PlainObject&#160;</td><td class="memTemplItemRight" valign="bottom"><b>PdControl</b> (const ::Eigen::MatrixBase&lt; Derived1 &gt; &amp;x, const ::Eigen::MatrixBase&lt; Derived2 &gt; &amp;x_des, const ::Eigen::MatrixBase&lt; Derived3 &gt; &amp;dx, const ::Eigen::MatrixBase&lt; Derived4 &gt; &amp;dx_des, const ::Eigen::MatrixBase&lt; Derived5 &gt; &amp;kp_kv, double ddx_max=0., typename Derived1::PlainObject *x_err_out=nullptr, typename Derived3::PlainObject *dx_err_out=nullptr)</td></tr>
+<tr class="separator:ad0ac14e0af3966f6c0a13afe857141b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64c257216bfee4cb43c190f11b0ce503"><td class="memTemplParams" colspan="2">template&lt;typename Derived1 , typename Derived3 &gt; </td></tr>
+<tr class="memitem:a64c257216bfee4cb43c190f11b0ce503"><td class="memTemplItemLeft" align="right" valign="top">Derived1::PlainObject&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacectrl__utils.html#a64c257216bfee4cb43c190f11b0ce503">PdControl</a> (const ::Eigen::Quaterniond &amp;quat, const ::Eigen::Quaterniond &amp;quat_des, const ::Eigen::MatrixBase&lt; Derived1 &gt; &amp;w, const ::Eigen::MatrixBase&lt; Derived3 &gt; &amp;kp_kv, double dw_max=0., typename Derived1::PlainObject *ori_err_out=nullptr)</td></tr>
+<tr class="separator:a64c257216bfee4cb43c190f11b0ce503"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeb775759015ffee6155c3582e37d5ee"><td class="memTemplParams" colspan="2"><a id="aaeb775759015ffee6155c3582e37d5ee"></a>
+template&lt;typename Derived1 , typename Derived2 , typename Derived3 &gt; </td></tr>
+<tr class="memitem:aaeb775759015ffee6155c3582e37d5ee"><td class="memTemplItemLeft" align="right" valign="top">Derived1::PlainObject&#160;</td><td class="memTemplItemRight" valign="bottom"><b>PdControl</b> (const ::Eigen::Quaterniond &amp;quat, const ::Eigen::Quaterniond &amp;quat_des, const ::Eigen::MatrixBase&lt; Derived1 &gt; &amp;w, const ::Eigen::MatrixBase&lt; Derived2 &gt; &amp;w_des, const ::Eigen::MatrixBase&lt; Derived3 &gt; &amp;kp_kv, double dw_max=0., typename Derived1::PlainObject *ori_err_out=nullptr, typename Derived2::PlainObject *w_err_out=nullptr)</td></tr>
+<tr class="separator:aaeb775759015ffee6155c3582e37d5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac7a769bae716973ff92425b5166ce7ed"><td class="memTemplParams" colspan="2"><a id="ac7a769bae716973ff92425b5166ce7ed"></a>
 template&lt;typename Derived1 , typename Derived2 , typename Derived3 , typename Derived4 &gt; </td></tr>
 <tr class="memitem:ac7a769bae716973ff92425b5166ce7ed"><td class="memTemplItemLeft" align="right" valign="top">Derived1::PlainObject&#160;</td><td class="memTemplItemRight" valign="bottom"><b>LookatPdControl</b> (const ::Eigen::MatrixBase&lt; Derived1 &gt; &amp;vec, const ::Eigen::MatrixBase&lt; Derived2 &gt; &amp;vec_des, const ::Eigen::MatrixBase&lt; Derived3 &gt; &amp;w, const ::Eigen::MatrixBase&lt; Derived4 &gt; &amp;kp_kv, double dw_max=0., typename Derived1::PlainObject *ori_err_out=nullptr)</td></tr>
@@ -1035,13 +1043,13 @@ template&lt;typename Derived &gt; </div>
 
 </div>
 </div>
-<a id="a66cb08d4573ef38d06cdafa33880a15e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a66cb08d4573ef38d06cdafa33880a15e">&#9670;&nbsp;</a></span>PdControl() <span class="overload">[1/2]</span></h2>
+<a id="ad326455379590e87a4e0cce836e6210f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad326455379590e87a4e0cce836e6210f">&#9670;&nbsp;</a></span>PdControl() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Derived1 , typename Derived2 , typename Derived3 , typename Derived4 &gt; </div>
+template&lt;typename Derived1 , typename Derived2 , typename Derived3 , typename Derived5 &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1067,7 +1075,7 @@ template&lt;typename Derived1 , typename Derived2 , typename Derived3 , typename
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const ::Eigen::MatrixBase&lt; Derived4 &gt; &amp;&#160;</td>
+          <td class="paramtype">const ::Eigen::MatrixBase&lt; Derived5 &gt; &amp;&#160;</td>
           <td class="paramname"><em>kp_kv</em>, </td>
         </tr>
         <tr>
@@ -1113,13 +1121,13 @@ template&lt;typename Derived1 , typename Derived2 , typename Derived3 , typename
 
 </div>
 </div>
-<a id="ad01b75b3b4a1847eb1e10ce4e62c6ace"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad01b75b3b4a1847eb1e10ce4e62c6ace">&#9670;&nbsp;</a></span>PdControl() <span class="overload">[2/2]</span></h2>
+<a id="a64c257216bfee4cb43c190f11b0ce503"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64c257216bfee4cb43c190f11b0ce503">&#9670;&nbsp;</a></span>PdControl() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Derived1 , typename Derived2 &gt; </div>
+template&lt;typename Derived1 , typename Derived3 &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1145,7 +1153,7 @@ template&lt;typename Derived1 , typename Derived2 &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const ::Eigen::MatrixBase&lt; Derived2 &gt; &amp;&#160;</td>
+          <td class="paramtype">const ::Eigen::MatrixBase&lt; Derived3 &gt; &amp;&#160;</td>
           <td class="paramname"><em>kp_kv</em>, </td>
         </tr>
         <tr>
