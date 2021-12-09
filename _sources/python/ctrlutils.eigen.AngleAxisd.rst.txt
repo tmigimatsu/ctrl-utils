@@ -17,8 +17,11 @@ ctrlutils.eigen.AngleAxisd
    .. autosummary::
    
       ~AngleAxisd.__init__
+      ~AngleAxisd.identity
       ~AngleAxisd.inverse
+      ~AngleAxisd.is_approx
       ~AngleAxisd.matrix
+      ~AngleAxisd.set
    
    
 

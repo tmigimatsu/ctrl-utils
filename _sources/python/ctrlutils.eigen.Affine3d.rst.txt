@@ -1,0 +1,31 @@
+ctrlutils.eigen.Affine3d
+========================
+
+.. currentmodule:: ctrlutils.eigen
+
+.. autoclass:: Affine3d
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Affine3d.__init__
+      ~Affine3d.identity
+      ~Affine3d.inverse
+      ~Affine3d.linear
+      ~Affine3d.matrix
+      ~Affine3d.rotation
+      ~Affine3d.translation
+   
+   
+
+   
+   
+   

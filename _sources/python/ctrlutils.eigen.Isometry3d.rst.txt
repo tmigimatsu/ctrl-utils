@@ -17,9 +17,11 @@ ctrlutils.eigen.Isometry3d
    .. autosummary::
    
       ~Isometry3d.__init__
+      ~Isometry3d.identity
       ~Isometry3d.inverse
       ~Isometry3d.linear
       ~Isometry3d.matrix
+      ~Isometry3d.rotation
       ~Isometry3d.translation
    
    

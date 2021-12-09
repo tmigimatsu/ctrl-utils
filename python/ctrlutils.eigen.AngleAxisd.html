@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="ctrlutils.eigen.Isometry3d" href="ctrlutils.eigen.Isometry3d.html" />
-    <link rel="prev" title="ctrlutils.eigen" href="ctrlutils.eigen.html" />
+    <link rel="prev" title="ctrlutils.eigen.Affine3d" href="ctrlutils.eigen.Affine3d.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
 <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
@@ -79,7 +79,7 @@
               
                 
   <li>
-    <a href="ctrlutils.eigen.html" title="Previous Chapter: ctrlutils.eigen"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; ctrlutils.eigen</span>
+    <a href="ctrlutils.eigen.Affine3d.html" title="Previous Chapter: ctrlutils.eigen.Affine3d"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm hidden-tablet">&laquo; ctrlutils.eig...</span>
     </a>
   </li>
   <li>
@@ -135,10 +135,11 @@
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctrlutils.eigen.AngleAxisd.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overloaded function.</p>
 <ol class="arabic simple">
+<li><p>__init__(self: ctrlutils.ctrlutils_eigen.AngleAxisd) -&gt; None</p></li>
 <li><p>__init__(self: ctrlutils.ctrlutils_eigen.AngleAxisd, arg0: ctrlutils.ctrlutils_eigen.AngleAxisd) -&gt; None</p></li>
-<li><p>__init__(self: ctrlutils.ctrlutils_eigen.AngleAxisd, angle: float, axis: numpy.ndarray[float64[3, 1]]) -&gt; None</p></li>
-<li><p>__init__(self: ctrlutils.ctrlutils_eigen.AngleAxisd, arg0: ctrlutils.ctrlutils_eigen.Quaterniond) -&gt; None</p></li>
 <li><p>__init__(self: ctrlutils.ctrlutils_eigen.AngleAxisd, arg0: numpy.ndarray[float64[3, 3]]) -&gt; None</p></li>
+<li><p>__init__(self: ctrlutils.ctrlutils_eigen.AngleAxisd, arg0: ctrlutils.ctrlutils_eigen.Quaterniond) -&gt; None</p></li>
+<li><p>__init__(self: ctrlutils.ctrlutils_eigen.AngleAxisd, angle: float, axis: numpy.ndarray[float64[3, 1]]) -&gt; None</p></li>
 </ol>
 </dd></dl>
 
@@ -152,11 +153,20 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd.__init__" title="ctrlutils.eigen.AngleAxisd.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
 <td><p>Overloaded function.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd.inverse" title="ctrlutils.eigen.AngleAxisd.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>(self)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd.identity" title="ctrlutils.eigen.AngleAxisd.identity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">identity</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd.inverse" title="ctrlutils.eigen.AngleAxisd.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd.is_approx" title="ctrlutils.eigen.AngleAxisd.is_approx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_approx</span></code></a>(self, arg0[, prec])</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd.matrix" title="ctrlutils.eigen.AngleAxisd.matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matrix</span></code></a>(self)</p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd.set" title="ctrlutils.eigen.AngleAxisd.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
 </tr>
 </tbody>
 </table>
@@ -176,14 +186,35 @@
 </tbody>
 </table>
 <dl class="py method">
+<dt class="sig sig-object py" id="ctrlutils.eigen.AngleAxisd.identity">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">identity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd" title="ctrlutils.ctrlutils_eigen.AngleAxisd"><span class="pre">ctrlutils.ctrlutils_eigen.AngleAxisd</span></a></span></span><a class="headerlink" href="#ctrlutils.eigen.AngleAxisd.identity" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="ctrlutils.eigen.AngleAxisd.inverse">
 <span class="sig-name descname"><span class="pre">inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd" title="ctrlutils.ctrlutils_eigen.AngleAxisd"><span class="pre">ctrlutils.ctrlutils_eigen.AngleAxisd</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd" title="ctrlutils.ctrlutils_eigen.AngleAxisd"><span class="pre">ctrlutils.ctrlutils_eigen.AngleAxisd</span></a></span></span><a class="headerlink" href="#ctrlutils.eigen.AngleAxisd.inverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ctrlutils.eigen.AngleAxisd.is_approx">
+<span class="sig-name descname"><span class="pre">is_approx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd" title="ctrlutils.ctrlutils_eigen.AngleAxisd"><span class="pre">ctrlutils.ctrlutils_eigen.AngleAxisd</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd" title="ctrlutils.ctrlutils_eigen.AngleAxisd"><span class="pre">ctrlutils.ctrlutils_eigen.AngleAxisd</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#ctrlutils.eigen.AngleAxisd.is_approx" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ctrlutils.eigen.AngleAxisd.matrix">
 <span class="sig-name descname"><span class="pre">matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.AngleAxisd" title="ctrlutils.ctrlutils_eigen.AngleAxisd"><span class="pre">ctrlutils.ctrlutils_eigen.AngleAxisd</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ctrlutils.eigen.AngleAxisd.matrix" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ctrlutils.eigen.AngleAxisd.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctrlutils.eigen.AngleAxisd.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>set(self: ctrlutils.ctrlutils_eigen.AngleAxisd, arg0: ctrlutils.ctrlutils_eigen.AngleAxisd) -&gt; ctrlutils.ctrlutils_eigen.AngleAxisd</p></li>
+<li><p>set(self: ctrlutils.ctrlutils_eigen.AngleAxisd, arg0: ctrlutils.ctrlutils_eigen.AngleAxisd) -&gt; ctrlutils.ctrlutils_eigen.AngleAxisd</p></li>
+<li><p>set(self: ctrlutils.ctrlutils_eigen.AngleAxisd, arg0: numpy.ndarray[float64[3, 3]]) -&gt; ctrlutils.ctrlutils_eigen.AngleAxisd</p></li>
+</ol>
+</dd></dl>
 
 </dd></dl>
 

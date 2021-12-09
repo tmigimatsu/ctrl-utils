@@ -17,6 +17,7 @@ ctrlutils.eigen.Translation3d
    .. autosummary::
    
       ~Translation3d.__init__
+      ~Translation3d.identity
       ~Translation3d.inverse
       ~Translation3d.translation
    

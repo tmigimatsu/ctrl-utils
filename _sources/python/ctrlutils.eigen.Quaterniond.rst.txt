@@ -17,10 +17,23 @@ ctrlutils.eigen.Quaterniond
    .. autosummary::
    
       ~Quaterniond.__init__
+      ~Quaterniond.angular_distance
+      ~Quaterniond.conjugate
+      ~Quaterniond.dot
+      ~Quaterniond.from_two_vectors
+      ~Quaterniond.identity
       ~Quaterniond.inverse
+      ~Quaterniond.is_approx
       ~Quaterniond.matrix
+      ~Quaterniond.norm
+      ~Quaterniond.normalize
       ~Quaterniond.normalized
       ~Quaterniond.set
+      ~Quaterniond.set_from_two_vectors
+      ~Quaterniond.set_identity
+      ~Quaterniond.slerp
+      ~Quaterniond.squared_norm
+      ~Quaterniond.unit_random
    
    
 
