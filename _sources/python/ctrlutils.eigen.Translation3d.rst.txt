@@ -19,10 +19,21 @@ ctrlutils.eigen.Translation3d
       ~Translation3d.__init__
       ~Translation3d.identity
       ~Translation3d.inverse
-      ~Translation3d.translation
+      ~Translation3d.is_approx
+      ~Translation3d.set
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Translation3d.translation
+      ~Translation3d.vector
+      ~Translation3d.x
+      ~Translation3d.y
+      ~Translation3d.z
    
    

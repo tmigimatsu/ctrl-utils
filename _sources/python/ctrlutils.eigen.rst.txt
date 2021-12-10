@@ -23,6 +23,7 @@
       AngleAxisd
       Isometry3d
       LdltMatrixXd
+      Projective3d
       Quaterniond
       Translation3d
    

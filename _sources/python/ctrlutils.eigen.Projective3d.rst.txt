@@ -1,0 +1,43 @@
+ctrlutils.eigen.Projective3d
+============================
+
+.. currentmodule:: ctrlutils.eigen
+
+.. autoclass:: Projective3d
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Projective3d.__init__
+      ~Projective3d.identity
+      ~Projective3d.inverse
+      ~Projective3d.is_approx
+      ~Projective3d.make_affine
+      ~Projective3d.prerotate
+      ~Projective3d.rotate
+      ~Projective3d.rotation
+      ~Projective3d.set
+      ~Projective3d.set_identity
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Projective3d.affine
+      ~Projective3d.linear
+      ~Projective3d.matrix
+      ~Projective3d.translation
+   
+   

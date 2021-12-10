@@ -44,6 +44,7 @@ ctrlutils.eigen.Quaterniond
    .. autosummary::
    
       ~Quaterniond.coeffs
+      ~Quaterniond.vec
       ~Quaterniond.w
       ~Quaterniond.x
       ~Quaterniond.y

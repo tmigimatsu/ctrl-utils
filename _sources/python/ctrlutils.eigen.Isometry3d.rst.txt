@@ -19,13 +19,25 @@ ctrlutils.eigen.Isometry3d
       ~Isometry3d.__init__
       ~Isometry3d.identity
       ~Isometry3d.inverse
-      ~Isometry3d.linear
-      ~Isometry3d.matrix
+      ~Isometry3d.is_approx
+      ~Isometry3d.make_affine
+      ~Isometry3d.prerotate
+      ~Isometry3d.rotate
       ~Isometry3d.rotation
-      ~Isometry3d.translation
+      ~Isometry3d.set
+      ~Isometry3d.set_identity
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Isometry3d.affine
+      ~Isometry3d.linear
+      ~Isometry3d.matrix
+      ~Isometry3d.translation
    
    

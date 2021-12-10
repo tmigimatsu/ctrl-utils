@@ -136,8 +136,8 @@
 <dd><p>Overloaded function.</p>
 <ol class="arabic simple">
 <li><p>__init__(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: ctrlutils.ctrlutils_eigen.Affine3d) -&gt; None</p></li>
-<li><p>__init__(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: numpy.ndarray[float64[4, 4]]) -&gt; None</p></li>
-<li><p>__init__(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: numpy.ndarray[float64[3, 3]]) -&gt; None</p></li>
+<li><p>__init__(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: numpy.ndarray[float64[4, 4], flags.f_contiguous]) -&gt; None</p></li>
+<li><p>__init__(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: numpy.ndarray[float64[3, 3], flags.f_contiguous]) -&gt; None</p></li>
 <li><p>__init__(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::Quaternion&lt;double, 0&gt;) -&gt; None</p></li>
 <li><p>__init__(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::AngleAxis&lt;double&gt;) -&gt; None</p></li>
 </ol>
@@ -159,16 +159,46 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.inverse" title="ctrlutils.eigen.Affine3d.inverse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse</span></code></a>(self, arg0)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.linear" title="ctrlutils.eigen.Affine3d.linear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear</span></code></a>(self)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.is_approx" title="ctrlutils.eigen.Affine3d.is_approx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_approx</span></code></a>(self, arg0[, prec])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.matrix" title="ctrlutils.eigen.Affine3d.matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matrix</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.make_affine" title="ctrlutils.eigen.Affine3d.make_affine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_affine</span></code></a>(self)</p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.prerotate" title="ctrlutils.eigen.Affine3d.prerotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prerotate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.rotate" title="ctrlutils.eigen.Affine3d.rotate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.rotation" title="ctrlutils.eigen.Affine3d.rotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotation</span></code></a>(self)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.translation" title="ctrlutils.eigen.Affine3d.translation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translation</span></code></a>(self)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.set" title="ctrlutils.eigen.Affine3d.set"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Overloaded function.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ctrlutils.eigen.Affine3d.set_identity" title="ctrlutils.eigen.Affine3d.set_identity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_identity</span></code></a>(self)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Attributes</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">affine</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">matrix</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">translation</span></code></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -184,23 +214,56 @@
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.linear">
-<span class="sig-name descname"><span class="pre">linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">flags.writeable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">flags.f_contiguous</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.linear" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.is_approx">
+<span class="sig-name descname"><span class="pre">is_approx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.10)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.10)"><span class="pre">bool</span></a></span></span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.is_approx" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.matrix">
-<span class="sig-name descname"><span class="pre">matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.matrix" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.make_affine">
+<span class="sig-name descname"><span class="pre">make_affine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.make_affine" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.prerotate">
+<span class="sig-name descname"><span class="pre">prerotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.prerotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>prerotate(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::Quaternion&lt;double, 0&gt;) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+<li><p>prerotate(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::AngleAxis&lt;double&gt;) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.rotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>rotate(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::Quaternion&lt;double, 0&gt;) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+<li><p>rotate(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::AngleAxis&lt;double&gt;) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+</ol>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.rotation">
-<span class="sig-name descname"><span class="pre">rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">flags.writeable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">flags.f_contiguous</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.rotation" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.rotation" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.translation">
-<span class="sig-name descname"><span class="pre">translation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.21)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">[</span></span><span class="pre">float64</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">flags.writeable</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.translation" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.set">
+<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic simple">
+<li><p>set(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::Translation&lt;double, 3&gt;) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+<li><p>set(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::Quaternion&lt;double, 0&gt;) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+<li><p>set(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: Eigen::AngleAxis&lt;double&gt;) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+<li><p>set(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: ctrlutils.ctrlutils_eigen.Affine3d) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+<li><p>set(self: ctrlutils.ctrlutils_eigen.Affine3d, arg0: numpy.ndarray[float64[4, 4]]) -&gt; ctrlutils.ctrlutils_eigen.Affine3d</p></li>
+</ol>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ctrlutils.eigen.Affine3d.set_identity">
+<span class="sig-name descname"><span class="pre">set_identity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#ctrlutils.eigen.Affine3d" title="ctrlutils.ctrlutils_eigen.Affine3d"><span class="pre">ctrlutils.ctrlutils_eigen.Affine3d</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.10)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#ctrlutils.eigen.Affine3d.set_identity" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

@@ -19,13 +19,25 @@ ctrlutils.eigen.Affine3d
       ~Affine3d.__init__
       ~Affine3d.identity
       ~Affine3d.inverse
-      ~Affine3d.linear
-      ~Affine3d.matrix
+      ~Affine3d.is_approx
+      ~Affine3d.make_affine
+      ~Affine3d.prerotate
+      ~Affine3d.rotate
       ~Affine3d.rotation
-      ~Affine3d.translation
+      ~Affine3d.set
+      ~Affine3d.set_identity
    
    
 
    
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Affine3d.affine
+      ~Affine3d.linear
+      ~Affine3d.matrix
+      ~Affine3d.translation
    
    
