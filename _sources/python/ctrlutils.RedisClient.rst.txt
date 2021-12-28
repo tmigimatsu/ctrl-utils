@@ -31,6 +31,7 @@ ctrlutils.RedisClient
       ~RedisClient.acl_users
       ~RedisClient.acl_whoami
       ~RedisClient.append
+      ~RedisClient.bf
       ~RedisClient.bgrewriteaof
       ~RedisClient.bgsave
       ~RedisClient.bitcount
@@ -43,6 +44,7 @@ ctrlutils.RedisClient
       ~RedisClient.brpoplpush
       ~RedisClient.bzpopmax
       ~RedisClient.bzpopmin
+      ~RedisClient.cf
       ~RedisClient.client
       ~RedisClient.client_getname
       ~RedisClient.client_getredir
@@ -54,13 +56,18 @@ ctrlutils.RedisClient
       ~RedisClient.client_pause
       ~RedisClient.client_reply
       ~RedisClient.client_setname
+      ~RedisClient.client_tracking
+      ~RedisClient.client_tracking_off
+      ~RedisClient.client_tracking_on
       ~RedisClient.client_trackinginfo
       ~RedisClient.client_unblock
       ~RedisClient.client_unpause
       ~RedisClient.close
       ~RedisClient.cluster
+      ~RedisClient.cms
       ~RedisClient.command
       ~RedisClient.command_count
+      ~RedisClient.command_getkeys
       ~RedisClient.command_info
       ~RedisClient.config_get
       ~RedisClient.config_resetstat
@@ -94,6 +101,8 @@ ctrlutils.RedisClient
       ~RedisClient.geosearch
       ~RedisClient.geosearchstore
       ~RedisClient.get
+      ~RedisClient.get_connection_kwargs
+      ~RedisClient.get_encoder
       ~RedisClient.get_image
       ~RedisClient.get_matrix
       ~RedisClient.getbit
@@ -101,6 +110,7 @@ ctrlutils.RedisClient
       ~RedisClient.getex
       ~RedisClient.getrange
       ~RedisClient.getset
+      ~RedisClient.graph
       ~RedisClient.hdel
       ~RedisClient.hexists
       ~RedisClient.hget
@@ -166,6 +176,7 @@ ctrlutils.RedisClient
       ~RedisClient.ping
       ~RedisClient.pipeline
       ~RedisClient.psetex
+      ~RedisClient.psync
       ~RedisClient.pttl
       ~RedisClient.publish
       ~RedisClient.pubsub
@@ -180,7 +191,9 @@ ctrlutils.RedisClient
       ~RedisClient.rename
       ~RedisClient.renamenx
       ~RedisClient.replicaof
+      ~RedisClient.reset
       ~RedisClient.restore
+      ~RedisClient.role
       ~RedisClient.rpop
       ~RedisClient.rpoplpush
       ~RedisClient.rpush
@@ -197,6 +210,7 @@ ctrlutils.RedisClient
       ~RedisClient.script_load
       ~RedisClient.sdiff
       ~RedisClient.sdiffstore
+      ~RedisClient.select
       ~RedisClient.sentinel
       ~RedisClient.sentinel_ckquorum
       ~RedisClient.sentinel_failover
@@ -241,7 +255,10 @@ ctrlutils.RedisClient
       ~RedisClient.sunion
       ~RedisClient.sunionstore
       ~RedisClient.swapdb
+      ~RedisClient.sync
+      ~RedisClient.tdigest
       ~RedisClient.time
+      ~RedisClient.topk
       ~RedisClient.touch
       ~RedisClient.transaction
       ~RedisClient.ts
