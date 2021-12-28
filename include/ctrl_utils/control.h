@@ -61,20 +61,23 @@ inline typename Derived1::PlainObject PdControl(
 
   // Apply gains.
   if (Derived5::ColsAtCompileTime == 1) {
-    x_err = -kp_kv(0) * x_err;
-    dx_err = -kp_kv(1) * dx_err;
+    x_err *= -kp_kv(0);
+    dx_err *= -kp_kv(1);
   } else {
-    x_err = -kp_kv.block(0, 0, x_err.size(), 1).array() * x_err.array();
-    dx_err = -kp_kv.block(0, 1, dx_err.size(), 1).array() * dx_err.array();
+    x_err.array() *= -kp_kv.block(0, 0, x_err.size(), 1).array();
+    dx_err.array() *= -kp_kv.block(0, 1, dx_err.size(), 1).array();
   }
 
   // Limit maximum error
   if (ddx_max > 0.) {
-    if (x_err.norm() > ddx_max) {
-      x_err = ddx_max * x_err.normalized();
+    const double x_err_sq_norm = x_err.squaredNorm();
+    const double ddx_max_sq = ddx_max * ddx_max;
+    if (x_err_sq_norm > ddx_max_sq) {
+      x_err *= ddx_max / std::sqrt(x_err_sq_norm);
     }
-    if (dx_err.norm() > ddx_max) {
-      dx_err = ddx_max * dx_err.normalized();
+    const double dx_err_sq_norm = dx_err.squaredNorm();
+    if (dx_err_sq_norm > ddx_max_sq) {
+      dx_err *= ddx_max / std::sqrt(dx_err_sq_norm);
     }
   }
 
@@ -183,16 +186,19 @@ inline typename Derived1::PlainObject PdControl(
   typename Derived1::PlainObject w_err = w;
 
   // Apply kp .
-  ori_err = -kp_kv(0) * ori_err;
-  w_err = -kp_kv(1) * w_err;
+  ori_err *= -kp_kv(0);
+  w_err *= -kp_kv(1);
 
   // Limit maximum error
   if (dw_max > 0.) {
-    if (ori_err.norm() > dw_max) {
-      ori_err = dw_max * ori_err.normalized();
+    const double ori_err_sq_norm = ori_err.squaredNorm();
+    const double dw_max_sq = dw_max * dw_max;
+    if (ori_err_sq_norm > dw_max_sq) {
+      ori_err *= dw_max / std::sqrt(ori_err_sq_norm);
     }
-    if (w_err.norm() > dw_max) {
-      w_err = dw_max * w_err.normalized();
+    const double w_err_sq_norm = w_err.squaredNorm();
+    if (w_err_sq_norm > dw_max_sq) {
+      w_err *= dw_max / std::sqrt(w_err_sq_norm);
     }
   }
 
