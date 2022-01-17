@@ -1,7 +1,13 @@
-import setuptools
+import pathlib
+import re
+import shutil
+import setuptools  # type: ignore
+from setuptools.command import build_ext  # type: ignore
 import subprocess
+import sys
 
-from setuptools.command import build_ext
+
+__version__ = "1.3.0"
 
 
 class CMakeExtension(setuptools.Extension):
@@ -11,8 +17,7 @@ class CMakeExtension(setuptools.Extension):
 
 class CMakeBuild(build_ext.build_ext):
     def run(self):
-        import distutils
-        import re
+        from packaging import version  # type: ignore
 
         if not self.inplace:
             try:
@@ -23,7 +28,7 @@ class CMakeBuild(build_ext.build_ext):
                     + ", ".join(e.name for e in self.extensions)
                 )
 
-            cmake_version = distutils.version.LooseVersion(
+            cmake_version = version.Version(
                 re.search(r"version\s*([\d.]+)", out.decode()).group(1)
             )
             if cmake_version < "3.13.0":
@@ -35,12 +40,6 @@ class CMakeBuild(build_ext.build_ext):
             self.build_extension(extension)
 
     def build_extension(self, extension: setuptools.Extension):
-        import os
-        import pathlib
-        import re
-        import shutil
-        import sys
-
         extension_dir = pathlib.Path(self.get_ext_fullpath(extension.name)).parent
         extension_dir.mkdir(parents=True, exist_ok=True)
 
@@ -56,9 +55,9 @@ class CMakeBuild(build_ext.build_ext):
         cmake_command = [
             "cmake",
             "-B" + str(build_dir),
+            "-DBUILD_PYTHON=ON",
             "-DPYBIND11_PYTHON_VERSION=" + python_version,
             "-DCMAKE_BUILD_TYPE=" + build_type,
-            "-DBUILD_PYTHON=ON",
         ]
         if not self.inplace:
             # Use relative paths for install rpath.
@@ -84,21 +83,20 @@ class CMakeBuild(build_ext.build_ext):
         if not self.inplace:
             # Copy pybind11 library.
             ctrlutils_dir = str(extension_dir / "ctrlutils")
-            for file in os.listdir(build_dir / "src" / "python"):
-                if re.match(r".*\.(?:so|dylib)\.?", file) is not None:
-                    file = str(build_dir / "src" / "python" / file)
-                    shutil.move(file, ctrlutils_dir)
+            for file in (build_dir / "src" / "python").iterdir():
+                if re.match(r".*\.(?:so|dylib)\.?", file.name) is not None:
+                    shutil.move(str(file), ctrlutils_dir)
 
             # Copy C++ libraries.
-            for file in os.listdir(os.path.join("install", "lib")):
-                if re.match(r".*\.(?:so|dylib)\.?", file) is not None:
-                    file = os.path.join("install", "lib", file)
-                    shutil.move(file, ctrlutils_dir)
+            libdir = next(iter(pathlib.Path("install").glob("lib*")))
+            for file in libdir.iterdir():
+                if re.match(r".*\.(?:so|dylib)\.?", file.name) is not None:
+                    shutil.move(str(file), ctrlutils_dir)
 
 
 setuptools.setup(
     name="ctrlutils",
-    version="1.4.0",
+    version=__version__,
     author="Toki Migimatsu",
     author_email="takatoki@cs.stanford.edu",
     description="Python ctrl-utils library",
@@ -111,6 +109,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.6",
+    setup_requires=["packaging"],
     ext_modules=[CMakeExtension("ctrlutils")],
     cmdclass={
         "build_ext": CMakeBuild,

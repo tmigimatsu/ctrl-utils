@@ -5,7 +5,8 @@ on:
       - main
     paths-ignore:
       - '.github/workflows/builds.yaml'
-      - '.github/workflows/tests.yaml'
+      - ".github/workflows/releases.yaml"
+      - ".github/workflows/publish.yaml"
       - '*.md'
   pull_request:
     branches:
@@ -18,27 +19,18 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install dependencies
+      - name: Install pip dependencies
         run: |
           sudo apt install doxygen
           pip install pipenv
           pipenv install --dev
 
-      - name: Configure
+      - name: Build
         run: |
           mkdir -p build
           cmake -B build -DBUILD_PYTHON=ON -DBUILD_DOCS=ON
-
-      - name: Generate cpp_redis Docs
-        run: |
-          cd external/cpp_redis/cpp_redis.git
-          git submodule update --init .
-          sed -i.old -E "s/^GENERATE_TAGFILE( +)=$/GENERATE_TAGFILE\1= cpp_redis.tag/" .doxygen
-          doxygen .doxygen
-
-      - name: Build
-        # ctrlutils neeeds to be in the virtual environment.
-        run: pipenv run pip install -e .
+          # spatialdyn needs to be in the virtual environment.
+          pipenv run pip install --no-use-pep517 -e .
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
