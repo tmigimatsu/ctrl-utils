@@ -31,7 +31,7 @@ class CMakeBuild(build_ext.build_ext):
             cmake_version = version.Version(
                 re.search(r"version\s*([\d.]+)", out.decode()).group(1)
             )
-            if cmake_version < "3.13.0":
+            if cmake_version < version.Version("3.13.0"):
                 raise RuntimeError(
                     "CMake >= 3.13.0 is required. Install the latest CMake with 'pip install cmake'."
                 )
