@@ -104,7 +104,7 @@ void DeclareTransform(pybind11::module& m, const char* class_name) {
       .def("rotation", &Transform3d::rotation,
            Mode == Isometry ? py::return_value_policy::reference_internal
                             : py::return_value_policy::automatic)
-      .def("inverse", &Transform3d::inverse)
+      .def("inverse", [](const Transform3d& T) { return T.inverse(); })
       .def("is_approx", &Transform3d::isApprox, py::arg(),
            "prec"_a = NumTraits<double>::dummy_precision())
       .def("make_affine", &Transform3d::makeAffine)
