@@ -19,6 +19,7 @@ ctrlutils.RedisClient
       ~RedisClient.__init__
       ~RedisClient.acl_cat
       ~RedisClient.acl_deluser
+      ~RedisClient.acl_dryrun
       ~RedisClient.acl_genpass
       ~RedisClient.acl_getuser
       ~RedisClient.acl_help
@@ -31,6 +32,7 @@ ctrlutils.RedisClient
       ~RedisClient.acl_users
       ~RedisClient.acl_whoami
       ~RedisClient.append
+      ~RedisClient.auth
       ~RedisClient.bf
       ~RedisClient.bgrewriteaof
       ~RedisClient.bgsave
@@ -39,9 +41,11 @@ ctrlutils.RedisClient
       ~RedisClient.bitop
       ~RedisClient.bitpos
       ~RedisClient.blmove
+      ~RedisClient.blmpop
       ~RedisClient.blpop
       ~RedisClient.brpop
       ~RedisClient.brpoplpush
+      ~RedisClient.bzmpop
       ~RedisClient.bzpopmax
       ~RedisClient.bzpopmin
       ~RedisClient.cf
@@ -53,6 +57,7 @@ ctrlutils.RedisClient
       ~RedisClient.client_kill
       ~RedisClient.client_kill_filter
       ~RedisClient.client_list
+      ~RedisClient.client_no_evict
       ~RedisClient.client_pause
       ~RedisClient.client_reply
       ~RedisClient.client_setname
@@ -67,6 +72,7 @@ ctrlutils.RedisClient
       ~RedisClient.cms
       ~RedisClient.command
       ~RedisClient.command_count
+      ~RedisClient.command_docs
       ~RedisClient.command_getkeys
       ~RedisClient.command_info
       ~RedisClient.config_get
@@ -83,15 +89,29 @@ ctrlutils.RedisClient
       ~RedisClient.dump
       ~RedisClient.echo
       ~RedisClient.eval
+      ~RedisClient.eval_ro
       ~RedisClient.evalsha
+      ~RedisClient.evalsha_ro
       ~RedisClient.execute_command
       ~RedisClient.exists
       ~RedisClient.expire
       ~RedisClient.expireat
+      ~RedisClient.expiretime
+      ~RedisClient.failover
+      ~RedisClient.fcall
+      ~RedisClient.fcall_ro
       ~RedisClient.flushall
       ~RedisClient.flushdb
       ~RedisClient.from_url
       ~RedisClient.ft
+      ~RedisClient.function_delete
+      ~RedisClient.function_dump
+      ~RedisClient.function_flush
+      ~RedisClient.function_kill
+      ~RedisClient.function_list
+      ~RedisClient.function_load
+      ~RedisClient.function_restore
+      ~RedisClient.function_stats
       ~RedisClient.geoadd
       ~RedisClient.geodist
       ~RedisClient.geohash
@@ -112,6 +132,7 @@ ctrlutils.RedisClient
       ~RedisClient.getset
       ~RedisClient.graph
       ~RedisClient.hdel
+      ~RedisClient.hello
       ~RedisClient.hexists
       ~RedisClient.hget
       ~RedisClient.hgetall
@@ -135,10 +156,12 @@ ctrlutils.RedisClient
       ~RedisClient.json
       ~RedisClient.keys
       ~RedisClient.lastsave
+      ~RedisClient.lcs
       ~RedisClient.lindex
       ~RedisClient.linsert
       ~RedisClient.llen
       ~RedisClient.lmove
+      ~RedisClient.lmpop
       ~RedisClient.load_external_module
       ~RedisClient.lock
       ~RedisClient.lolwut
@@ -170,6 +193,7 @@ ctrlutils.RedisClient
       ~RedisClient.persist
       ~RedisClient.pexpire
       ~RedisClient.pexpireat
+      ~RedisClient.pexpiretime
       ~RedisClient.pfadd
       ~RedisClient.pfcount
       ~RedisClient.pfmerge
@@ -234,6 +258,7 @@ ctrlutils.RedisClient
       ~RedisClient.setrange
       ~RedisClient.shutdown
       ~RedisClient.sinter
+      ~RedisClient.sintercard
       ~RedisClient.sinterstore
       ~RedisClient.sismember
       ~RedisClient.slaveof
@@ -244,6 +269,7 @@ ctrlutils.RedisClient
       ~RedisClient.smismember
       ~RedisClient.smove
       ~RedisClient.sort
+      ~RedisClient.sort_ro
       ~RedisClient.spop
       ~RedisClient.srandmember
       ~RedisClient.srem
@@ -296,8 +322,10 @@ ctrlutils.RedisClient
       ~RedisClient.zdiffstore
       ~RedisClient.zincrby
       ~RedisClient.zinter
+      ~RedisClient.zintercard
       ~RedisClient.zinterstore
       ~RedisClient.zlexcount
+      ~RedisClient.zmpop
       ~RedisClient.zmscore
       ~RedisClient.zpopmax
       ~RedisClient.zpopmin
@@ -330,5 +358,6 @@ ctrlutils.RedisClient
    .. autosummary::
    
       ~RedisClient.RESPONSE_CALLBACKS
+      ~RedisClient.connection_pool
    
    
