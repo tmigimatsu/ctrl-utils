@@ -75,10 +75,6 @@ inline typename Derived1::PlainObject PdControl(
     if (x_err_sq_norm > ddx_max_sq) {
       x_err *= ddx_max / std::sqrt(x_err_sq_norm);
     }
-    const double dx_err_sq_norm = dx_err.squaredNorm();
-    if (dx_err_sq_norm > ddx_max_sq) {
-      dx_err *= ddx_max / std::sqrt(dx_err_sq_norm);
-    }
   }
 
   return x_err + dx_err;
@@ -120,11 +116,10 @@ inline typename Derived1::PlainObject PdControl(
 
   // Limit maximum error
   if (ddx_max > 0.) {
-    if (x_err.norm() > ddx_max) {
-      x_err = ddx_max * x_err.normalized();
-    }
-    if (dx_err.norm() > ddx_max) {
-      dx_err = ddx_max * dx_err.normalized();
+    const double x_err_sq_norm = x_err.squaredNorm();
+    const double ddx_max_sq = ddx_max * ddx_max;
+    if (x_err_sq_norm > ddx_max_sq) {
+      x_err *= ddx_max / std::sqrt(x_err_sq_norm);
     }
   }
 
@@ -196,10 +191,6 @@ inline typename Derived1::PlainObject PdControl(
     if (ori_err_sq_norm > dw_max_sq) {
       ori_err *= dw_max / std::sqrt(ori_err_sq_norm);
     }
-    const double w_err_sq_norm = w_err.squaredNorm();
-    if (w_err_sq_norm > dw_max_sq) {
-      w_err *= dw_max / std::sqrt(w_err_sq_norm);
-    }
   }
 
   return ori_err + w_err;
@@ -235,11 +226,10 @@ inline typename Derived1::PlainObject PdControl(
 
   // Limit maximum error
   if (dw_max > 0.) {
-    if (ori_err.norm() > dw_max) {
-      ori_err = dw_max * ori_err.normalized();
-    }
-    if (w_err.norm() > dw_max) {
-      w_err = dw_max * w_err.normalized();
+    const double ori_err_sq_norm = ori_err.squaredNorm();
+    const double dw_max_sq = dw_max * dw_max;
+    if (ori_err_sq_norm > dw_max_sq) {
+      ori_err *= dw_max / std::sqrt(ori_err_sq_norm);
     }
   }
 
