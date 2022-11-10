@@ -74,7 +74,9 @@ ctrlutils.RedisClient
       ~RedisClient.command_count
       ~RedisClient.command_docs
       ~RedisClient.command_getkeys
+      ~RedisClient.command_getkeysandflags
       ~RedisClient.command_info
+      ~RedisClient.command_list
       ~RedisClient.config_get
       ~RedisClient.config_resetstat
       ~RedisClient.config_rewrite
@@ -156,6 +158,7 @@ ctrlutils.RedisClient
       ~RedisClient.json
       ~RedisClient.keys
       ~RedisClient.lastsave
+      ~RedisClient.latency_histogram
       ~RedisClient.lcs
       ~RedisClient.lindex
       ~RedisClient.linsert
@@ -183,6 +186,7 @@ ctrlutils.RedisClient
       ~RedisClient.migrate
       ~RedisClient.module_list
       ~RedisClient.module_load
+      ~RedisClient.module_loadex
       ~RedisClient.module_unload
       ~RedisClient.monitor
       ~RedisClient.move
