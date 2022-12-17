@@ -38,6 +38,7 @@ ctrlutils.RedisClient
       ~RedisClient.bgsave
       ~RedisClient.bitcount
       ~RedisClient.bitfield
+      ~RedisClient.bitfield_ro
       ~RedisClient.bitop
       ~RedisClient.bitpos
       ~RedisClient.blmove
@@ -127,6 +128,7 @@ ctrlutils.RedisClient
       ~RedisClient.get_encoder
       ~RedisClient.get_image
       ~RedisClient.get_matrix
+      ~RedisClient.get_retry
       ~RedisClient.getbit
       ~RedisClient.getdel
       ~RedisClient.getex
@@ -256,6 +258,7 @@ ctrlutils.RedisClient
       ~RedisClient.set_image
       ~RedisClient.set_matrix
       ~RedisClient.set_response_callback
+      ~RedisClient.set_retry
       ~RedisClient.setbit
       ~RedisClient.setex
       ~RedisClient.setnx
