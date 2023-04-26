@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v1.4.3 (2023-04-26)
+### Fix
+* Move to pyproject.toml ([`bebc47b`](https://github.com/tmigimatsu/ctrl-utils/commit/bebc47b8f2451d3dcd9c62d4aa077a5018754267))
+
 ## v1.4.2 (2023-04-26)
 ### Fix
 * Update pybind11 version ([`0bb2e7c`](https://github.com/tmigimatsu/ctrl-utils/commit/0bb2e7c10cb9a4c125f2b4c638528ad4c8f85e2e))
