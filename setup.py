@@ -95,24 +95,9 @@ class CMakeBuild(build_ext.build_ext):
 
 
 setuptools.setup(
-    name="ctrlutils",
-    version=__version__,
-    author="Toki Migimatsu",
-    author_email="takatoki@cs.stanford.edu",
-    description="Python ctrl-utils library",
-    url="https://github.com/tmigimatsu/ctrl-utils",
-    license="MIT",
     packages=["ctrlutils", "ctrlutils.eigen"],
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ],
-    python_requires=">=3.6",
-    setup_requires=["packaging"],
     ext_modules=[CMakeExtension("ctrlutils")],
     cmdclass={
         "build_ext": CMakeBuild,
     },
-    install_requires=["numpy", "redis"]
 )
