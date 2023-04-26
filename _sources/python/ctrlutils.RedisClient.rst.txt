@@ -160,7 +160,12 @@ ctrlutils.RedisClient
       ~RedisClient.json
       ~RedisClient.keys
       ~RedisClient.lastsave
+      ~RedisClient.latency_doctor
+      ~RedisClient.latency_graph
       ~RedisClient.latency_histogram
+      ~RedisClient.latency_history
+      ~RedisClient.latency_latest
+      ~RedisClient.latency_reset
       ~RedisClient.lcs
       ~RedisClient.lindex
       ~RedisClient.linsert

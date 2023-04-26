@@ -131,7 +131,7 @@
 <span class="sig-prename descclassname"><span class="pre">ctrlutils.</span></span><span class="sig-name descname"><span class="pre">pd_control</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ctrlutils.pd_control" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overloaded function.</p>
 <ol class="arabic">
-<li><p>pd_control(x: numpy.ndarray[float64[m, 1]], x_des: numpy.ndarray[float64[m, 1]], dx: numpy.ndarray[float64[m, 1]], kp_kv: numpy.ndarray[float64[m, n], flags.f_contiguous], ddx_max: float = 0.0) -&gt; Tuple[numpy.ndarray[float64[m, 1]], numpy.ndarray[float64[m, 1]]]</p>
+<li><p>pd_control(x: numpy.ndarray[numpy.float64[m, 1]], x_des: numpy.ndarray[numpy.float64[m, 1]], dx: numpy.ndarray[numpy.float64[m, 1]], kp_kv: numpy.ndarray[numpy.float64[m, n], flags.f_contiguous], ddx_max: float = 0.0) -&gt; Tuple[numpy.ndarray[numpy.float64[m, 1]], numpy.ndarray[numpy.float64[m, 1]]]</p>
 <blockquote>
 <div><p>General PD control law for reaching a goal position with velocity damping.</p>
 <p>Outputs a desired acceleration given a desired position, as well as the
@@ -158,7 +158,7 @@ and is ignored when less than or equal to 0.</p>
 </dl>
 </div></blockquote>
 </li>
-<li><p>pd_control(quat: Eigen::Quaternion&lt;double, 0&gt;, quat_des: Eigen::Quaternion&lt;double, 0&gt;, w: numpy.ndarray[float64[3, 1]], kp_kv: numpy.ndarray[float64[m, n], flags.f_contiguous], dw_max: float = 0.0) -&gt; Tuple[numpy.ndarray[float64[3, 1]], numpy.ndarray[float64[3, 1]]]</p>
+<li><p>pd_control(quat: Eigen::Quaternion&lt;double, 0&gt;, quat_des: Eigen::Quaternion&lt;double, 0&gt;, w: numpy.ndarray[numpy.float64[3, 1]], kp_kv: numpy.ndarray[numpy.float64[m, n], flags.f_contiguous], dw_max: float = 0.0) -&gt; Tuple[numpy.ndarray[numpy.float64[3, 1]], numpy.ndarray[numpy.float64[3, 1]]]</p>
 <blockquote>
 <div><p>Special PD control law for 3D orientations.</p>
 <p>Outputs a desired acceleration given a desired orientation, as well as the
