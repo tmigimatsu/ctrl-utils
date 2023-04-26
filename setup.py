@@ -1,10 +1,12 @@
 import pathlib
 import re
 import shutil
-import setuptools  # type: ignore
-from setuptools.command import build_ext  # type: ignore
 import subprocess
 import sys
+
+import setuptools  # type: ignore
+from setuptools.command import build_ext  # type: ignore
+from setuptools.extern.packaging import version  # type: ignore
 
 
 __version__ = "1.4.2"
@@ -17,8 +19,6 @@ class CMakeExtension(setuptools.Extension):
 
 class CMakeBuild(build_ext.build_ext):
     def run(self):
-        from packaging import version  # type: ignore
-
         if not self.inplace:
             try:
                 out = subprocess.check_output(["cmake", "--version"])
@@ -28,9 +28,10 @@ class CMakeBuild(build_ext.build_ext):
                     + ", ".join(e.name for e in self.extensions)
                 )
 
-            cmake_version = version.Version(
-                re.search(r"version\s*([\d.]+)", out.decode()).group(1)
-            )
+            m = re.search(r"version\s*([\d.]+)", out.decode())
+            if m is None:
+                raise RuntimeError("Could not find CMake version.")
+            cmake_version = version.Version(m.group(1))
             if cmake_version < version.Version("3.13.0"):
                 raise RuntimeError(
                     "CMake >= 3.13.0 is required. Install the latest CMake with 'pip install cmake'."
@@ -40,11 +41,19 @@ class CMakeBuild(build_ext.build_ext):
             self.build_extension(extension)
 
     def build_extension(self, extension: setuptools.Extension):
-        extension_dir = pathlib.Path(self.get_ext_fullpath(extension.name)).parent
-        extension_dir.mkdir(parents=True, exist_ok=True)
+        extension_dir = pathlib.Path(
+            self.get_ext_fullpath(extension.name)
+        ).parent.absolute()
 
+        # Clean old build.
+        for old_build in extension_dir.glob(
+            "*.dylib" if sys.platform == "darwin" else "*.so"
+        ):
+            old_build.unlink()
+
+        # Create new build folder.
         if self.inplace:
-            build_dir = extension_dir / "build"
+            build_dir = (pathlib.Path(__file__).parent / "build").absolute()
         else:
             build_dir = pathlib.Path(self.build_temp)
         build_dir.mkdir(parents=True, exist_ok=True)
@@ -66,6 +75,7 @@ class CMakeBuild(build_ext.build_ext):
                 "-DCMAKE_INSTALL_PREFIX=install",
                 "-DCMAKE_INSTALL_RPATH=" + rpath_origin,
             ]
+        print(*cmake_command)
         self.spawn(cmake_command)
 
         # Build and install.
