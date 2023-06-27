@@ -59,6 +59,7 @@ ctrlutils.RedisClient
       ~RedisClient.client_kill_filter
       ~RedisClient.client_list
       ~RedisClient.client_no_evict
+      ~RedisClient.client_no_touch
       ~RedisClient.client_pause
       ~RedisClient.client_reply
       ~RedisClient.client_setname
@@ -305,6 +306,7 @@ ctrlutils.RedisClient
       ~RedisClient.unlink
       ~RedisClient.unwatch
       ~RedisClient.wait
+      ~RedisClient.waitaof
       ~RedisClient.watch
       ~RedisClient.xack
       ~RedisClient.xadd
