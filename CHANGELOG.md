@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.4.4 (2023-06-27)
+
+### Fix
+
+* Redis_cpp c++17 error ([`1843801`](https://github.com/tmigimatsu/ctrl-utils/commit/18438013a64c7942a242417b3d8727fadd3011c8))
+
 ## v1.4.3 (2023-04-26)
 ### Fix
 * Move to pyproject.toml ([`bebc47b`](https://github.com/tmigimatsu/ctrl-utils/commit/bebc47b8f2451d3dcd9c62d4aa077a5018754267))
