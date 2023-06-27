@@ -9,6 +9,10 @@
 
 if(NOT TARGET cpp_redis::cpp_redis)
     add_library(cpp_redis::cpp_redis INTERFACE IMPORTED GLOBAL)
+    execute_process(
+        COMMAND sed -i "s/^#include <cpp_redis\\/misc\\/macro.hpp>/#include <cpp_redis\\/misc\\/macro.hpp>\\n#include <thread>/" cpp_redis.git/sources/core/client.cpp
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
     # Try to find cpp_redis via PkgConfig.
     find_package(PkgConfig)
