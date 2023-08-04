@@ -130,6 +130,7 @@ ctrlutils.RedisClient
       ~RedisClient.get_image
       ~RedisClient.get_matrix
       ~RedisClient.get_retry
+      ~RedisClient.get_tensor
       ~RedisClient.getbit
       ~RedisClient.getdel
       ~RedisClient.getex
@@ -265,6 +266,7 @@ ctrlutils.RedisClient
       ~RedisClient.set_matrix
       ~RedisClient.set_response_callback
       ~RedisClient.set_retry
+      ~RedisClient.set_tensor
       ~RedisClient.setbit
       ~RedisClient.setex
       ~RedisClient.setnx
