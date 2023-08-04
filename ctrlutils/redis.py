@@ -7,18 +7,18 @@ Created: May 23, 2021
 Authors: Toki Migimatsu
 """
 
-import typing
+from typing import Optional, Union
 
-import redis
 import numpy as np
+import redis
 
 
-class StringStream:
+class InputStringStream:
     def __init__(self, buffer: bytes):
         self._buffer = buffer
         self._idx = 0
 
-    def getbuffer(self) -> bytes:
+    def peek_remaining(self) -> bytes:
         return self._buffer[self._idx :]
 
     def read(self, num_bytes: int) -> bytes:
@@ -27,13 +27,27 @@ class StringStream:
         return self._buffer[idx_prev : self._idx]
 
     def read_word(self) -> str:
-        len_word = self.getbuffer().index(b" ")
+        len_word = self.peek_remaining().index(b" ")
         word = self.read(len_word)
         self.read(1)  # Consume space.
         return word.decode("utf8")
 
 
-def decode_matlab(s: typing.Union[str, bytes]) -> np.ndarray:
+class OutputStringStream:
+    def __init__(self, buffer: Optional[list[bytes]] = None) -> None:
+        self._buffer = [] if buffer is None else buffer
+
+    def write(self, b: Union[bytes, str]) -> None:
+        if isinstance(b, str):
+            b = b.encode("utf8")
+        self._buffer.append(b)
+
+    def flush(self) -> bytes:
+        self._buffer = [b"".join(self._buffer)]
+        return self._buffer[0]
+
+
+def decode_matlab(s: Union[str, bytes]) -> np.ndarray:
     if isinstance(s, bytes):
         s = s.decode("utf8")
     s = s.strip()
@@ -50,7 +64,7 @@ def encode_matlab(A: np.ndarray) -> str:
 def decode_opencv(b: bytes) -> np.ndarray:
     import cv2
 
-    ss = StringStream(b)
+    ss = InputStringStream(b)
 
     mat_type = int(ss.read_word())
     if mat_type in {
@@ -68,18 +82,17 @@ def decode_opencv(b: bytes) -> np.ndarray:
         cv2.CV_32FC4,
     }:
         size = int(ss.read_word())
-        buffer = np.frombuffer(ss.getbuffer(), dtype=np.uint8)
+        buffer = np.frombuffer(ss.peek_remaining(), dtype=np.uint8)
         img = cv2.imdecode(buffer, cv2.IMREAD_UNCHANGED)
     else:
-        rows = int(ss.read_word())
-        cols = int(ss.read_word())
-        buffer = np.frombuffer(ss.getbuffer(), dtype=np.uint8)
-        img = buffer.reshape((rows, cols))
+        raise ValueError(f"Unsupported image type {mat_type}.")
 
     return img
 
+
 def encode_opencv(img: np.ndarray) -> bytes:
     import cv2
+
     def np_to_cv_type(img: np.ndarray):
         if img.dtype == np.uint8:
             if len(img.shape) == 2 or img.shape[2] == 1:
@@ -108,25 +121,57 @@ def encode_opencv(img: np.ndarray) -> bytes:
                 return cv2.CV_32FC3
             elif img.shape[2] == 4:
                 return cv2.CV_32FC4
-        raise ArgumentError("Unsupported image type {img.dtype}, {img.shape[2]} channels")
+        raise ValueError(
+            f"Unsupported image type {img.dtype}, {img.shape[2] if len(img.shape) > 2 else 1} channels"
+        )
 
-    buffer = []
     type_img = np_to_cv_type(img)
-    buffer.append(f"{type_img} ".encode("utf8"))
 
     if img.dtype in (np.uint8, np.uint16):
-        _, png = cv2.imencode(".png", img)
-        buffer.append(f"{len(png)} ".encode("utf8"))
-        buffer.append(png.tobytes())
+        _, data = cv2.imencode(".png", img)
     elif img.dtype == np.float32:
-        _, exr = cv2.imencode(".exr", img)
-        buffer.append(f"{len(exr)} ".encode("utf8"))
-        buffer.append(exr.tobytes())
-    else:
-        buffer.append(f"{img.shape[0]} {img.shape[1]} ".encode("utf8"))
-        buffer.append(img.tobytes())
+        _, data = cv2.imencode(".exr", img)
 
-    return b"".join(buffer)
+    ss = OutputStringStream()
+    ss.write(f"{type_img} {len(data)} ")
+    ss.write(data.tobytes())
+
+    return ss.flush()
+
+
+def decode_tensor(b: bytes) -> np.ndarray:
+    ss = InputStringStream(b)
+
+    # Parse shape opening delimiter.
+    w = ss.read_word()
+    if w != "(":
+        raise ValueError(f"Expected '(' at index 0 but found {w} instead.")
+
+    # Parse shape.
+    shape = []
+    while True:
+        w = ss.read_word()
+        if w == ")":
+            break
+        shape.append(int(w))
+
+    # Parse dtype
+    dtype = np.dtype(ss.read_word())
+
+    # Parse data.
+    tensor = np.frombuffer(ss.peek_remaining(), dtype=dtype)
+    tensor = tensor.reshape(shape)
+
+    return tensor
+
+
+def encode_tensor(tensor: np.ndarray) -> bytes:
+    ss = OutputStringStream()
+    shape = " ".join(map(str, tensor.shape))
+    dtype = str(tensor.dtype)
+    ss.write(f"( {shape} ) {dtype} ")
+    ss.write(tensor.tobytes())
+    return ss.flush()
 
 
 class RedisClient(redis.Redis):
@@ -134,42 +179,99 @@ class RedisClient(redis.Redis):
         self,
         host: str = "127.0.0.1",
         port: int = 6379,
-        password: typing.Optional[str] = None,
-    ):
+        password: Optional[str] = None,
+    ) -> None:
         super().__init__(host=host, port=port, password=password)
 
-    def pipeline(self, transaction=True, shard_hint=None):
+    def pipeline(self, transaction: bool = True, shard_hint=None) -> "Pipeline":
         return Pipeline(
             self.connection_pool, self.response_callbacks, transaction, shard_hint
         )
 
+    def get(self, key: str, decode: Optional[str] = None) -> str:
+        val = super().get(key)
+        if decode is not None:
+            return val.decode("utf8")
+        return val
+
     def get_image(self, key: str) -> np.ndarray:
         """Gets a cv::Mat image from Redis."""
-        val = self.get(key)
-        return decode_opencv(val)
+        b_val = super().get(key)
+        return decode_opencv(b_val)
 
-    def set_image(self, key: str, val: np.ndarray):
+    def set_image(self, key: str, val: np.ndarray) -> bool:
         """Sets a cv::Mat in Redis."""
-        self.set(key, encode_opencv(val))
+        return self.set(key, encode_opencv(val))
 
     def get_matrix(self, key: str) -> np.ndarray:
         """Gets an Eigen::Matrix or Eigen::Vector from Redis."""
-        val = self.get(key).decode("utf8")
-        return decode_matlab(val)
+        b_val = self.get(key)
+        return decode_matlab(b_val)
 
-    def set_matrix(self, key: str, val: np.ndarray):
+    def set_matrix(self, key: str, val: np.ndarray) -> bool:
         """Sets an Eigen::Matrix or Eigen::Vector in Redis."""
-        self.set(key, encode_matlab(val))
+        return self.set(key, encode_matlab(val))
+
+    def get_tensor(self, key: str) -> np.ndarray:
+        """Gets a np.ndarray from Redis."""
+        b_val = super().get(key)
+        return decode_tensor(b_val)
+
+    def set_tensor(self, key: str, val: np.ndarray) -> bool:
+        """Sets a np.ndarray in Redis."""
+        return self.set(key, encode_tensor(val))
 
 
 class Pipeline(redis.client.Pipeline):
     def __init__(self, connection_pool, response_callbacks, transaction, shard_hint):
         super().__init__(connection_pool, response_callbacks, transaction, shard_hint)
+        self._decode_fns = []
 
-    def set_image(self, key: str, val: np.ndarray):
+    def get(self, key: str, decode: Optional[str] = None) -> "Pipeline":
+        super().get(key)
+        self._decode_fns.append(None if decode is None else lambda b: b.decode(decode))
+        return self
+
+    def set(self, key: str, val) -> "Pipeline":
+        super().set(key, val)
+        self._decode_fns.append(None)
+        return self
+
+    def get_image(self, key: str) -> "Pipeline":
+        """Gets a cv::Mat from Redis."""
+        super().get(key)
+        self._decode_fns.append(decode_opencv)
+        return self
+
+    def set_image(self, key: str, val: np.ndarray) -> "Pipeline":
         """Sets a cv::Mat in Redis."""
-        self.set(key, encode_opencv(val))
+        return self.set(key, encode_opencv(val))
 
-    def set_matrix(self, key: str, val: np.ndarray):
+    def get_matrix(self, key: str) -> "Pipeline":
+        """Gets an Eigen::Matrix or Eigen::Vector from Redis."""
+        super().get(key)
+        self._decode_fns.append(decode_matlab)
+        return self
+
+    def set_matrix(self, key: str, val: np.ndarray) -> "Pipeline":
         """Sets an Eigen::Matrix or Eigen::Vector in Redis."""
-        self.set(key, encode_matlab(val))
+        return self.set(key, encode_matlab(val))
+
+    def get_tensor(self, key: str) -> "Pipeline":
+        """Gets a tensor from Redis."""
+        super().get(key)
+        self._decode_fns.append(decode_tensor)
+        return self
+
+    def set_tensor(self, key: str, val: np.ndarray) -> "Pipeline":
+        """Sets a tensor in Redis."""
+        return self.set(key, encode_tensor(val))
+
+    def execute(self) -> list:
+        responses = super().execute()
+        decoded_responses = [
+            decode_fn(response) if decode_fn is not None else response
+            for response, decode_fn in zip(responses, self._decode_fns)
+        ]
+        self._decode_fns = []
+        return decoded_responses
