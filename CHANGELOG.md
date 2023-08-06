@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.5.0 (2023-08-06)
+
+### Feature
+
+* Encode tensors in Redis ([`7cfc8cf`](https://github.com/tmigimatsu/ctrl-utils/commit/7cfc8cf71a3ca02efe91f6f5259de53c92ae5245))
+
 ## v1.4.4 (2023-06-27)
 
 ### Fix
