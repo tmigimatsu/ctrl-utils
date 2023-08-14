@@ -12,7 +12,7 @@ cmake_minimum_required(VERSION 3.11)
 
 # Define project
 project(ctrl_utils
-    VERSION 1.5.0
+    VERSION 1.5.1
     DESCRIPTION "Utility library for robot control"
     LANGUAGES CXX
 )

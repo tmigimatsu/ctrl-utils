@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## v1.5.1 (2023-08-14)
+
+### Fix
+
+* Pack bool tensors ([`23c92ff`](https://github.com/tmigimatsu/ctrl-utils/commit/23c92ff3c838e9058e099a01a0888bc1fef2854b))
+
 ## v1.5.0 (2023-08-06)
 
 ### Feature
