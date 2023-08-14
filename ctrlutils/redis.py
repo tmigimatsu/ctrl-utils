@@ -159,7 +159,11 @@ def decode_tensor(b: bytes) -> np.ndarray:
     dtype = np.dtype(ss.read_word())
 
     # Parse data.
-    tensor = np.frombuffer(ss.peek_remaining(), dtype=dtype)
+    if dtype == "bool":
+        tensor = np.frombuffer(ss.peek_remaining(), dtype=np.uint8)
+        tensor = np.unpackbits(tensor, count=np.prod(shape)).astype(bool)
+    else:
+        tensor = np.frombuffer(ss.peek_remaining(), dtype=dtype)
     tensor = tensor.reshape(shape)
 
     return tensor
@@ -170,6 +174,8 @@ def encode_tensor(tensor: np.ndarray) -> bytes:
     shape = " ".join(map(str, tensor.shape))
     dtype = str(tensor.dtype)
     ss.write(f"( {shape} ) {dtype} ")
+    if dtype == "bool":
+        tensor = np.packbits(tensor)
     ss.write(tensor.tobytes())
     return ss.flush()
 
